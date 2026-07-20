@@ -25,6 +25,7 @@ export interface Collection {
   description: string;
   image: string;
   productCount: number;
+  comingSoon?: boolean;
 }
 
 export interface Review {

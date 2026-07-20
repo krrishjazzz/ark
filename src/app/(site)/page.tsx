@@ -8,19 +8,33 @@ import { OurStory } from "@/components/home/OurStory";
 import { CustomerGallery } from "@/components/home/CustomerGallery";
 import { Testimonials } from "@/components/home/Testimonials";
 import { InstagramFeed } from "@/components/home/InstagramFeed";
+import {
+  fetchCollections,
+  fetchFeaturedProducts,
+  fetchTestimonials,
+  fetchGalleryImages,
+} from "@/lib/cms";
 
-export default function HomePage() {
+export default async function HomePage() {
+  const [collections, featuredProducts, testimonials, galleryImages] =
+    await Promise.all([
+      fetchCollections(),
+      fetchFeaturedProducts(),
+      fetchTestimonials(),
+      fetchGalleryImages(),
+    ]);
+
   return (
     <>
       <Hero />
-      <FeaturedCollections />
+      <FeaturedCollections collections={collections} />
       <Craftsmanship />
-      <ProductShowcase />
+      <ProductShowcase products={featuredProducts} />
       <WhyARK />
       <PackagingShowcase />
       <OurStory />
-      <CustomerGallery />
-      <Testimonials />
+      <CustomerGallery images={galleryImages} />
+      <Testimonials items={testimonials} />
       <InstagramFeed />
     </>
   );

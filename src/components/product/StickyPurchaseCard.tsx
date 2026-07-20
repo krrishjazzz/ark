@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { useStore } from "@/lib/store";
 import { formatPrice } from "@/lib/utils";
+import { getProductPrimaryImage } from "@/lib/images";
 import { SIZES, FRAME_OPTIONS } from "@/lib/constants";
 import type { Product } from "@/types";
 import { cn } from "@/lib/utils";
@@ -27,7 +28,7 @@ export function StickyPurchaseCard({ product }: StickyPurchaseCardProps) {
       productId: product.id,
       slug: product.slug,
       name: product.name,
-      image: product.images[0],
+      image: getProductPrimaryImage(product.images),
       size: selectedSize,
       frame: selectedFrame,
       price,

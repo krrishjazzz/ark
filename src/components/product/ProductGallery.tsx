@@ -5,6 +5,7 @@ import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronLeft, ChevronRight, ZoomIn } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { ensureProductImages } from "@/lib/images";
 
 interface ProductGalleryProps {
   images: string[];
@@ -12,11 +13,13 @@ interface ProductGalleryProps {
 }
 
 export function ProductGallery({ images, name }: ProductGalleryProps) {
+  const galleryImages = ensureProductImages(images);
   const [activeIndex, setActiveIndex] = useState(0);
   const [zoomed, setZoomed] = useState(false);
 
-  const next = () => setActiveIndex((i) => (i + 1) % images.length);
-  const prev = () => setActiveIndex((i) => (i - 1 + images.length) % images.length);
+  const next = () => setActiveIndex((i) => (i + 1) % galleryImages.length);
+  const prev = () =>
+    setActiveIndex((i) => (i - 1 + galleryImages.length) % galleryImages.length);
 
   return (
     <div className="space-y-4">
@@ -35,7 +38,7 @@ export function ProductGallery({ images, name }: ProductGalleryProps) {
             className="absolute inset-0"
           >
             <Image
-              src={images[activeIndex]}
+              src={galleryImages[activeIndex]}
               alt={`${name} - view ${activeIndex + 1}`}
               fill
               className="object-cover"
@@ -49,7 +52,7 @@ export function ProductGallery({ images, name }: ProductGalleryProps) {
           <ZoomIn size={16} />
         </div>
 
-        {images.length > 1 && (
+        {galleryImages.length > 1 && (
           <>
             <button
               onClick={(e) => { e.stopPropagation(); prev(); }}
@@ -70,9 +73,9 @@ export function ProductGallery({ images, name }: ProductGalleryProps) {
       </div>
 
       {/* Thumbnails */}
-      {images.length > 1 && (
+      {galleryImages.length > 1 && (
         <div className="flex gap-3 overflow-x-auto hide-scrollbar">
-          {images.map((img, i) => (
+          {galleryImages.map((img, i) => (
             <button
               key={i}
               onClick={() => setActiveIndex(i)}
@@ -107,7 +110,7 @@ export function ProductGallery({ images, name }: ProductGalleryProps) {
               className="relative max-w-4xl w-full aspect-[3/4]"
             >
               <Image
-                src={images[activeIndex]}
+                src={galleryImages[activeIndex]}
                 alt={name}
                 fill
                 className="object-contain"

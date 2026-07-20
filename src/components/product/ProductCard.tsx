@@ -6,6 +6,7 @@ import { Heart, ArrowUpRight } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { useStore } from "@/lib/store";
 import { formatPrice } from "@/lib/utils";
+import { getProductPrimaryImage } from "@/lib/images";
 import type { Product } from "@/types";
 import { cn } from "@/lib/utils";
 
@@ -28,7 +29,7 @@ export function ProductCard({ product, className }: ProductCardProps) {
       <Link href={`/products/${product.slug}`} className="block">
         <div className="relative aspect-[3/4] image-zoom-container">
           <Image
-            src={product.images[0]}
+            src={getProductPrimaryImage(product.images)}
             alt={product.name}
             fill
             className="object-cover"

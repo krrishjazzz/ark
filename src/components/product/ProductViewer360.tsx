@@ -4,6 +4,7 @@ import { useRef, useState } from "react";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import { RotateCcw } from "lucide-react";
+import { ensureProductImages, getProductPrimaryImage } from "@/lib/images";
 
 interface ProductViewer360Props {
   images: string[];
@@ -11,6 +12,7 @@ interface ProductViewer360Props {
 }
 
 export function ProductViewer360({ images, name }: ProductViewer360Props) {
+  const viewerImages = ensureProductImages(images);
   const [rotation, setRotation] = useState(0);
   const [isDragging, setIsDragging] = useState(false);
   const startX = useRef(0);
@@ -31,7 +33,7 @@ export function ProductViewer360({ images, name }: ProductViewer360Props) {
 
   const handlePointerUp = () => setIsDragging(false);
 
-  const activeImageIndex = Math.abs(Math.round(rotation / 45)) % images.length;
+  const activeImageIndex = Math.abs(Math.round(rotation / 45)) % viewerImages.length;
 
   return (
     <div className="relative">
@@ -49,7 +51,7 @@ export function ProductViewer360({ images, name }: ProductViewer360Props) {
           style={{ transformStyle: "preserve-3d" }}
         >
           <Image
-            src={images[activeImageIndex] || images[0]}
+            src={viewerImages[activeImageIndex] ?? getProductPrimaryImage(viewerImages)}
             alt={`${name} 360 view`}
             fill
             className="object-cover"

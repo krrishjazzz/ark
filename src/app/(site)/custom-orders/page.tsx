@@ -12,8 +12,25 @@ import { Label } from "@/components/ui/label";
 export default function CustomOrdersPage() {
   const [submitted, setSubmitted] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    const form = e.currentTarget;
+    const formData = new FormData(form);
+
+    await fetch("/api/custom-order", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        brand: formData.get("brand"),
+        model: formData.get("model"),
+        year: formData.get("year"),
+        color: formData.get("color"),
+        customText: formData.get("customText"),
+        email: formData.get("email"),
+        phone: formData.get("phone"),
+      }),
+    });
+
     setSubmitted(true);
   };
 
@@ -60,19 +77,19 @@ export default function CustomOrdersPage() {
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                 <div className="space-y-2">
                   <Label htmlFor="brand">Brand</Label>
-                  <Input id="brand" placeholder="e.g. Porsche" required />
+                  <Input id="brand" name="brand" placeholder="e.g. Porsche" required />
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="model">Model</Label>
-                  <Input id="model" placeholder="e.g. 911 GT3 RS" required />
+                  <Input id="model" name="model" placeholder="e.g. 911 GT3 RS" required />
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="year">Year</Label>
-                  <Input id="year" placeholder="e.g. 2024" required />
+                  <Input id="year" name="year" placeholder="e.g. 2024" required />
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="color">Color</Label>
-                  <Input id="color" placeholder="e.g. Guards Red" required />
+                  <Input id="color" name="color" placeholder="e.g. Guards Red" required />
                 </div>
               </div>
 
@@ -80,6 +97,7 @@ export default function CustomOrdersPage() {
                 <Label htmlFor="custom-text">Custom Text / Special Requests</Label>
                 <Textarea
                   id="custom-text"
+                  name="customText"
                   placeholder="Describe your vision — textures, colors, special details..."
                   rows={4}
                 />
@@ -88,11 +106,11 @@ export default function CustomOrdersPage() {
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                 <div className="space-y-2">
                   <Label htmlFor="email">Email</Label>
-                  <Input id="email" type="email" placeholder="you@email.com" required />
+                  <Input id="email" name="email" type="email" placeholder="you@email.com" required />
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="phone">Phone</Label>
-                  <Input id="phone" type="tel" placeholder="+91 XXXXX XXXXX" required />
+                  <Input id="phone" name="phone" type="tel" placeholder="+91 XXXXX XXXXX" required />
                 </div>
               </div>
 

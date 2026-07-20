@@ -13,7 +13,9 @@ export const BRAND = {
 
 export const IMAGES = {
   logo: "/images/logo.png",
-  hero: "/images/product-wall.png",
+  hero: "/images/hero-bg.png",
+  heroBg: "/images/hero-bg.png",
+  heroCinematic: "/images/hero-cinematic.png",
   productWall: "/images/product-wall.png",
   productTopdown: "/images/product-topdown.png",
   productEasel: "/images/product-easel.png",
@@ -21,7 +23,27 @@ export const IMAGES = {
   brandBoard1: "/images/brand-board-1.png",
   brandBoard2: "/images/brand-board-2.png",
   packaging: "/images/packaging.png",
+  collectionCars: "/images/collection-car-grid.png",
+  collectionAudiR8: "/images/collection-audi-r8.png",
+  collectionRollsRoyce: "/images/collection-rolls-royce.png",
+  collectionMustang: "/images/collection-mustang.png",
+  collectionFerrariF1: "/images/collection-ferrari-f1.png",
+  collectionWineBottle: "/images/collection-johnnie-walker.png",
+  collectionJohnnieWalker: "/images/collection-johnnie-walker.png",
+  collectionJagermeister: "/images/collection-jagermeister.png",
+  collectionBallantines: "/images/collection-ballantines.png",
+  collectionJackDaniels: "/images/collection-jack-daniels.png",
+  collectionBombaySapphire: "/images/collection-bombay-sapphire.png",
+  collectionBmwMotorrad: "/images/collection-bmw-motorrad.png",
+  collectionSuzukiGsxr: "/images/collection-suzuki-gsxr.png",
+  collectionSpiderMan: "/images/collection-spider-man.png",
+  collectionBatman: "/images/collection-batman.png",
+  collectionMarvel: "/images/collection-spider-man.png",
+  /** Used when CMS/local data has no image */
+  fallback: "/images/collection-car-grid.png",
 } as const;
+
+export const FALLBACK_IMAGE = IMAGES.fallback;
 
 export const SIZES = [
   { label: '12" × 18"', value: "12x18", priceMultiplier: 1 },

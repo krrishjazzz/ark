@@ -4,21 +4,32 @@ import { useState } from "react";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import { SectionHeading } from "@/components/animations/SectionHeading";
-import { customerGallery } from "@/lib/data/content";
 import { cn } from "@/lib/utils";
 
-const categories = [
-  "All",
-  ...Array.from(new Set(customerGallery.map((item) => item.category))),
-];
+interface GalleryImage {
+  id: string;
+  image: string;
+  category: string;
+  alt: string;
+}
 
-export function CustomerGallery() {
+interface CustomerGalleryProps {
+  images: GalleryImage[];
+}
+
+function getCategories(images: GalleryImage[]) {
+  return ["All", ...Array.from(new Set(images.map((item) => item.category)))];
+}
+
+export function CustomerGallery({ images }: CustomerGalleryProps) {
   const [activeCategory, setActiveCategory] = useState("All");
 
   const filtered =
     activeCategory === "All"
-      ? customerGallery
-      : customerGallery.filter((item) => item.category === activeCategory);
+      ? images
+      : images.filter((item) => item.category === activeCategory);
+
+  const categoryList = getCategories(images);
 
   return (
     <section className="section-padding px-6 lg:px-8 bg-card/30" aria-label="Customer Gallery">
@@ -31,7 +42,7 @@ export function CustomerGallery() {
 
         {/* Category filters */}
         <div className="flex flex-wrap justify-center gap-3 mb-12">
-          {categories.map((cat) => (
+          {categoryList.map((cat) => (
             <button
               key={cat}
               onClick={() => setActiveCategory(cat)}

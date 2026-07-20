@@ -5,12 +5,16 @@ import Link from "next/link";
 import Image from "next/image";
 import { motion, useMotionValue, useTransform } from "framer-motion";
 import { SectionHeading } from "@/components/animations/SectionHeading";
-import { getFeaturedProducts } from "@/lib/data/products";
 import { formatPrice } from "@/lib/utils";
+import { getProductPrimaryImage } from "@/lib/images";
 import { Badge } from "@/components/ui/badge";
+import type { Product } from "@/types";
 
-export function ProductShowcase() {
-  const products = getFeaturedProducts();
+interface ProductShowcaseProps {
+  products: Product[];
+}
+
+export function ProductShowcase({ products }: ProductShowcaseProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const [hoveredId, setHoveredId] = useState<string | null>(null);
 
@@ -49,7 +53,7 @@ function ShowcaseCard({
   isHovered,
   onHover,
 }: {
-  product: ReturnType<typeof getFeaturedProducts>[0];
+  product: Product;
   index: number;
   isHovered: boolean;
   onHover: (id: string | null) => void;
@@ -81,7 +85,7 @@ function ShowcaseCard({
       >
         <div className="relative aspect-[3/4] image-zoom-container">
           <Image
-            src={product.images[0]}
+            src={getProductPrimaryImage(product.images)}
             alt={product.name}
             fill
             className="object-cover"

@@ -1,8 +1,5 @@
 import type { Metadata } from "next";
 import { Cormorant_Garamond, Inter } from "next/font/google";
-import { AppProviders } from "@/components/providers/AppProviders";
-import { Navbar } from "@/components/layout/Navbar";
-import { Footer } from "@/components/layout/Footer";
 import { BRAND } from "@/lib/constants";
 import "./globals.css";
 
@@ -58,11 +55,7 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${cormorant.variable} ${inter.variable}`}>
       <body className="bg-background text-foreground antialiased">
-        <AppProviders>
-          <Navbar />
-          <main>{children}</main>
-          <Footer />
-        </AppProviders>
+        {children}
       </body>
     </html>
   );

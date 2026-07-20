@@ -5,7 +5,11 @@ import { motion } from "framer-motion";
 import { Star } from "lucide-react";
 import { SectionHeading } from "@/components/animations/SectionHeading";
 import { staggerContainer, staggerItem } from "@/components/animations/FadeIn";
-import { testimonials } from "@/lib/data/content";
+import type { Testimonial } from "@/types";
+
+interface TestimonialsProps {
+  items: Testimonial[];
+}
 
 function StarRating({ rating }: { rating: number }) {
   return (
@@ -28,7 +32,7 @@ function StarRating({ rating }: { rating: number }) {
   );
 }
 
-export function Testimonials() {
+export function Testimonials({ items }: TestimonialsProps) {
   return (
     <section className="section-padding px-6 lg:px-8" aria-label="Testimonials">
       <div className="mx-auto max-w-7xl">
@@ -45,7 +49,7 @@ export function Testimonials() {
           viewport={{ once: true, margin: "-80px" }}
           className="grid grid-cols-1 md:grid-cols-2 gap-6"
         >
-          {testimonials.map((testimonial) => (
+          {items.map((testimonial) => (
             <motion.div
               key={testimonial.id}
               variants={staggerItem}

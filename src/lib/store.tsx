@@ -11,6 +11,7 @@ import {
 } from "react";
 import type { CartItem, Product } from "@/types";
 import { SIZES, FRAME_OPTIONS } from "@/lib/constants";
+import { getProductPrimaryImage } from "@/lib/images";
 
 interface StoreContextType {
   cart: CartItem[];
@@ -204,7 +205,7 @@ export function useAddProductToCart(product: Product, size: string, frame: strin
       productId: product.id,
       slug: product.slug,
       name: product.name,
-      image: product.images[0],
+      image: getProductPrimaryImage(product.images),
       size,
       frame,
       price: calculatePrice(product.basePrice, size),

@@ -1,71 +1,218 @@
 /**
- * CMS-ready data layer for ARK
- *
- * This module provides a clean abstraction over data sources.
- * Currently backed by local JSON/TS files. Swap implementations
- * to connect Sanity, Contentful, Strapi, or a custom admin API.
+ * CMS data layer — fetches from Sanity when content exists,
+ * falls back to local data so the site always works.
  */
 
+import { SanityCMSAdapter } from "@/lib/cms/sanity-adapter";
+import { LocalCMSAdapter } from "@/lib/cms/types";
+import type { CMSAdapter } from "@/lib/cms/types";
 import type { Product, Collection, Testimonial } from "@/types";
-import { products, getProductBySlug, getFeaturedProducts } from "@/lib/data/products";
-import { collections, getCollectionBySlug } from "@/lib/data/collections";
-import { testimonials, customerGallery } from "@/lib/data/content";
+import { getRelatedProducts } from "@/lib/data/products";
 
-export interface CMSAdapter {
-  getProducts(): Promise<Product[]>;
-  getProduct(slug: string): Promise<Product | null>;
-  getCollections(): Promise<Collection[]>;
-  getCollection(slug: string): Promise<Collection | null>;
-  getTestimonials(): Promise<Testimonial[]>;
-  getGalleryImages(): Promise<typeof customerGallery>;
-  submitCustomOrder(data: Record<string, unknown>): Promise<{ success: boolean }>;
-  submitContact(data: Record<string, unknown>): Promise<{ success: boolean }>;
-}
+const sanity = new SanityCMSAdapter();
+const local = new LocalCMSAdapter();
 
-class LocalCMSAdapter implements CMSAdapter {
-  async getProducts() {
-    return products;
-  }
-
-  async getProduct(slug: string) {
-    return getProductBySlug(slug) ?? null;
-  }
-
-  async getCollections() {
-    return collections;
-  }
-
-  async getCollection(slug: string) {
-    return getCollectionBySlug(slug) ?? null;
-  }
-
-  async getTestimonials() {
-    return testimonials;
-  }
-
-  async getGalleryImages() {
-    return customerGallery;
-  }
-
-  async submitCustomOrder(data: Record<string, unknown>) {
-    console.log("[CMS] Custom order received:", data);
-    return { success: true };
-  }
-
-  async submitContact(data: Record<string, unknown>) {
-    console.log("[CMS] Contact form received:", data);
-    return { success: true };
-  }
-}
-
-let cmsInstance: CMSAdapter = new LocalCMSAdapter();
+let activeAdapter: CMSAdapter = sanity;
 
 export function setCMSAdapter(adapter: CMSAdapter) {
-  cmsInstance = adapter;
+  activeAdapter = adapter;
 }
 
 export function getCMS(): CMSAdapter {
-  return cmsInstance;
+  return activeAdapter;
 }
 
-export { products, collections, testimonials, getFeaturedProducts };
+function mergeProducts(sanityProducts: Product[], localProducts: Product[]): Product[] {
+  const bySlug = new Map<string, Product>();
+
+  for (const product of localProducts) {
+    bySlug.set(product.slug, product);
+  }
+
+  for (const product of sanityProducts) {
+    const existing = bySlug.get(product.slug);
+    bySlug.set(product.slug, {
+      ...(existing ?? product),
+      ...product,
+      images: product.images.length > 0 ? product.images : (existing?.images ?? product.images),
+    });
+  }
+
+  return Array.from(bySlug.values());
+}
+
+function mergeCollections(
+  sanityCollections: Collection[],
+  localCollections: Collection[]
+): Collection[] {
+  const localBySlug = new Map(localCollections.map((c) => [c.slug, c]));
+  const localSlugs = new Set(localCollections.map((c) => c.slug));
+  const sanitySlugs = new Set(sanityCollections.map((c) => c.slug));
+
+  const merged = sanityCollections
+    .filter((collection) => localSlugs.has(collection.slug))
+    .map((collection) => {
+      const local = localBySlug.get(collection.slug);
+      if (!local) return collection;
+
+      return {
+        ...collection,
+        productCount: Math.max(collection.productCount ?? 0, local.productCount ?? 0),
+        image: local.image || collection.image,
+      };
+    });
+
+  for (const local of localCollections) {
+    if (!sanitySlugs.has(local.slug)) {
+      merged.push(local);
+    }
+  }
+
+  return merged;
+}
+
+function mergeCollection(
+  sanityCollection: Collection | null,
+  localCollection: Collection | null
+): Collection | null {
+  if (!localCollection) return null;
+  if (!sanityCollection) return localCollection;
+
+  return {
+    ...sanityCollection,
+    productCount: Math.max(
+      sanityCollection.productCount ?? 0,
+      localCollection.productCount ?? 0
+    ),
+    image: localCollection.image || sanityCollection.image,
+  };
+}
+
+async function withFallback<T>(
+  sanityFn: () => Promise<T[]>,
+  localFn: () => Promise<T[]>
+): Promise<T[]> {
+  try {
+    const result = await sanityFn();
+    if (result.length > 0) return result;
+  } catch (error) {
+    console.warn("[CMS] Sanity fetch failed, using local data:", error);
+  }
+  return localFn();
+}
+
+async function withFallbackSingle<T>(
+  sanityFn: () => Promise<T | null>,
+  localFn: () => Promise<T | null>
+): Promise<T | null> {
+  try {
+    const result = await sanityFn();
+    if (result) return result;
+  } catch (error) {
+    console.warn("[CMS] Sanity fetch failed, using local data:", error);
+  }
+  return localFn();
+}
+
+export async function fetchProducts(): Promise<Product[]> {
+  try {
+    const [sanityProducts, localProducts] = await Promise.all([
+      sanity.getProducts(),
+      local.getProducts(),
+    ]);
+    if (sanityProducts.length > 0) return mergeProducts(sanityProducts, localProducts);
+  } catch (error) {
+    console.warn("[CMS] Sanity fetch failed, using local data:", error);
+  }
+  return local.getProducts();
+}
+
+export async function fetchProduct(slug: string): Promise<Product | null> {
+  try {
+    const [sanityProduct, localProduct] = await Promise.all([
+      sanity.getProduct(slug),
+      local.getProduct(slug),
+    ]);
+    if (sanityProduct && localProduct) {
+      return mergeProducts([sanityProduct], [localProduct])[0] ?? null;
+    }
+    return sanityProduct ?? localProduct;
+  } catch (error) {
+    console.warn("[CMS] Sanity fetch failed, using local data:", error);
+  }
+  return local.getProduct(slug);
+}
+
+export async function fetchFeaturedProducts(): Promise<Product[]> {
+  const all = await fetchProducts();
+  return all.filter((p) => p.featured);
+}
+
+export async function fetchProductsByCollection(
+  collection: string
+): Promise<Product[]> {
+  try {
+    const [sanityProducts, localProducts] = await Promise.all([
+      sanity.getProductsByCollection(collection),
+      local.getProductsByCollection(collection),
+    ]);
+    const merged = mergeProducts(sanityProducts, localProducts);
+    return merged.filter((p) => p.collection === collection);
+  } catch (error) {
+    console.warn("[CMS] Sanity fetch failed, using local data:", error);
+  }
+  return local.getProductsByCollection(collection);
+}
+
+export async function fetchCollections(): Promise<Collection[]> {
+  try {
+    const [sanityCollections, localCollections] = await Promise.all([
+      sanity.getCollections(),
+      local.getCollections(),
+    ]);
+    if (sanityCollections.length > 0) {
+      return mergeCollections(sanityCollections, localCollections);
+    }
+  } catch (error) {
+    console.warn("[CMS] Sanity fetch failed, using local data:", error);
+  }
+  return local.getCollections();
+}
+
+export async function fetchCollection(slug: string): Promise<Collection | null> {
+  try {
+    const [sanityCollection, localCollection] = await Promise.all([
+      sanity.getCollection(slug),
+      local.getCollection(slug),
+    ]);
+    return mergeCollection(sanityCollection, localCollection);
+  } catch (error) {
+    console.warn("[CMS] Sanity fetch failed, using local data:", error);
+  }
+  return local.getCollection(slug);
+}
+
+export async function fetchTestimonials(): Promise<Testimonial[]> {
+  return withFallback(
+    () => sanity.getTestimonials(),
+    () => local.getTestimonials()
+  );
+}
+
+export async function fetchGalleryImages() {
+  return withFallback(
+    () => sanity.getGalleryImages(),
+    () => local.getGalleryImages()
+  );
+}
+
+export async function fetchRelatedProducts(slug: string, limit = 4) {
+  const product = await fetchProduct(slug);
+  const all = await fetchProducts();
+  if (!product) return all.slice(0, limit);
+  return all
+    .filter((p) => p.slug !== slug && p.collection === product.collection)
+    .slice(0, limit);
+}
+
+export { getRelatedProducts };

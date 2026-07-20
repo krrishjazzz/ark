@@ -15,13 +15,7 @@ const sortOptions = [
   { label: "Newest", value: "newest" },
 ];
 
-const collectionFilters = [
-  "All",
-  "supercars",
-  "motorcycles",
-  "badge-series",
-  "abstract",
-];
+const collectionFilters = ["All", "cars"];
 
 export default function SearchPage() {
   const [query, setQuery] = useState("");

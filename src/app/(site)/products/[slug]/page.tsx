@@ -6,11 +6,7 @@ import { StickyPurchaseCard } from "@/components/product/StickyPurchaseCard";
 import { ProductCard } from "@/components/product/ProductCard";
 import { SectionHeading } from "@/components/animations/SectionHeading";
 import { FadeIn } from "@/components/animations/FadeIn";
-import {
-  getProductBySlug,
-  getRelatedProducts,
-  products,
-} from "@/lib/data/products";
+import { fetchProduct, fetchProducts, fetchRelatedProducts } from "@/lib/cms";
 import { Star } from "lucide-react";
 import { ProductViewTracker } from "@/components/product/ProductViewTracker";
 
@@ -19,12 +15,13 @@ interface Props {
 }
 
 export async function generateStaticParams() {
+  const products = await fetchProducts();
   return products.map((p) => ({ slug: p.slug }));
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
-  const product = getProductBySlug(slug);
+  const product = await fetchProduct(slug);
   if (!product) return { title: "Product Not Found" };
   return {
     title: product.name,
@@ -32,17 +29,17 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     openGraph: {
       title: product.name,
       description: product.tagline,
-      images: [product.images[0]],
+      images: product.images[0] ? [product.images[0]] : [],
     },
   };
 }
 
 export default async function ProductPage({ params }: Props) {
   const { slug } = await params;
-  const product = getProductBySlug(slug);
+  const product = await fetchProduct(slug);
   if (!product) notFound();
 
-  const related = getRelatedProducts(slug);
+  const related = await fetchRelatedProducts(slug);
 
   return (
     <div className="pt-28 pb-20">
@@ -64,7 +61,6 @@ export default async function ProductPage({ params }: Props) {
           </div>
         </div>
 
-        {/* Details tabs */}
         <div className="mt-24 grid grid-cols-1 md:grid-cols-3 gap-12">
           <FadeIn>
             <h3 className="font-heading text-2xl font-light text-foreground mb-4">
@@ -100,7 +96,6 @@ export default async function ProductPage({ params }: Props) {
           </FadeIn>
         </div>
 
-        {/* Reviews */}
         {product.reviews.length > 0 && (
           <div className="mt-24">
             <SectionHeading label="Reviews" title="Collector Reviews" align="left" />
@@ -135,7 +130,6 @@ export default async function ProductPage({ params }: Props) {
           </div>
         )}
 
-        {/* Related */}
         {related.length > 0 && (
           <div className="mt-24">
             <SectionHeading

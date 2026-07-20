@@ -1,9 +1,12 @@
 import type { MetadataRoute } from "next";
-import { products } from "@/lib/data/products";
-import { collections } from "@/lib/data/collections";
+import { fetchProducts, fetchCollections } from "@/lib/cms";
 
-export default function sitemap(): MetadataRoute.Sitemap {
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = "https://arkresin.art";
+  const [products, collections] = await Promise.all([
+    fetchProducts(),
+    fetchCollections(),
+  ]);
 
   const staticPages = [
     "",
