@@ -4,12 +4,14 @@ export const BRAND = {
   tagline: "Beyond Cars. Beyond Limits.",
   description:
     "Handcrafted resin masterpieces inspired by machines, emotion and timeless craftsmanship.",
-  email: "hello@arkresin.art",
-  phone: "+91 98765 43210",
+  email: "aestheticresinkreations@gmail.com",
+  phone: "+91 91630 34822",
+  phoneRaw: "9163034822",
+  location: "PS Abacus Newtown, AA-2D, Kolkata, India",
   instagram: "https://www.instagram.com/aestheticresinkreations/",
   facebook: "https://www.facebook.com/profile.php?id=61591768516700",
   instagramHandle: "aestheticresinkreations",
-  whatsapp: "https://wa.me/919876543210",
+  whatsapp: "https://wa.me/919163034822",
 } as const;
 
 export const IMAGES = {

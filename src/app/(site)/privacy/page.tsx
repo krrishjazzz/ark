@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { SectionHeading } from "@/components/animations/SectionHeading";
+import { BRAND } from "@/lib/constants";
 
 export const metadata: Metadata = {
   title: "Privacy Policy",
@@ -13,7 +14,7 @@ export default function PrivacyPage() {
         <div className="space-y-6 text-grey leading-relaxed text-sm">
           <p>ARK Aesthetic Resin Kreations respects your privacy. We collect only the information necessary to process orders and communicate with you.</p>
           <p>We do not sell or share your personal data with third parties except as required for order fulfillment and payment processing.</p>
-          <p>For questions, contact hello@arkresin.art</p>
+          <p>For questions, contact {BRAND.email}</p>
         </div>
       </div>
     </div>

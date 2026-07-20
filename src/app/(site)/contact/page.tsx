@@ -1,6 +1,6 @@
 "use client";
 
-import { MessageCircle, Mail, MapPin, Send } from "lucide-react";
+import { MessageCircle, Mail, MapPin, Phone, Send } from "lucide-react";
 import { InstagramIcon } from "@/components/icons/SocialIcons";
 import { SectionHeading } from "@/components/animations/SectionHeading";
 import { FadeIn } from "@/components/animations/FadeIn";
@@ -60,9 +60,19 @@ export default function ContactPage() {
                   <MapPin size={20} className="text-gold mt-1 shrink-0" />
                   <div>
                     <h3 className="font-heading text-lg text-foreground">Studio</h3>
-                    <p className="text-sm text-grey mt-1">
-                      ARK Studio, Mumbai, India
-                    </p>
+                    <p className="text-sm text-grey mt-1">{BRAND.location}</p>
+                  </div>
+                </div>
+                <div className="flex items-start gap-4 mb-6">
+                  <Phone size={20} className="text-gold mt-1 shrink-0" />
+                  <div>
+                    <h3 className="font-heading text-lg text-foreground">Phone & WhatsApp</h3>
+                    <a
+                      href={`tel:+91${BRAND.phoneRaw}`}
+                      className="text-sm text-grey hover:text-gold transition-colors block mt-1"
+                    >
+                      {BRAND.phone}
+                    </a>
                   </div>
                 </div>
                 <div className="flex items-start gap-4">
@@ -98,7 +108,7 @@ export default function ContactPage() {
               <div className="rounded-[20px] border border-border overflow-hidden aspect-video bg-card flex items-center justify-center">
                 <iframe
                   title="ARK Studio Location"
-                  src="https://maps.google.com/maps?q=Mumbai%2C%20India&z=12&output=embed"
+                  src={`https://maps.google.com/maps?q=${encodeURIComponent(BRAND.location)}&z=14&output=embed`}
                   className="w-full h-full border-0"
                   loading="lazy"
                   referrerPolicy="no-referrer-when-downgrade"

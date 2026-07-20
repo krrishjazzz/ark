@@ -169,7 +169,7 @@ export function CheckoutForm() {
                 type="tel"
                 value={customer.phone}
                 onChange={(e) => updateField("phone", e.target.value)}
-                placeholder="+91 98765 43210"
+                placeholder={BRAND.phone}
                 required
               />
             </div>
