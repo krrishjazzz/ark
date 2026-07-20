@@ -11,6 +11,7 @@ import {
 } from "@/lib/cms";
 import { Badge } from "@/components/ui/badge";
 import { resolveImageSrc } from "@/lib/images";
+import { BRAND } from "@/lib/constants";
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -79,7 +80,7 @@ export default async function CollectionDetailPage({ params }: Props) {
                 </p>
                 <p className="text-sm text-grey">
                   This collection is still launching — browse pieces below and follow{" "}
-                  <span className="text-foreground">@ark.resin.art</span> for updates.
+                  <span className="text-foreground">@{BRAND.instagramHandle}</span> for updates.
                 </p>
               </div>
             )}
@@ -92,7 +93,7 @@ export default async function CollectionDetailPage({ params }: Props) {
         ) : collection.comingSoon ? (
           <SectionHeading
             title="Launching Soon"
-            description="This collection is currently in development. Follow us on Instagram @ark.resin.art for updates."
+            description={`This collection is currently in development. Follow us on Instagram @${BRAND.instagramHandle} for updates.`}
           />
         ) : (
           <SectionHeading

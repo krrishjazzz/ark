@@ -15,7 +15,7 @@ export function InstagramFeed() {
         <SectionHeading
           label="Social"
           title="Follow the Craft"
-          description="Join our community on Instagram @ark.resin.art"
+          description={`Join our community on Instagram @${BRAND.instagramHandle}`}
         />
 
         <div className="columns-2 md:columns-3 lg:columns-4 gap-4 space-y-4">

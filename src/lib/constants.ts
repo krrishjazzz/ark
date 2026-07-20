@@ -6,8 +6,9 @@ export const BRAND = {
     "Handcrafted resin masterpieces inspired by machines, emotion and timeless craftsmanship.",
   email: "hello@arkresin.art",
   phone: "+91 98765 43210",
-  instagram: "https://instagram.com/ark.resin.art",
-  facebook: "https://facebook.com/ark.resin.art",
+  instagram: "https://www.instagram.com/aestheticresinkreations/",
+  facebook: "https://www.facebook.com/profile.php?id=61591768516700",
+  instagramHandle: "aestheticresinkreations",
   whatsapp: "https://wa.me/919876543210",
 } as const;
 

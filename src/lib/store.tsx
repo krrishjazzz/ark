@@ -18,6 +18,7 @@ interface StoreContextType {
   wishlist: string[];
   recentlyViewed: string[];
   compareList: string[];
+  hydrated: boolean;
   addToCart: (item: Omit<CartItem, "quantity">) => void;
   removeFromCart: (productId: string, size: string) => void;
   updateQuantity: (productId: string, size: string, quantity: number) => void;
@@ -33,27 +34,46 @@ interface StoreContextType {
 
 const StoreContext = createContext<StoreContextType | null>(null);
 
+function readStoredStore() {
+  if (typeof window === "undefined") {
+    return { cart: [] as CartItem[], wishlist: [] as string[], recentlyViewed: [] as string[] };
+  }
+
+  try {
+    const saved = localStorage.getItem("ark-store");
+    if (saved) {
+      const data = JSON.parse(saved);
+      return {
+        cart: (data.cart ?? []) as CartItem[],
+        wishlist: (data.wishlist ?? []) as string[],
+        recentlyViewed: (data.recentlyViewed ?? []) as string[],
+      };
+    }
+  } catch {
+    /* ignore */
+  }
+
+  return { cart: [] as CartItem[], wishlist: [] as string[], recentlyViewed: [] as string[] };
+}
+
 export function StoreProvider({ children }: { children: ReactNode }) {
+  const [hydrated, setHydrated] = useState(false);
   const [cart, setCart] = useState<CartItem[]>([]);
   const [wishlist, setWishlist] = useState<string[]>([]);
   const [recentlyViewed, setRecentlyViewed] = useState<string[]>([]);
   const [compareList, setCompareList] = useState<string[]>([]);
 
   useEffect(() => {
-    try {
-      const saved = localStorage.getItem("ark-store");
-      if (saved) {
-        const data = JSON.parse(saved);
-        if (data.cart) setCart(data.cart);
-        if (data.wishlist) setWishlist(data.wishlist);
-        if (data.recentlyViewed) setRecentlyViewed(data.recentlyViewed);
-      }
-    } catch {
-      /* ignore */
-    }
+    const stored = readStoredStore();
+    setCart(stored.cart);
+    setWishlist(stored.wishlist);
+    setRecentlyViewed(stored.recentlyViewed);
+    setHydrated(true);
   }, []);
 
   useEffect(() => {
+    if (!hydrated) return;
+
     try {
       localStorage.setItem(
         "ark-store",
@@ -62,7 +82,7 @@ export function StoreProvider({ children }: { children: ReactNode }) {
     } catch {
       /* ignore */
     }
-  }, [cart, wishlist, recentlyViewed]);
+  }, [cart, wishlist, recentlyViewed, hydrated]);
 
   const calculatePrice = useCallback((basePrice: number, size: string) => {
     const sizeOption = SIZES.find((s) => s.value === size);
@@ -154,6 +174,7 @@ export function StoreProvider({ children }: { children: ReactNode }) {
       wishlist,
       recentlyViewed,
       compareList,
+      hydrated,
       addToCart,
       removeFromCart,
       updateQuantity,
@@ -171,6 +192,7 @@ export function StoreProvider({ children }: { children: ReactNode }) {
       wishlist,
       recentlyViewed,
       compareList,
+      hydrated,
       addToCart,
       removeFromCart,
       updateQuantity,

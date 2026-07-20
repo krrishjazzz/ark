@@ -2,19 +2,28 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { Minus, Plus, Trash2, ShoppingBag } from "lucide-react";
 import { SectionHeading } from "@/components/animations/SectionHeading";
 import { FadeIn } from "@/components/animations/FadeIn";
 import { Button } from "@/components/ui/button";
 import { useStore } from "@/lib/store";
+import { calculateCartTotals } from "@/lib/checkout";
 import { formatPrice } from "@/lib/utils";
 
 export default function CartPage() {
-  const { cart, updateQuantity, removeFromCart, cartCount } = useStore();
+  const router = useRouter();
+  const { cart, updateQuantity, removeFromCart, cartCount, hydrated } = useStore();
 
-  const subtotal = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
-  const shipping = subtotal > 50000 ? 0 : 2500;
-  const total = subtotal + shipping;
+  const { subtotal, shipping, total } = calculateCartTotals(cart);
+
+  if (!hydrated) {
+    return (
+      <div className="pt-32 pb-20">
+        <div className="mx-auto max-w-2xl px-6 text-center text-grey">Loading cart...</div>
+      </div>
+    );
+  }
 
   if (cartCount === 0) {
     return (
@@ -105,7 +114,12 @@ export default function CartPage() {
               <span className="text-gold">{formatPrice(total)}</span>
             </div>
           </div>
-          <Button variant="gold" size="lg" className="w-full">
+          <Button
+            variant="gold"
+            size="lg"
+            className="w-full"
+            onClick={() => router.push("/checkout")}
+          >
             <ShoppingBag size={16} />
             Secure Checkout
           </Button>
