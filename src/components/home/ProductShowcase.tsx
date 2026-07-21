@@ -7,14 +7,23 @@ import { motion, useMotionValue, useTransform } from "framer-motion";
 import { SectionHeading } from "@/components/animations/SectionHeading";
 import { formatPrice } from "@/lib/utils";
 import { getProductPrimaryImage } from "@/lib/images";
+import { isComingSoonCollection } from "@/lib/data/collections";
 import { Badge } from "@/components/ui/badge";
 import type { Product } from "@/types";
 
 interface ProductShowcaseProps {
   products: Product[];
+  label?: string;
+  title?: string;
+  description?: string;
 }
 
-export function ProductShowcase({ products }: ProductShowcaseProps) {
+export function ProductShowcase({
+  products,
+  label = "Masterpieces",
+  title = "Interactive Showcase",
+  description = "Explore our signature pieces. Hover to appreciate the depth. Click to discover every detail.",
+}: ProductShowcaseProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const [hoveredId, setHoveredId] = useState<string | null>(null);
 
@@ -22,9 +31,9 @@ export function ProductShowcase({ products }: ProductShowcaseProps) {
     <section className="section-padding overflow-hidden" aria-label="Product Showcase">
       <div className="mx-auto max-w-7xl px-6 lg:px-8 mb-16">
         <SectionHeading
-          label="Masterpieces"
-          title="Interactive Showcase"
-          description="Explore our signature pieces. Hover to appreciate the depth. Click to discover every detail."
+          label={label}
+          title={title}
+          description={description}
         />
       </div>
 
@@ -60,6 +69,7 @@ function ShowcaseCard({
 }) {
   const mouseX = useMotionValue(0);
   const rotateY = useTransform(mouseX, [-150, 150], [-8, 8]);
+  const comingSoon = isComingSoonCollection(product.collection);
 
   return (
     <motion.div
@@ -120,9 +130,15 @@ function ShowcaseCard({
             {product.name}
           </h3>
           <p className="text-sm text-grey mt-2">{product.tagline}</p>
-          <p className="text-gold font-light mt-4 text-lg">
-            {formatPrice(product.basePrice)}
-          </p>
+          {comingSoon ? (
+            <p className="font-button text-[9px] uppercase tracking-[0.2em] text-gold/70 mt-4">
+              Coming Soon
+            </p>
+          ) : (
+            <p className="text-gold font-light mt-4 text-lg">
+              {formatPrice(product.basePrice)}
+            </p>
+          )}
         </div>
       </Link>
     </motion.div>

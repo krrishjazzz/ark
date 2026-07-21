@@ -59,6 +59,7 @@ function mergeCollections(
         ...collection,
         productCount: Math.max(collection.productCount ?? 0, local.productCount ?? 0),
         image: local.image || collection.image,
+        comingSoon: local.comingSoon ?? collection.comingSoon ?? false,
       };
     });
 
@@ -85,6 +86,7 @@ function mergeCollection(
       localCollection.productCount ?? 0
     ),
     image: localCollection.image || sanityCollection.image,
+    comingSoon: localCollection.comingSoon ?? sanityCollection.comingSoon ?? false,
   };
 }
 

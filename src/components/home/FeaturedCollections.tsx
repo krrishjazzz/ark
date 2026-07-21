@@ -7,80 +7,70 @@ import { ArrowUpRight, Clock } from "lucide-react";
 import { SectionHeading } from "@/components/animations/SectionHeading";
 import { FadeIn, staggerContainer, staggerItem } from "@/components/animations/FadeIn";
 import { Badge } from "@/components/ui/badge";
+import { ProductCard } from "@/components/product/ProductCard";
 import { resolveImageSrc } from "@/lib/images";
-import type { Collection } from "@/types";
+import { isComingSoonCollection } from "@/lib/data/collections";
+import type { Collection, Product } from "@/types";
 import { cn } from "@/lib/utils";
 
 interface FeaturedCollectionsProps {
   collections: Collection[];
+  products: Product[];
 }
 
 function CollectionCard({ collection }: { collection: Collection }) {
-  const isComingSoon = collection.comingSoon;
-  const hasPreview = isComingSoon && collection.productCount > 0;
+  const hasPreview = collection.productCount > 0;
 
-  const card = (
-    <div
-      className={cn(
-        "group block relative overflow-hidden rounded-[20px] border border-border gold-glow-hover shadow-lift cursor-pointer",
-        isComingSoon && "opacity-90"
-      )}
-    >
-      <div className="relative aspect-[3/4] image-zoom-container">
-        <Image
-          src={resolveImageSrc(collection.image)}
-          alt={collection.name}
-          fill
-          className={cn("object-cover", isComingSoon && "grayscale-[30%]")}
-          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-background via-background/20 to-transparent opacity-80 group-hover:opacity-90 transition-opacity duration-700" />
+  return (
+    <Link href={`/collections/${collection.slug}`} className="block">
+      <div className="group relative overflow-hidden rounded-[20px] border border-border gold-glow-hover shadow-lift cursor-pointer opacity-90 hover:opacity-100 transition-opacity">
+        <div className="relative aspect-[3/4] image-zoom-container">
+          <Image
+            src={resolveImageSrc(collection.image)}
+            alt={collection.name}
+            fill
+            className="object-cover grayscale-[30%] group-hover:grayscale-0 transition-all duration-500"
+            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-background via-background/20 to-transparent opacity-80 group-hover:opacity-90 transition-opacity duration-700" />
 
-        {isComingSoon && (
           <div className="absolute top-4 right-4">
             <Badge variant="outline" className="gap-1.5 bg-background/80">
               <Clock size={10} />
               Coming Soon
             </Badge>
           </div>
-        )}
-      </div>
+        </div>
 
-      <div className="absolute bottom-0 left-0 right-0 p-6 md:p-8">
-        <div className="flex items-end justify-between">
-          <div>
-            <p className="font-button text-[9px] uppercase tracking-[0.2em] text-gold mb-2">
-              {collection.tagline}
-            </p>
-            <h3 className="font-heading text-2xl md:text-3xl font-light text-foreground">
-              {collection.name}
-            </h3>
-            <p className="text-xs text-grey mt-2">
-              {isComingSoon
-                ? hasPreview
+        <div className="absolute bottom-0 left-0 right-0 p-6 md:p-8">
+          <div className="flex items-end justify-between">
+            <div>
+              <p className="font-button text-[9px] uppercase tracking-[0.2em] text-gold mb-2">
+                {collection.tagline}
+              </p>
+              <h3 className="font-heading text-2xl md:text-3xl font-light text-foreground">
+                {collection.name}
+              </h3>
+              <p className="text-xs text-grey mt-2">
+                {hasPreview
                   ? `${collection.productCount} pieces to preview`
-                  : "Launching soon"
-                : `${collection.productCount} pieces available`}
-            </p>
-          </div>
-          <div className="h-10 w-10 flex items-center justify-center rounded-full border border-gold/30 text-gold opacity-0 group-hover:opacity-100 transition-all duration-500 group-hover:scale-110">
-            <ArrowUpRight size={16} />
+                  : "Launching soon"}
+              </p>
+            </div>
+            <div className="h-10 w-10 flex items-center justify-center rounded-full border border-gold/30 text-gold opacity-0 group-hover:opacity-100 transition-all duration-500 group-hover:scale-110">
+              <ArrowUpRight size={16} />
+            </div>
           </div>
         </div>
       </div>
-    </div>
-  );
-
-  return (
-    <Link href={`/collections/${collection.slug}`} className="block">
-      {card}
     </Link>
   );
 }
 
-export function FeaturedCollections({ collections }: FeaturedCollectionsProps) {
-  const active = collections.filter((c) => !c.comingSoon);
+export function FeaturedCollections({ collections, products }: FeaturedCollectionsProps) {
   const upcoming = collections.filter((c) => c.comingSoon);
+  const liveProducts = products.filter((p) => !isComingSoonCollection(p.collection));
+  const liveCollections = collections.filter((c) => !c.comingSoon);
 
   return (
     <section className="section-padding px-6 lg:px-8" aria-label="Featured Collections">
@@ -88,22 +78,51 @@ export function FeaturedCollections({ collections }: FeaturedCollectionsProps) {
         <SectionHeading
           label="Collections"
           title="Featured Collections"
-          description="All cars possible — plus wine & spirits, motorcycles, and Marvel heroes arriving soon."
+          description="Shop our live pieces today. Explore upcoming collections and preview what's launching next."
         />
 
-        <motion.div
-          variants={staggerContainer}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-80px" }}
-          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-16"
-        >
-          {active.map((collection) => (
-            <motion.div key={collection.id} variants={staggerItem}>
-              <CollectionCard collection={collection} />
+        {liveProducts.length > 0 && (
+          <div className="mb-20">
+            <FadeIn>
+              <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-8">
+                <div>
+                  <p className="font-button text-[10px] uppercase tracking-[0.3em] text-gold mb-2">
+                    Available Now
+                  </p>
+                  <h3 className="font-heading text-3xl md:text-4xl font-light text-foreground">
+                    {liveCollections[0]?.name ?? "Shop Now"}
+                  </h3>
+                  <p className="text-sm text-grey mt-2 max-w-xl">
+                    {liveCollections[0]?.description ??
+                      "Handcrafted resin masterpieces — ready to order."}
+                  </p>
+                </div>
+                {liveCollections[0] && (
+                  <Link
+                    href={`/collections/${liveCollections[0].slug}`}
+                    className="font-button text-[10px] uppercase tracking-[0.2em] text-gold hover:text-gold-light transition-colors shrink-0"
+                  >
+                    View collection →
+                  </Link>
+                )}
+              </div>
+            </FadeIn>
+
+            <motion.div
+              variants={staggerContainer}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, margin: "-80px" }}
+              className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6"
+            >
+              {liveProducts.map((product) => (
+                <motion.div key={product.id} variants={staggerItem}>
+                  <ProductCard product={product} />
+                </motion.div>
+              ))}
             </motion.div>
-          ))}
-        </motion.div>
+          </div>
+        )}
 
         {upcoming.length > 0 && (
           <>
@@ -117,7 +136,10 @@ export function FeaturedCollections({ collections }: FeaturedCollectionsProps) {
               initial="hidden"
               whileInView="visible"
               viewport={{ once: true, margin: "-80px" }}
-              className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6"
+              className={cn(
+                "grid grid-cols-1 sm:grid-cols-2 gap-6",
+                upcoming.length >= 3 ? "lg:grid-cols-3" : "lg:grid-cols-2"
+              )}
             >
               {upcoming.map((collection) => (
                 <motion.div key={collection.id} variants={staggerItem}>

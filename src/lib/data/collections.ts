@@ -33,7 +33,7 @@ export const collections: Collection[] = [
       "Luxury wine and spirits immortalized in flowing resin — for collectors and connoisseurs.",
     image: IMAGES.collectionWineBottle,
     productCount: 5,
-    comingSoon: false,
+    comingSoon: true,
   },
   {
     id: "5",
@@ -53,4 +53,12 @@ export const comingSoonCollections = collections.filter((c) => c.comingSoon);
 
 export function getCollectionBySlug(slug: string): Collection | undefined {
   return collections.find((c) => c.slug === slug);
+}
+
+export function isComingSoonCollection(slug: string): boolean {
+  return getCollectionBySlug(slug)?.comingSoon ?? false;
+}
+
+export function isLiveCollection(slug: string): boolean {
+  return !isComingSoonCollection(slug);
 }

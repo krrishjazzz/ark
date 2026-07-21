@@ -11,25 +11,39 @@ import { InstagramFeed } from "@/components/home/InstagramFeed";
 import {
   fetchCollections,
   fetchFeaturedProducts,
+  fetchProducts,
   fetchTestimonials,
   fetchGalleryImages,
 } from "@/lib/cms";
+import { isComingSoonCollection } from "@/lib/data/collections";
 
 export default async function HomePage() {
-  const [collections, featuredProducts, testimonials, galleryImages] =
+  const [collections, products, featuredProducts, testimonials, galleryImages] =
     await Promise.all([
       fetchCollections(),
+      fetchProducts(),
       fetchFeaturedProducts(),
       fetchTestimonials(),
       fetchGalleryImages(),
     ]);
 
+  const previewProducts = featuredProducts.filter((p) =>
+    isComingSoonCollection(p.collection)
+  );
+
   return (
     <>
       <Hero />
-      <FeaturedCollections collections={collections} />
+      <FeaturedCollections collections={collections} products={products} />
       <Craftsmanship />
-      <ProductShowcase products={featuredProducts} />
+      {previewProducts.length > 0 && (
+        <ProductShowcase
+          products={previewProducts}
+          label="Early Preview"
+          title="Coming Soon"
+          description="A first look at pieces from our upcoming collections. Tap to explore — available to preview, not to purchase yet."
+        />
+      )}
       <WhyARK />
       <PackagingShowcase />
       <OurStory />

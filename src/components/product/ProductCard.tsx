@@ -7,6 +7,7 @@ import { Badge } from "@/components/ui/badge";
 import { useStore } from "@/lib/store";
 import { formatPrice } from "@/lib/utils";
 import { getProductPrimaryImage } from "@/lib/images";
+import { isComingSoonCollection } from "@/lib/data/collections";
 import type { Product } from "@/types";
 import { cn } from "@/lib/utils";
 
@@ -18,6 +19,7 @@ interface ProductCardProps {
 export function ProductCard({ product, className }: ProductCardProps) {
   const { toggleWishlist, isInWishlist } = useStore();
   const wished = isInWishlist(product.id);
+  const comingSoon = isComingSoonCollection(product.collection);
 
   return (
     <div
@@ -58,7 +60,13 @@ export function ProductCard({ product, className }: ProductCardProps) {
             {product.name}
           </h3>
           <p className="text-sm text-grey mt-1">{product.tagline}</p>
-          <p className="text-gold mt-3 font-light">{formatPrice(product.basePrice)}</p>
+          {comingSoon ? (
+            <p className="font-button text-[9px] uppercase tracking-[0.2em] text-gold/70 mt-3">
+              Coming Soon
+            </p>
+          ) : (
+            <p className="text-gold mt-3 font-light">{formatPrice(product.basePrice)}</p>
+          )}
         </div>
       </Link>
 

@@ -6,7 +6,8 @@ import { StickyPurchaseCard } from "@/components/product/StickyPurchaseCard";
 import { ProductCard } from "@/components/product/ProductCard";
 import { SectionHeading } from "@/components/animations/SectionHeading";
 import { FadeIn } from "@/components/animations/FadeIn";
-import { fetchProduct, fetchProducts, fetchRelatedProducts } from "@/lib/cms";
+import { fetchProduct, fetchProducts, fetchRelatedProducts, fetchCollection } from "@/lib/cms";
+import { isComingSoonCollection } from "@/lib/data/collections";
 import { Star } from "lucide-react";
 import { ProductViewTracker } from "@/components/product/ProductViewTracker";
 
@@ -40,6 +41,9 @@ export default async function ProductPage({ params }: Props) {
   if (!product) notFound();
 
   const related = await fetchRelatedProducts(slug);
+  const collection = await fetchCollection(product.collection);
+  const comingSoon =
+    collection?.comingSoon ?? isComingSoonCollection(product.collection);
 
   return (
     <div className="pt-28 pb-20">
@@ -57,7 +61,7 @@ export default async function ProductPage({ params }: Props) {
             </div>
           </div>
           <div className="lg:col-span-2">
-            <StickyPurchaseCard product={product} />
+            <StickyPurchaseCard product={product} comingSoon={comingSoon} />
           </div>
         </div>
 

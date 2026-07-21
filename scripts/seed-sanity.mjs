@@ -304,7 +304,7 @@ const collections = [
     tagline: "Pour with passion.",
     description: "Luxury wine and spirits immortalized in flowing resin.",
     productCount: 5,
-    comingSoon: false,
+    comingSoon: true,
   },
   {
     _type: "collection",

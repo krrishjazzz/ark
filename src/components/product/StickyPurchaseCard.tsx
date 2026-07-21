@@ -7,15 +7,17 @@ import { Badge } from "@/components/ui/badge";
 import { useStore } from "@/lib/store";
 import { formatPrice } from "@/lib/utils";
 import { getProductPrimaryImage } from "@/lib/images";
-import { SIZES, FRAME_OPTIONS } from "@/lib/constants";
+import { SIZES, FRAME_OPTIONS, BRAND } from "@/lib/constants";
 import type { Product } from "@/types";
 import { cn } from "@/lib/utils";
+import Link from "next/link";
 
 interface StickyPurchaseCardProps {
   product: Product;
+  comingSoon?: boolean;
 }
 
-export function StickyPurchaseCard({ product }: StickyPurchaseCardProps) {
+export function StickyPurchaseCard({ product, comingSoon = false }: StickyPurchaseCardProps) {
   const [selectedSize, setSelectedSize] = useState<string>(SIZES[1].value);
   const [selectedFrame, setSelectedFrame] = useState<string>(FRAME_OPTIONS[0].value);
   const { addToCart, calculatePrice, toggleWishlist, isInWishlist } = useStore();
@@ -53,6 +55,35 @@ export function StickyPurchaseCard({ product }: StickyPurchaseCardProps) {
 
       <p className="text-grey text-sm leading-relaxed mb-6">{product.description}</p>
 
+      {comingSoon ? (
+        <>
+          <p className="font-button text-[10px] uppercase tracking-[0.25em] text-gold/80 mb-6">
+            Coming Soon — Preview Only
+          </p>
+          <p className="text-sm text-grey mb-8">
+            This piece is not available for purchase yet. Follow{" "}
+            <span className="text-foreground">@{BRAND.instagramHandle}</span> or contact us to
+            register interest.
+          </p>
+          <div className="flex gap-3 mb-4">
+            <Button asChild variant="gold" className="flex-1">
+              <Link href="/contact">Enquire Now</Link>
+            </Button>
+            <Button
+              variant="outline"
+              size="icon"
+              onClick={() => toggleWishlist(product.id)}
+              aria-label={wished ? "Remove from wishlist" : "Add to wishlist"}
+            >
+              <Heart size={16} className={wished ? "fill-gold text-gold" : ""} />
+            </Button>
+          </div>
+          <p className="text-xs text-grey text-center">
+            Edition {product.edition.current} of {product.edition.total} — launching soon
+          </p>
+        </>
+      ) : (
+        <>
       <p className="font-heading text-3xl text-gold mb-8">{formatPrice(price)}</p>
 
       {/* Size selector */}
@@ -128,6 +159,8 @@ export function StickyPurchaseCard({ product }: StickyPurchaseCardProps) {
       <p className="text-xs text-grey text-center">
         Edition {product.edition.current} of {product.edition.total} — Secure checkout with insured shipping
       </p>
+        </>
+      )}
     </div>
   );
 }

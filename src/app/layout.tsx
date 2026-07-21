@@ -1,6 +1,9 @@
 import type { Metadata } from "next";
 import { Cormorant_Garamond, Inter } from "next/font/google";
 import { BRAND } from "@/lib/constants";
+import {
+  GoogleTagManager,
+} from "@/components/analytics/GoogleTagManager";
 import "./globals.css";
 
 const cormorant = Cormorant_Garamond({
@@ -55,6 +58,7 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${cormorant.variable} ${inter.variable}`}>
       <body className="bg-background text-foreground antialiased">
+        <GoogleTagManager />
         {children}
       </body>
     </html>
