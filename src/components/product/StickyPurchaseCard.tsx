@@ -5,8 +5,8 @@ import { Heart, ShoppingBag, Share2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { useStore } from "@/lib/store";
-import { formatPrice } from "@/lib/utils";
 import { getProductPrimaryImage } from "@/lib/images";
+import { ProductPrice } from "@/components/product/ProductPrice";
 import { SIZES, FRAME_OPTIONS, BRAND } from "@/lib/constants";
 import type { Product } from "@/types";
 import { cn } from "@/lib/utils";
@@ -23,6 +23,9 @@ export function StickyPurchaseCard({ product, comingSoon = false }: StickyPurcha
   const { addToCart, calculatePrice, toggleWishlist, isInWishlist } = useStore();
 
   const price = calculatePrice(product.basePrice, selectedSize);
+  const compareAtPrice = product.compareAtPrice
+    ? calculatePrice(product.compareAtPrice, selectedSize)
+    : undefined;
   const wished = isInWishlist(product.id);
 
   const handleAddToCart = () => {
@@ -84,7 +87,7 @@ export function StickyPurchaseCard({ product, comingSoon = false }: StickyPurcha
         </>
       ) : (
         <>
-      <p className="font-heading text-3xl text-gold mb-8">{formatPrice(price)}</p>
+      <ProductPrice price={price} compareAtPrice={compareAtPrice} size="lg" className="mb-8" />
 
       {/* Size selector */}
       <div className="mb-6">

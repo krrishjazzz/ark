@@ -7,6 +7,7 @@ export interface Product {
   tagline: string;
   description: string;
   basePrice: number;
+  compareAtPrice?: number;
   images: string[];
   edition: { current: number; total: number };
   featured?: boolean;

@@ -54,7 +54,8 @@ const products = [
     tagline: "Speed. Power. Precision.",
     description:
       "A white Audi R8 frozen in motion, coiled by a crimson serpent against volcanic obsidian resin.",
-    basePrice: 45000,
+    basePrice: 12000,
+    compareAtPrice: 45000,
     editionCurrent: 12,
     editionTotal: 50,
     featured: true,

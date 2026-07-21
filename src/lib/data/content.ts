@@ -19,7 +19,7 @@ export const testimonials: Testimonial[] = [
     rating: 5,
     quote:
       "I ordered a custom Porsche piece for my husband's birthday. The attention to detail and packaging exceeded every luxury brand I've experienced.",
-    image: IMAGES.packaging,
+    image: IMAGES.packagingBox,
     product: "Custom Porsche 911",
   },
   {
@@ -50,7 +50,7 @@ export const customerGallery = [
   { id: "3", image: IMAGES.productGrid, category: "Car Showrooms", alt: "ARK art in car showroom" },
   { id: "4", image: IMAGES.productTopdown, category: "Gaming Rooms", alt: "ARK art in gaming setup" },
   { id: "5", image: IMAGES.brandBoard1, category: "Wall Mockups", alt: "ARK brand display wall" },
-  { id: "6", image: IMAGES.packaging, category: "Luxury Homes", alt: "ARK packaging unboxing" },
+  { id: "6", image: IMAGES.packagingBox, category: "Luxury Homes", alt: "ARK packaging unboxing" },
   { id: "7", image: IMAGES.brandBoard2, category: "Offices", alt: "ARK collection display" },
   { id: "8", image: IMAGES.productWall, category: "Car Showrooms", alt: "ARK in automotive gallery" },
 ];
@@ -59,7 +59,7 @@ export const instagramPosts = [
   { id: "1", image: IMAGES.productWall, likes: 1240, caption: "Predator Edition — now available" },
   { id: "2", image: IMAGES.productEasel, likes: 987, caption: "Crafted with precision" },
   { id: "3", image: IMAGES.productGrid, likes: 1560, caption: "Every angle tells a story" },
-  { id: "4", image: IMAGES.packaging, likes: 834, caption: "The unboxing experience" },
+  { id: "4", image: IMAGES.packagingBox, likes: 834, caption: "The unboxing experience" },
   { id: "5", image: IMAGES.productTopdown, likes: 1102, caption: "Frozen in time" },
   { id: "6", image: IMAGES.brandBoard1, likes: 945, caption: "Beyond cars. Beyond limits." },
 ];
@@ -134,22 +134,22 @@ export const packagingItems = [
   {
     title: "Magnetic Box",
     description: "Heavy-duty matte black box with gold ARK monogram and magnetic closure.",
-    image: IMAGES.packaging,
+    image: IMAGES.packagingBox,
   },
   {
     title: "Certificate",
     description: "Premium black card with gold foil — edition number, materials, and signature.",
-    image: IMAGES.brandBoard2,
+    image: IMAGES.packagingCertificate,
   },
   {
     title: "Microfiber Cloth",
     description: "Ultra-soft cleaning cloth to maintain the pristine gloss finish.",
-    image: IMAGES.brandBoard1,
+    image: IMAGES.packagingMicrofiber,
   },
   {
     title: "Thank You Card",
     description: "Handwritten note from the founder, thanking you for joining the ARK family.",
-    image: IMAGES.logo,
+    image: IMAGES.packagingThankYou,
   },
 ];
 

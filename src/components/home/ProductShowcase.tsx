@@ -5,8 +5,8 @@ import Link from "next/link";
 import Image from "next/image";
 import { motion, useMotionValue, useTransform } from "framer-motion";
 import { SectionHeading } from "@/components/animations/SectionHeading";
-import { formatPrice } from "@/lib/utils";
 import { getProductPrimaryImage } from "@/lib/images";
+import { ProductPrice } from "@/components/product/ProductPrice";
 import { isComingSoonCollection } from "@/lib/data/collections";
 import { Badge } from "@/components/ui/badge";
 import type { Product } from "@/types";
@@ -135,9 +135,12 @@ function ShowcaseCard({
               Coming Soon
             </p>
           ) : (
-            <p className="text-gold font-light mt-4 text-lg">
-              {formatPrice(product.basePrice)}
-            </p>
+            <ProductPrice
+              price={product.basePrice}
+              compareAtPrice={product.compareAtPrice}
+              size="md"
+              className="mt-4"
+            />
           )}
         </div>
       </Link>

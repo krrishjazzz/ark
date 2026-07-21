@@ -5,8 +5,8 @@ import Image from "next/image";
 import { Heart, ArrowUpRight } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { useStore } from "@/lib/store";
-import { formatPrice } from "@/lib/utils";
 import { getProductPrimaryImage } from "@/lib/images";
+import { ProductPrice } from "@/components/product/ProductPrice";
 import { isComingSoonCollection } from "@/lib/data/collections";
 import type { Product } from "@/types";
 import { cn } from "@/lib/utils";
@@ -65,7 +65,12 @@ export function ProductCard({ product, className }: ProductCardProps) {
               Coming Soon
             </p>
           ) : (
-            <p className="text-gold mt-3 font-light">{formatPrice(product.basePrice)}</p>
+            <ProductPrice
+              price={product.basePrice}
+              compareAtPrice={product.compareAtPrice}
+              size="md"
+              className="mt-3"
+            />
           )}
         </div>
       </Link>

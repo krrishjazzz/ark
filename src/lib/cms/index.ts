@@ -35,6 +35,8 @@ function mergeProducts(sanityProducts: Product[], localProducts: Product[]): Pro
       ...(existing ?? product),
       ...product,
       images: product.images.length > 0 ? product.images : (existing?.images ?? product.images),
+      basePrice: existing?.basePrice ?? product.basePrice ?? 0,
+      compareAtPrice: existing?.compareAtPrice ?? product.compareAtPrice,
     });
   }
 

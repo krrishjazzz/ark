@@ -17,7 +17,13 @@ export const product = defineType({
     defineField({ name: "manufacturer", title: "Manufacturer", type: "string" }),
     defineField({ name: "tagline", title: "Tagline", type: "string" }),
     defineField({ name: "description", title: "Description", type: "text", rows: 4 }),
-    defineField({ name: "basePrice", title: "Base Price (INR)", type: "number" }),
+    defineField({ name: "basePrice", title: "Sale Price (INR)", type: "number" }),
+    defineField({
+      name: "compareAtPrice",
+      title: "Original Price (INR)",
+      type: "number",
+      description: "Shown crossed out when higher than the sale price.",
+    }),
     defineField({
       name: "images",
       title: "Images",

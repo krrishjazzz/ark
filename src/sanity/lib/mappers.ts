@@ -14,6 +14,7 @@ interface SanityProduct {
   tagline?: string;
   description?: string;
   basePrice?: number;
+  compareAtPrice?: number;
   images?: SanityImageSource[];
   editionCurrent?: number;
   editionTotal?: number;
@@ -105,6 +106,7 @@ export function mapSanityProduct(doc: SanityProduct): Product {
     tagline: doc.tagline || "",
     description: doc.description || "",
     basePrice: doc.basePrice || 0,
+    compareAtPrice: doc.compareAtPrice,
     images,
     edition: {
       current: doc.editionCurrent || 1,

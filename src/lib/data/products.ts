@@ -11,7 +11,8 @@ export const products: Product[] = [
     tagline: "Speed. Power. Precision.",
     description:
       "A white Audi R8 frozen in motion against volcanic obsidian resin with crimson serpent details. Museum-grade gloss finish with integrated LED ambient lighting.",
-    basePrice: 45000,
+    basePrice: 12000,
+    compareAtPrice: 45000,
     images: [IMAGES.collectionAudiR8, IMAGES.productWall, IMAGES.productEasel],
     edition: { current: 12, total: 50 },
     featured: true,
@@ -51,7 +52,8 @@ export const products: Product[] = [
     tagline: "Effortless grandeur.",
     description:
       "A Rolls Royce captured mid-drift through marbled grey resin with metallic smoke textures. The pinnacle of automotive luxury, frozen forever.",
-    basePrice: 52000,
+    basePrice: 15000,
+    compareAtPrice: 52000,
     images: [IMAGES.collectionRollsRoyce, IMAGES.productTopdown],
     edition: { current: 4, total: 25 },
     featured: true,
@@ -82,7 +84,8 @@ export const products: Product[] = [
     tagline: "American icon. Frozen tide.",
     description:
       "A classic black Ford Mustang on a topographical ocean resin landscape with snow-textured islands. Bold, timeless, unmistakably American.",
-    basePrice: 40000,
+    basePrice: 8000,
+    compareAtPrice: 40000,
     images: [IMAGES.collectionMustang, IMAGES.productEasel],
     edition: { current: 7, total: 40 },
     featured: true,
@@ -113,7 +116,8 @@ export const products: Product[] = [
     tagline: "Prancing horse. Racing glory.",
     description:
       "The Ferrari SF-23 Formula 1 car immortalized on a bold Rosso Corsa resin canvas. For the Scuderia devotee who lives at the limit.",
-    basePrice: 48000,
+    basePrice: 10000,
+    compareAtPrice: 48000,
     images: [IMAGES.collectionFerrariF1, IMAGES.productGrid],
     edition: { current: 2, total: 30 },
     featured: true,
