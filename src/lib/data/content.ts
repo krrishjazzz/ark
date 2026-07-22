@@ -45,6 +45,7 @@ export const testimonials: Testimonial[] = [
 ];
 
 export const customerGallery = [
+  { id: "0", image: IMAGES.galleryWallHd, category: "Gallery Display", alt: "ARK car collection in luxury gallery setting" },
   { id: "1", image: IMAGES.productWall, category: "Luxury Homes", alt: "ARK art in luxury living room" },
   { id: "2", image: IMAGES.productEasel, category: "Offices", alt: "ARK art in executive office" },
   { id: "3", image: IMAGES.productGrid, category: "Car Showrooms", alt: "ARK art in car showroom" },

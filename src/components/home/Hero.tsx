@@ -37,12 +37,13 @@ export function Hero() {
           fill
           className="object-cover object-center"
           priority
+          quality={100}
           unoptimized
           sizes="100vw"
           aria-hidden
         />
-        <div className="absolute inset-0 bg-gradient-to-b from-black/55 via-black/15 to-black/75" />
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_30%,rgba(0,0,0,0.4)_100%)]" />
+        <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/45 to-black/80" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(0,0,0,0.55)_0%,transparent_55%)]" />
       </motion.div>
 
       {/* Content — rendered in code for sharp text at any resolution */}
@@ -53,7 +54,7 @@ export function Hero() {
         <motion.div
           initial={{ opacity: 0, scale: 0.92 }}
           animate={{ opacity: 1, scale: 1 }}
-          transition={{ delay: 2.2, duration: 1, ease: [0.16, 1, 0.3, 1] }}
+          transition={{ delay: 0.4, duration: 1, ease: [0.16, 1, 0.3, 1] }}
           className="mb-5"
         >
           <Image
@@ -71,7 +72,7 @@ export function Hero() {
           className="font-button text-[9px] sm:text-[10px] uppercase tracking-[0.35em] text-gold mb-4"
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 2.35, duration: 0.7 }}
+          transition={{ delay: 0.55, duration: 0.7 }}
         >
           {BRAND.fullName}
         </motion.p>
@@ -80,7 +81,7 @@ export function Hero() {
           className="font-button text-[8px] sm:text-[9px] uppercase tracking-[0.45em] text-foreground/45 mb-5"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ delay: 2.45, duration: 0.7 }}
+          transition={{ delay: 0.65, duration: 0.7 }}
         >
           Luxury · Craftsmanship · Passion
         </motion.p>
@@ -89,7 +90,7 @@ export function Hero() {
           className="font-heading text-[2rem] sm:text-5xl md:text-6xl lg:text-7xl font-light uppercase leading-[1.08] tracking-wide"
           initial={{ opacity: 0, y: 24 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 2.5, duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
+          transition={{ delay: 0.7, duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
         >
           <span className="text-gold-gradient">Beyond Cars.</span>
           <br />
@@ -100,7 +101,7 @@ export function Hero() {
           className="mt-6 max-w-md text-sm sm:text-base text-foreground/55 font-light leading-relaxed"
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 2.65, duration: 0.7 }}
+          transition={{ delay: 0.85, duration: 0.7 }}
         >
           {BRAND.description}
         </motion.p>
@@ -109,7 +110,7 @@ export function Hero() {
           className="mt-9 flex flex-col sm:flex-row items-center gap-3 sm:gap-4"
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 2.8, duration: 0.7 }}
+          transition={{ delay: 1, duration: 0.7 }}
         >
           <Link
             href="/collections"
@@ -132,7 +133,7 @@ export function Hero() {
         className="absolute bottom-6 left-1/2 -translate-x-1/2 z-10 flex flex-col items-center gap-2"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ delay: 3.2, duration: 0.8 }}
+        transition={{ delay: 1.4, duration: 0.8 }}
       >
         <span className="font-button text-[8px] uppercase tracking-[0.35em] text-foreground/35">
           Scroll to Discover

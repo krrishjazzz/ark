@@ -16,9 +16,10 @@ export const BRAND = {
 
 export const IMAGES = {
   logo: "/images/logo.png",
-  hero: "/images/hero-bg.png",
-  heroBg: "/images/hero-bg.png",
+  hero: "/images/hero-bg.jpg",
+  heroBg: "/images/hero-bg.jpg",
   heroCinematic: "/images/hero-cinematic.png",
+  galleryWallHd: "/images/hero-bg.jpg",
   productWall: "/images/product-wall.png",
   productTopdown: "/images/product-topdown.png",
   productEasel: "/images/product-easel.png",
