@@ -20,7 +20,7 @@ export function PackagingShowcase() {
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12">
           <FadeIn direction="left">
-            <div className="relative aspect-[4/5] rounded-[20px] overflow-hidden border border-border image-zoom-container shadow-luxury">
+            <div className="relative aspect-[3/4] sm:aspect-[4/5] max-h-[420px] sm:max-h-none rounded-[20px] overflow-hidden border border-border image-zoom-container shadow-luxury">
               <Image
                 src={heroItem.image}
                 alt={heroItem.title}
@@ -30,16 +30,16 @@ export function PackagingShowcase() {
                 priority
               />
               <div className="absolute inset-0 bg-gradient-to-t from-background/80 via-transparent to-transparent" />
-              <div className="absolute bottom-0 left-0 right-0 p-6 md:p-8">
-                <h3 className="font-heading text-2xl font-light text-foreground">
+              <div className="absolute bottom-0 left-0 right-0 p-4 sm:p-6 md:p-8">
+                <h3 className="font-heading text-lg sm:text-2xl font-light text-foreground">
                   {heroItem.title}
                 </h3>
-                <p className="text-sm text-grey mt-2 max-w-md">{heroItem.description}</p>
+                <p className="text-xs sm:text-sm text-grey mt-1 sm:mt-2 max-w-md line-clamp-2 sm:line-clamp-none">{heroItem.description}</p>
               </div>
             </div>
           </FadeIn>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+          <div className="grid grid-cols-2 sm:grid-cols-2 gap-3 sm:gap-6">
             {gridItems.map((item, index) => (
               <FadeIn key={item.title} delay={index * 0.1} direction="right">
                 <motion.div
@@ -56,11 +56,11 @@ export function PackagingShowcase() {
                       sizes="300px"
                     />
                   </div>
-                  <div className="p-5">
-                    <h3 className="font-heading text-lg font-light text-foreground">
+                  <div className="p-3 sm:p-5">
+                    <h3 className="font-heading text-sm sm:text-lg font-light text-foreground line-clamp-1">
                       {item.title}
                     </h3>
-                    <p className="text-xs text-grey mt-2 leading-relaxed">
+                    <p className="text-[10px] sm:text-xs text-grey mt-1 sm:mt-2 leading-relaxed line-clamp-2 sm:line-clamp-none">
                       {item.description}
                     </p>
                   </div>

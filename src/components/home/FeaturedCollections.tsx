@@ -24,41 +24,43 @@ function CollectionCard({ collection }: { collection: Collection }) {
   return (
     <Link href={`/collections/${collection.slug}`} className="block">
       <div className="group relative overflow-hidden rounded-[20px] border border-border gold-glow-hover shadow-lift cursor-pointer opacity-90 hover:opacity-100 transition-opacity">
-        <div className="relative aspect-[3/4] image-zoom-container">
+        <div className="relative aspect-[4/5] sm:aspect-[3/4] image-zoom-container">
           <Image
             src={resolveImageSrc(collection.image)}
             alt={collection.name}
             fill
             className="object-cover grayscale-[30%] group-hover:grayscale-0 transition-all duration-500"
-            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+            sizes="(max-width: 640px) 50vw, (max-width: 1024px) 50vw, 25vw"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-background via-background/20 to-transparent opacity-80 group-hover:opacity-90 transition-opacity duration-700" />
 
-          <div className="absolute top-4 right-4">
-            <Badge variant="outline" className="gap-1.5 bg-background/80">
-              <Clock size={10} />
-              Coming Soon
+          <div className="absolute top-4 right-4 max-sm:top-2 max-sm:right-2">
+            <Badge variant="outline" className="gap-1 max-sm:gap-0.5 bg-background/80 max-sm:text-[8px] max-sm:px-1.5 max-sm:py-0.5">
+              <Clock size={10} className="max-sm:w-2 max-sm:h-2" />
+              <span className="max-sm:hidden">Coming Soon</span>
+              <span className="sm:hidden">Soon</span>
             </Badge>
           </div>
         </div>
 
-        <div className="absolute bottom-0 left-0 right-0 p-6 md:p-8">
-          <div className="flex items-end justify-between">
-            <div>
-              <p className="font-button text-[9px] uppercase tracking-[0.2em] text-gold mb-2">
+        <div className="absolute bottom-0 left-0 right-0 p-3 sm:p-6 md:p-8">
+          <div className="flex items-end justify-between gap-2">
+            <div className="min-w-0">
+              <p className="font-button text-[8px] sm:text-[9px] uppercase tracking-[0.2em] text-gold mb-1 sm:mb-2 line-clamp-1">
                 {collection.tagline}
               </p>
-              <h3 className="font-heading text-2xl md:text-3xl font-light text-foreground">
+              <h3 className="font-heading text-base sm:text-2xl md:text-3xl font-light text-foreground line-clamp-2 leading-snug">
                 {collection.name}
               </h3>
-              <p className="text-xs text-grey mt-2">
+              <p className="text-[10px] sm:text-xs text-grey mt-1 sm:mt-2 line-clamp-1">
                 {hasPreview
                   ? `${collection.productCount} pieces to preview`
                   : "Launching soon"}
               </p>
             </div>
-            <div className="h-10 w-10 flex items-center justify-center rounded-full border border-gold/30 text-gold opacity-0 group-hover:opacity-100 transition-all duration-500 group-hover:scale-110">
-              <ArrowUpRight size={16} />
+            <div className="h-8 w-8 sm:h-10 sm:w-10 shrink-0 flex items-center justify-center rounded-full border border-gold/30 text-gold opacity-0 group-hover:opacity-100 transition-all duration-500 group-hover:scale-110 max-sm:opacity-100">
+              <ArrowUpRight size={14} className="sm:hidden" />
+              <ArrowUpRight size={16} className="hidden sm:block" />
             </div>
           </div>
         </div>
@@ -113,7 +115,7 @@ export function FeaturedCollections({ collections, products }: FeaturedCollectio
               initial="hidden"
               whileInView="visible"
               viewport={{ once: true, margin: "-80px" }}
-              className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6"
+              className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6"
             >
               {liveProducts.map((product) => (
                 <motion.div key={product.id} variants={staggerItem}>
@@ -137,7 +139,7 @@ export function FeaturedCollections({ collections, products }: FeaturedCollectio
               whileInView="visible"
               viewport={{ once: true, margin: "-80px" }}
               className={cn(
-                "grid grid-cols-1 sm:grid-cols-2 gap-6",
+                "grid grid-cols-2 gap-3 sm:gap-6",
                 upcoming.length >= 3 ? "lg:grid-cols-3" : "lg:grid-cols-2"
               )}
             >

@@ -150,7 +150,7 @@ export const products: Product[] = [
     basePrice: 42000,
     images: [IMAGES.collectionBmwMotorrad],
     edition: { current: 3, total: 30 },
-    featured: true,
+    featured: false,
     collection: "motorcycles",
     craftsmanship: [
       "Multi-layer collage composition",

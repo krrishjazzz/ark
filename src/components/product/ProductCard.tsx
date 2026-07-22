@@ -29,18 +29,18 @@ export function ProductCard({ product, className }: ProductCardProps) {
       )}
     >
       <Link href={`/products/${product.slug}`} className="block">
-        <div className="relative aspect-[3/4] image-zoom-container">
+        <div className="relative aspect-[4/5] sm:aspect-[3/4] image-zoom-container">
           <Image
             src={getProductPrimaryImage(product.images)}
             alt={product.name}
             fill
             className="object-cover"
-            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+            sizes="(max-width: 640px) 50vw, (max-width: 1024px) 50vw, 25vw"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-background/90 via-background/10 to-transparent" />
 
-          <div className="absolute top-4 left-4">
-            <Badge variant="gold">
+          <div className="absolute top-4 left-4 max-sm:top-2 max-sm:left-2">
+            <Badge variant="gold" className="max-sm:text-[8px] max-sm:px-2 max-sm:py-0.5">
               {product.edition.current}/{product.edition.total}
             </Badge>
           </div>
@@ -52,24 +52,24 @@ export function ProductCard({ product, className }: ProductCardProps) {
           </div>
         </div>
 
-        <div className="p-6 bg-card gold-line">
-          <p className="font-button text-[9px] uppercase tracking-[0.2em] text-gold mb-2">
+        <div className="p-3 sm:p-6 bg-card gold-line">
+          <p className="font-button text-[8px] sm:text-[9px] uppercase tracking-[0.2em] text-gold mb-1 sm:mb-2 line-clamp-1">
             {product.series}
           </p>
-          <h3 className="font-heading text-xl font-light text-foreground group-hover:text-gold transition-colors duration-500">
+          <h3 className="font-heading text-sm sm:text-xl font-light text-foreground group-hover:text-gold transition-colors duration-500 line-clamp-2 leading-snug">
             {product.name}
           </h3>
-          <p className="text-sm text-grey mt-1">{product.tagline}</p>
+          <p className="text-xs text-grey mt-1 hidden sm:block">{product.tagline}</p>
           {comingSoon ? (
-            <p className="font-button text-[9px] uppercase tracking-[0.2em] text-gold/70 mt-3">
+            <p className="font-button text-[8px] sm:text-[9px] uppercase tracking-[0.2em] text-gold/70 mt-2 sm:mt-3">
               Coming Soon
             </p>
           ) : (
             <ProductPrice
               price={product.basePrice}
               compareAtPrice={product.compareAtPrice}
-              size="md"
-              className="mt-3"
+              size="sm"
+              className="mt-2 sm:mt-3 max-sm:[&_span]:text-xs"
             />
           )}
         </div>

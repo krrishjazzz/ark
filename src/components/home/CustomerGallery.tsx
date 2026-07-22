@@ -59,7 +59,7 @@ export function CustomerGallery({ images }: CustomerGalleryProps) {
         </div>
 
         {/* Masonry grid */}
-        <motion.div layout className="columns-1 sm:columns-2 lg:columns-3 gap-6 space-y-6">
+        <motion.div layout className="columns-2 sm:columns-2 lg:columns-3 gap-3 sm:gap-6 space-y-3 sm:space-y-6">
           <AnimatePresence mode="popLayout">
             {filtered.map((item, index) => (
               <motion.div

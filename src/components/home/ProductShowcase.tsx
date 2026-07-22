@@ -77,7 +77,7 @@ function ShowcaseCard({
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-50px" }}
       transition={{ delay: index * 0.1, duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-      className="snap-center shrink-0 w-[320px] md:w-[400px] lg:w-[450px]"
+      className="snap-center shrink-0 w-[46vw] min-w-[160px] max-w-[240px] sm:w-[320px] md:w-[400px] lg:w-[450px] sm:max-w-none"
       onMouseMove={(e) => {
         const rect = e.currentTarget.getBoundingClientRect();
         mouseX.set(e.clientX - rect.left - rect.width / 2);
@@ -93,19 +93,18 @@ function ShowcaseCard({
         href={`/products/${product.slug}`}
         className="group block rounded-[20px] border border-border gold-glow-hover overflow-hidden shadow-luxury"
       >
-        <div className="relative aspect-[3/4] image-zoom-container">
+        <div className="relative aspect-[4/5] sm:aspect-[3/4] image-zoom-container">
           <Image
             src={getProductPrimaryImage(product.images)}
             alt={product.name}
             fill
             className="object-cover"
-            sizes="450px"
+            sizes="(max-width: 640px) 46vw, 450px"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent" />
 
-          {/* Edition counter */}
-          <div className="absolute top-4 right-4">
-            <Badge variant="gold">
+          <div className="absolute top-4 right-4 max-sm:top-2 max-sm:right-2">
+            <Badge variant="gold" className="max-sm:text-[8px] max-sm:px-2 max-sm:py-0.5">
               {product.edition.current}/{product.edition.total}
             </Badge>
           </div>
@@ -122,24 +121,24 @@ function ShowcaseCard({
           />
         </div>
 
-        <div className="p-6 md:p-8 bg-card">
-          <p className="font-button text-[9px] uppercase tracking-[0.2em] text-gold mb-2">
+        <div className="p-3 sm:p-6 md:p-8 bg-card">
+          <p className="font-button text-[8px] sm:text-[9px] uppercase tracking-[0.2em] text-gold mb-1 sm:mb-2 line-clamp-1">
             {product.series}
           </p>
-          <h3 className="font-heading text-xl md:text-2xl font-light text-foreground group-hover:text-gold transition-colors duration-500">
+          <h3 className="font-heading text-sm sm:text-xl md:text-2xl font-light text-foreground group-hover:text-gold transition-colors duration-500 line-clamp-2 leading-snug">
             {product.name}
           </h3>
-          <p className="text-sm text-grey mt-2">{product.tagline}</p>
+          <p className="text-xs text-grey mt-1 sm:mt-2 hidden sm:block">{product.tagline}</p>
           {comingSoon ? (
-            <p className="font-button text-[9px] uppercase tracking-[0.2em] text-gold/70 mt-4">
+            <p className="font-button text-[8px] sm:text-[9px] uppercase tracking-[0.2em] text-gold/70 mt-2 sm:mt-4">
               Coming Soon
             </p>
           ) : (
             <ProductPrice
               price={product.basePrice}
               compareAtPrice={product.compareAtPrice}
-              size="md"
-              className="mt-4"
+              size="sm"
+              className="mt-2 sm:mt-4 max-sm:[&_span]:text-xs"
             />
           )}
         </div>

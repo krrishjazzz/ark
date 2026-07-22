@@ -31,12 +31,14 @@ function mergeProducts(sanityProducts: Product[], localProducts: Product[]): Pro
 
   for (const product of sanityProducts) {
     const existing = bySlug.get(product.slug);
+    if (!existing) continue;
+
     bySlug.set(product.slug, {
-      ...(existing ?? product),
+      ...existing,
       ...product,
-      images: product.images.length > 0 ? product.images : (existing?.images ?? product.images),
-      basePrice: existing?.basePrice ?? product.basePrice ?? 0,
-      compareAtPrice: existing?.compareAtPrice ?? product.compareAtPrice,
+      images: product.images.length > 0 ? product.images : existing.images,
+      basePrice: existing.basePrice ?? product.basePrice ?? 0,
+      compareAtPrice: existing.compareAtPrice ?? product.compareAtPrice,
     });
   }
 
@@ -132,19 +134,18 @@ export async function fetchProducts(): Promise<Product[]> {
 }
 
 export async function fetchProduct(slug: string): Promise<Product | null> {
+  const localProduct = await local.getProduct(slug);
+  if (!localProduct) return null;
+
   try {
-    const [sanityProduct, localProduct] = await Promise.all([
-      sanity.getProduct(slug),
-      local.getProduct(slug),
-    ]);
-    if (sanityProduct && localProduct) {
-      return mergeProducts([sanityProduct], [localProduct])[0] ?? null;
+    const sanityProduct = await sanity.getProduct(slug);
+    if (sanityProduct) {
+      return mergeProducts([sanityProduct], [localProduct])[0] ?? localProduct;
     }
-    return sanityProduct ?? localProduct;
   } catch (error) {
     console.warn("[CMS] Sanity fetch failed, using local data:", error);
   }
-  return local.getProduct(slug);
+  return localProduct;
 }
 
 export async function fetchFeaturedProducts(): Promise<Product[]> {

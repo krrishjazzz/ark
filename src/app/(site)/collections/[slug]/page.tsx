@@ -41,7 +41,7 @@ export default async function CollectionDetailPage({ params }: Props) {
 
   return (
     <div className="pt-32 pb-20">
-      <div className="relative h-[50vh] min-h-[400px] mb-16">
+      <div className="relative h-[32vh] min-h-[220px] sm:h-[50vh] sm:min-h-[400px] mb-10 sm:mb-16">
         <Image
           src={resolveImageSrc(collection.image)}
           alt={collection.name}
@@ -84,7 +84,7 @@ export default async function CollectionDetailPage({ params }: Props) {
                 </p>
               </div>
             )}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-8">
               {products.map((product) => (
                 <ProductCard key={product.id} product={product} />
               ))}

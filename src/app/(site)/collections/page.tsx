@@ -60,7 +60,7 @@ export default async function CollectionsPage() {
                       View collection →
                     </Link>
                   </div>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+                  <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-8">
                     {collectionProducts.map((product) => (
                       <ProductCard key={product.id} product={product} />
                     ))}
@@ -79,44 +79,49 @@ export default async function CollectionsPage() {
               description="New collections in development — click to preview pieces inside each collection."
               align="left"
             />
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-24">
+            <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-6 mb-24">
               {upcoming.map((collection) => (
                 <Link
                   key={collection.id}
                   href={`/collections/${collection.slug}`}
                   className="group relative overflow-hidden rounded-[20px] border border-border opacity-90 gold-glow-hover shadow-lift transition-opacity hover:opacity-100"
                 >
-                  <div className="relative aspect-[16/9] image-zoom-container">
+                  <div className="relative aspect-[4/3] sm:aspect-[16/9] image-zoom-container">
                     <Image
                       src={resolveImageSrc(collection.image)}
                       alt={collection.name}
                       fill
                       className="object-cover grayscale-[20%] group-hover:grayscale-0 transition-all duration-500"
-                      sizes="(max-width: 1024px) 50vw, 33vw"
+                      sizes="(max-width: 640px) 50vw, (max-width: 1024px) 50vw, 33vw"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-background via-background/50 to-transparent" />
-                    <div className="absolute top-4 right-4">
-                      <Badge variant="outline" className="gap-1.5 bg-background/80">
-                        <Clock size={10} />
-                        Coming Soon
+                    <div className="absolute top-2 right-2 sm:top-4 sm:right-4">
+                      <Badge variant="outline" className="gap-1.5 bg-background/80 max-sm:text-[8px] max-sm:px-2 max-sm:py-0.5">
+                        <Clock size={10} className="max-sm:w-2 max-sm:h-2" />
+                        <span className="max-sm:hidden">Coming Soon</span>
+                        <span className="sm:hidden">Soon</span>
                       </Badge>
                     </div>
                   </div>
-                  <div className="p-5 flex items-end justify-between gap-4">
-                    <div>
-                      <h3 className="font-heading text-lg font-light text-foreground group-hover:text-gold transition-colors">
+                  <div className="p-3 sm:p-5 flex items-end justify-between gap-2">
+                    <div className="min-w-0">
+                      <h3 className="font-heading text-sm sm:text-lg font-light text-foreground group-hover:text-gold transition-colors line-clamp-2 leading-snug">
                         {collection.name}
                       </h3>
-                      <p className="text-xs text-grey mt-1">{collection.tagline}</p>
+                      <p className="text-[10px] sm:text-xs text-grey mt-1 line-clamp-1">{collection.tagline}</p>
                       {collection.productCount > 0 && (
-                        <p className="text-xs text-gold mt-2">
-                          {collection.productCount} pieces to preview
+                        <p className="text-[10px] sm:text-xs text-gold mt-1 sm:mt-2">
+                          {collection.productCount} pieces
                         </p>
                       )}
                     </div>
                     <ArrowUpRight
+                      size={14}
+                      className="text-gold shrink-0 sm:hidden"
+                    />
+                    <ArrowUpRight
                       size={16}
-                      className="text-gold shrink-0 opacity-0 group-hover:opacity-100 transition-opacity"
+                      className="text-gold shrink-0 opacity-0 group-hover:opacity-100 transition-opacity hidden sm:block"
                     />
                   </div>
                 </Link>
