@@ -20,12 +20,12 @@ export function Hero() {
   return (
     <section
       ref={containerRef}
-      className="relative w-full h-[100svh] min-h-[640px] bg-[#090909] overflow-hidden"
+      className="relative w-full min-h-[100svh] bg-[#090909] overflow-hidden md:h-[100svh] md:min-h-[640px]"
       aria-label="Hero"
     >
       {/* High-res cinematic background */}
       <motion.div
-        className="absolute inset-0"
+        className="absolute inset-0 flex items-center justify-center md:block"
         style={{ scale: imageScale }}
         initial={{ scale: 1.03 }}
         animate={{ scale: 1 }}
@@ -35,27 +35,27 @@ export function Hero() {
           src={IMAGES.heroBg}
           alt=""
           fill
-          className="object-cover object-center"
+          className="object-contain object-center md:object-cover md:object-center"
           priority
           quality={100}
           unoptimized
           sizes="100vw"
           aria-hidden
         />
-        <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/45 to-black/80" />
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(0,0,0,0.55)_0%,transparent_55%)]" />
+        <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/30 to-black/75 max-md:via-black/20" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(0,0,0,0.45)_0%,transparent_55%)] max-md:opacity-70" />
       </motion.div>
 
       {/* Content — rendered in code for sharp text at any resolution */}
       <motion.div
         style={{ opacity: contentOpacity, y: contentY }}
-        className="relative z-10 flex h-full flex-col items-center justify-center px-6 text-center"
+        className="relative z-10 flex min-h-[100svh] flex-col items-center justify-end px-6 pb-28 pt-32 text-center md:min-h-0 md:h-full md:justify-center md:pb-0 md:pt-0"
       >
         <motion.div
           initial={{ opacity: 0, scale: 0.92 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ delay: 0.4, duration: 1, ease: [0.16, 1, 0.3, 1] }}
-          className="mb-5"
+          className="mb-5 max-md:hidden"
         >
           <Image
             src={IMAGES.logo}
@@ -87,7 +87,7 @@ export function Hero() {
         </motion.p>
 
         <motion.h1
-          className="font-heading text-[2rem] sm:text-5xl md:text-6xl lg:text-7xl font-light uppercase leading-[1.08] tracking-wide"
+          className="font-heading text-[1.75rem] sm:text-5xl md:text-6xl lg:text-7xl font-light uppercase leading-[1.08] tracking-wide"
           initial={{ opacity: 0, y: 24 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.7, duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
