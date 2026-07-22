@@ -3,72 +3,79 @@
 import Image from "next/image";
 import { motion } from "framer-motion";
 import { SectionHeading } from "@/components/animations/SectionHeading";
-import { FadeIn } from "@/components/animations/FadeIn";
 import { packagingItems } from "@/lib/data/content";
 
 export function PackagingShowcase() {
-  const [heroItem, ...gridItems] = packagingItems;
-
   return (
     <section className="section-padding px-6 lg:px-8 bg-card/30" aria-label="Packaging">
       <div className="mx-auto max-w-7xl">
         <SectionHeading
           label="Unboxing"
           title="Premium Packaging"
-          description="The experience begins before you reach the artwork. Every ARK piece arrives in museum-quality presentation."
+          description="The ritual begins before the artwork reaches your wall. Scroll through the ARK unboxing experience."
         />
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12">
-          <FadeIn direction="left">
-            <div className="relative aspect-[3/4] sm:aspect-[4/5] max-h-[420px] sm:max-h-none rounded-[20px] overflow-hidden border border-border image-zoom-container shadow-luxury">
-              <Image
-                src={heroItem.image}
-                alt={heroItem.title}
-                fill
-                className="object-cover"
-                sizes="(max-width: 1024px) 100vw, 50vw"
-                priority
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-background/80 via-transparent to-transparent" />
-              <div className="absolute bottom-0 left-0 right-0 p-4 sm:p-6 md:p-8">
-                <h3 className="font-heading text-lg sm:text-2xl font-light text-foreground">
-                  {heroItem.title}
-                </h3>
-                <p className="text-xs sm:text-sm text-grey mt-1 sm:mt-2 max-w-md line-clamp-2 sm:line-clamp-none">{heroItem.description}</p>
-              </div>
-            </div>
-          </FadeIn>
+        <div className="relative mt-12 md:mt-16">
+          <div
+            className="absolute left-[19px] sm:left-[27px] top-0 bottom-0 w-px bg-gradient-to-b from-transparent via-gold/40 to-transparent hidden sm:block"
+            aria-hidden
+          />
 
-          <div className="grid grid-cols-2 sm:grid-cols-2 gap-3 sm:gap-6">
-            {gridItems.map((item, index) => (
-              <FadeIn key={item.title} delay={index * 0.1} direction="right">
-                <motion.div
-                  className="group rounded-[20px] border border-border overflow-hidden gold-glow-hover shadow-lift h-full"
-                  whileHover={{ y: -4 }}
-                  transition={{ duration: 0.5 }}
-                >
-                  <div className="relative aspect-square image-zoom-container">
-                    <Image
-                      src={item.image}
-                      alt={item.title}
-                      fill
-                      className="object-cover"
-                      sizes="300px"
-                    />
-                  </div>
-                  <div className="p-3 sm:p-5">
-                    <h3 className="font-heading text-sm sm:text-lg font-light text-foreground line-clamp-1">
-                      {item.title}
-                    </h3>
-                    <p className="text-[10px] sm:text-xs text-grey mt-1 sm:mt-2 leading-relaxed line-clamp-2 sm:line-clamp-none">
-                      {item.description}
-                    </p>
-                  </div>
-                </motion.div>
-              </FadeIn>
+          <div className="space-y-10 sm:space-y-16">
+            {packagingItems.map((item, index) => (
+              <motion.div
+                key={item.title}
+                initial={{ opacity: 0, y: 32 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-60px" }}
+                transition={{ duration: 0.8, delay: index * 0.05, ease: [0.16, 1, 0.3, 1] }}
+                className="grid grid-cols-1 md:grid-cols-[auto_1fr_1fr] gap-4 sm:gap-8 items-center"
+              >
+                <div className="hidden md:flex items-center justify-center w-14 h-14 rounded-full border border-gold/30 bg-background shrink-0 relative z-10">
+                  <span className="font-heading text-lg text-gold">
+                    {String(index + 1).padStart(2, "0")}
+                  </span>
+                </div>
+
+                <div className="relative aspect-[16/10] sm:aspect-[4/3] md:aspect-[3/2] max-h-[220px] sm:max-h-[320px] md:max-h-none rounded-[20px] overflow-hidden border border-border image-zoom-container shadow-luxury spotlight-card">
+                  <Image
+                    src={item.image}
+                    alt={item.title}
+                    fill
+                    className="object-cover"
+                    sizes="(max-width: 768px) 100vw, 50vw"
+                    priority={index === 0}
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-background/50 via-transparent to-transparent md:hidden" />
+                  <span className="md:hidden absolute top-3 left-3 font-heading text-2xl text-gold/80">
+                    {String(index + 1).padStart(2, "0")}
+                  </span>
+                </div>
+
+                <div className="md:pl-4">
+                  <p className="font-button text-[10px] uppercase tracking-[0.3em] text-gold mb-2">
+                    Step {index + 1}
+                  </p>
+                  <h3 className="font-heading text-2xl sm:text-3xl font-light text-foreground mb-3">
+                    {item.title}
+                  </h3>
+                  <p className="text-sm text-grey leading-relaxed max-w-md">
+                    {item.description}
+                  </p>
+                </div>
+              </motion.div>
             ))}
           </div>
         </div>
+
+        <motion.p
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          className="font-heading text-xl sm:text-2xl font-light text-center text-gold-gradient mt-16 sm:mt-20"
+        >
+          Your piece arrives ready for the wall.
+        </motion.p>
       </div>
     </section>
   );

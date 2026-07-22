@@ -2,7 +2,7 @@
 
 import { motion, useScroll, useTransform } from "framer-motion";
 import Image from "next/image";
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { cn } from "@/lib/utils";
 
 interface ParallaxImageProps {
@@ -21,6 +21,21 @@ export function ParallaxImage({
   priority = false,
 }: ParallaxImageProps) {
   const ref = useRef(null);
+  const [reduceMotion, setReduceMotion] = useState(false);
+
+  useEffect(() => {
+    const mobile = window.matchMedia("(max-width: 767px)");
+    const motion = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const update = () => setReduceMotion(mobile.matches || motion.matches);
+    update();
+    mobile.addEventListener("change", update);
+    motion.addEventListener("change", update);
+    return () => {
+      mobile.removeEventListener("change", update);
+      motion.removeEventListener("change", update);
+    };
+  }, []);
+
   const { scrollYProgress } = useScroll({
     target: ref,
     offset: ["start end", "end start"],
@@ -29,7 +44,13 @@ export function ParallaxImage({
 
   return (
     <div ref={ref} className={cn("relative overflow-hidden", className)}>
-      <motion.div style={{ y }} className="relative h-[120%] w-full -top-[10%]">
+      <motion.div
+        style={reduceMotion ? undefined : { y }}
+        className={cn(
+          "relative w-full",
+          reduceMotion ? "h-full" : "h-[120%] -top-[10%]"
+        )}
+      >
         <Image
           src={src}
           alt={alt}

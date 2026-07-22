@@ -10,7 +10,7 @@ const buttonVariants = cva(
       variant: {
         default:
           "bg-background border border-gold/40 text-gold hover:border-gold hover:shadow-[0_0_30px_rgba(201,164,91,0.2)] hover:scale-[1.03] rounded-[20px] px-8 py-4",
-        gold: "bg-gold text-background hover:bg-gold-light hover:scale-[1.03] hover:shadow-[0_0_40px_rgba(201,164,91,0.3)] rounded-[20px] px-8 py-4",
+        gold: "relative overflow-hidden bg-gold text-background hover:bg-gold-light hover:scale-[1.03] hover:shadow-[0_0_40px_rgba(201,164,91,0.3)] rounded-[20px] px-8 py-4 btn-shimmer",
         ghost:
           "text-foreground/70 hover:text-gold border border-transparent hover:border-border rounded-[20px] px-6 py-3",
         outline:

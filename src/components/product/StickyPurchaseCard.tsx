@@ -11,6 +11,7 @@ import { SIZES, FRAME_OPTIONS, BRAND } from "@/lib/constants";
 import type { Product } from "@/types";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
+import { buildProductEnquiryMessage, buildWhatsAppUrl } from "@/lib/whatsapp";
 
 interface StickyPurchaseCardProps {
   product: Product;
@@ -27,6 +28,9 @@ export function StickyPurchaseCard({ product, comingSoon = false }: StickyPurcha
     ? calculatePrice(product.compareAtPrice, selectedSize)
     : undefined;
   const wished = isInWishlist(product.id);
+  const whatsappHref = buildWhatsAppUrl(
+    buildProductEnquiryMessage(product.name, comingSoon)
+  );
 
   const handleAddToCart = () => {
     addToCart({
@@ -68,13 +72,19 @@ export function StickyPurchaseCard({ product, comingSoon = false }: StickyPurcha
             <span className="text-foreground">@{BRAND.instagramHandle}</span> or contact us to
             register interest.
           </p>
-          <div className="flex gap-3 mb-4">
-            <Button asChild variant="gold" className="flex-1">
-              <Link href="/contact">Enquire Now</Link>
+          <div className="flex flex-col sm:flex-row gap-3 mb-4">
+            <Button asChild variant="gold" className="flex-1 btn-shimmer">
+              <a href={whatsappHref} target="_blank" rel="noopener noreferrer">
+                WhatsApp Enquire
+              </a>
+            </Button>
+            <Button asChild variant="outline" className="flex-1 sm:flex-none sm:px-6">
+              <Link href="/contact">Contact</Link>
             </Button>
             <Button
               variant="outline"
               size="icon"
+              className="shrink-0"
               onClick={() => toggleWishlist(product.id)}
               aria-label={wished ? "Remove from wishlist" : "Add to wishlist"}
             >
