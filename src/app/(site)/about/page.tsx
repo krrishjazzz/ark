@@ -3,20 +3,24 @@ import Image from "next/image";
 import { SectionHeading } from "@/components/animations/SectionHeading";
 import { FadeIn } from "@/components/animations/FadeIn";
 import { timeline, craftsmanshipFeatures } from "@/lib/data/content";
-import { IMAGES, BRAND } from "@/lib/constants";
+import { BRAND } from "@/lib/constants";
+import { fetchSiteSettings } from "@/lib/cms";
+import { resolveImageSrc } from "@/lib/images";
 
 export const metadata: Metadata = {
   title: "About",
   description: `The story of ${BRAND.fullName} — handcrafted resin art born from automotive passion.`,
 };
 
-export default function AboutPage() {
+export default async function AboutPage() {
+  const { brandBoardPrimary } = await fetchSiteSettings();
+
   return (
     <div className="pt-32 pb-20">
       {/* Hero */}
       <div className="relative h-[60vh] min-h-[500px] mb-20">
         <Image
-          src={IMAGES.brandBoard1}
+          src={resolveImageSrc(brandBoardPrimary)}
           alt="ARK brand story"
           fill
           className="object-cover"

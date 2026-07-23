@@ -7,6 +7,8 @@ import { SanityCMSAdapter } from "@/lib/cms/sanity-adapter";
 import { LocalCMSAdapter } from "@/lib/cms/types";
 import type { CMSAdapter } from "@/lib/cms/types";
 import type { Product, Collection, Testimonial } from "@/types";
+import type { SiteSettings } from "@/types/site-settings";
+import { EMPTY_SITE_SETTINGS } from "@/types/site-settings";
 import { getRelatedProducts } from "@/lib/data/products";
 
 const sanity = new SanityCMSAdapter();
@@ -62,7 +64,7 @@ function mergeCollections(
       return {
         ...collection,
         productCount: Math.max(collection.productCount ?? 0, local.productCount ?? 0),
-        image: local.image || collection.image,
+        image: collection.image || local.image,
         comingSoon: local.comingSoon ?? collection.comingSoon ?? false,
       };
     });
@@ -89,7 +91,7 @@ function mergeCollection(
       sanityCollection.productCount ?? 0,
       localCollection.productCount ?? 0
     ),
-    image: localCollection.image || sanityCollection.image,
+    image: sanityCollection.image || localCollection.image,
     comingSoon: localCollection.comingSoon ?? sanityCollection.comingSoon ?? false,
   };
 }
@@ -209,6 +211,23 @@ export async function fetchGalleryImages() {
     () => sanity.getGalleryImages(),
     () => local.getGalleryImages()
   );
+}
+
+export async function fetchSiteSettings(): Promise<SiteSettings> {
+  try {
+    const settings = await sanity.getSiteSettings();
+    if (
+      settings.logo ||
+      settings.heroImage ||
+      settings.packaging.box ||
+      settings.instagramImages.length > 0
+    ) {
+      return settings;
+    }
+  } catch (error) {
+    console.warn("[CMS] Sanity site settings fetch failed:", error);
+  }
+  return EMPTY_SITE_SETTINGS;
 }
 
 export async function fetchRelatedProducts(slug: string, limit = 4) {

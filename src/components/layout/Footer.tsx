@@ -3,7 +3,9 @@ import Image from "next/image";
 import { Mail } from "lucide-react";
 import { InstagramIcon, FacebookIcon } from "@/components/icons/SocialIcons";
 import { NewsletterForm } from "@/components/layout/NewsletterForm";
-import { IMAGES, BRAND } from "@/lib/constants";
+import { BRAND } from "@/lib/constants";
+import { fetchSiteSettings } from "@/lib/cms";
+import { resolveImageSrc } from "@/lib/images";
 
 const footerLinks = {
   shop: [
@@ -26,7 +28,9 @@ const footerLinks = {
   ],
 };
 
-export function Footer() {
+export async function Footer() {
+  const { logo } = await fetchSiteSettings();
+
   return (
     <footer className="bg-background border-t border-border">
       <div className="mx-auto max-w-7xl px-6 lg:px-8 py-20 md:py-28">
@@ -35,7 +39,7 @@ export function Footer() {
           <div className="lg:col-span-2">
             <Link href="/" className="inline-flex items-center gap-3 mb-6">
               <Image
-                src={IMAGES.logo}
+                src={resolveImageSrc(logo)}
                 alt={BRAND.name}
                 width={48}
                 height={48}

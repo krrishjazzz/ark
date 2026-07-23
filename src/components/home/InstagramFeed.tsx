@@ -7,8 +7,17 @@ import { InstagramIcon } from "@/components/icons/SocialIcons";
 import { SectionHeading } from "@/components/animations/SectionHeading";
 import { instagramPosts } from "@/lib/data/content";
 import { BRAND } from "@/lib/constants";
+import { useSiteSettings } from "@/components/providers/SiteSettingsProvider";
+import { resolveImageSrc } from "@/lib/images";
 
 export function InstagramFeed() {
+  const { instagramImages } = useSiteSettings();
+
+  const posts = instagramPosts.map((post, index) => ({
+    ...post,
+    image: instagramImages[index] || post.image,
+  }));
+
   return (
     <section className="section-padding px-6 lg:px-8 bg-card/30" aria-label="Instagram Feed">
       <div className="mx-auto max-w-7xl">
@@ -19,7 +28,7 @@ export function InstagramFeed() {
         />
 
         <div className="columns-2 md:columns-3 lg:columns-4 gap-3 sm:gap-4 space-y-3 sm:space-y-4">
-          {instagramPosts.map((post, index) => (
+          {posts.map((post, index) => (
             <motion.a
               key={post.id}
               href={BRAND.instagram}
@@ -33,7 +42,7 @@ export function InstagramFeed() {
             >
               <div className="relative rounded-[20px] overflow-hidden border border-border gold-glow-hover image-zoom-container">
                 <Image
-                  src={post.image}
+                  src={resolveImageSrc(post.image)}
                   alt={post.caption}
                   width={400}
                   height={index % 3 === 0 ? 500 : 400}

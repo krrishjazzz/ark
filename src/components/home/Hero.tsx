@@ -5,9 +5,12 @@ import Image from "next/image";
 import Link from "next/link";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { Play } from "lucide-react";
-import { IMAGES, BRAND } from "@/lib/constants";
+import { BRAND } from "@/lib/constants";
+import { useSiteSettings } from "@/components/providers/SiteSettingsProvider";
+import { resolveImageSrc } from "@/lib/images";
 
 export function Hero() {
+  const { heroImage, logo } = useSiteSettings();
   const containerRef = useRef(null);
   const { scrollYProgress } = useScroll({
     target: containerRef,
@@ -32,7 +35,7 @@ export function Hero() {
         transition={{ duration: 10, ease: [0.16, 1, 0.3, 1] }}
       >
         <Image
-          src={IMAGES.heroBg}
+          src={resolveImageSrc(heroImage)}
           alt=""
           fill
           className="object-contain object-center md:object-cover md:object-center"
@@ -58,7 +61,7 @@ export function Hero() {
           className="mb-5 max-md:hidden"
         >
           <Image
-            src={IMAGES.logo}
+            src={resolveImageSrc(logo)}
             alt={BRAND.name}
             width={88}
             height={88}

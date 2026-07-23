@@ -3,19 +3,22 @@ import Image from "next/image";
 import { SectionHeading } from "@/components/animations/SectionHeading";
 import { FadeIn } from "@/components/animations/FadeIn";
 import { craftsmanshipFeatures } from "@/lib/data/content";
-import { IMAGES } from "@/lib/constants";
+import { fetchSiteSettings } from "@/lib/cms";
+import { resolveImageSrc } from "@/lib/images";
 
 export const metadata: Metadata = {
   title: "Craftsmanship",
   description: "Discover the meticulous process behind every ARK resin masterpiece.",
 };
 
-export default function CraftsmanshipPage() {
+export default async function CraftsmanshipPage() {
+  const { aboutHero } = await fetchSiteSettings();
+
   return (
     <div className="pt-32 pb-20">
       <div className="relative h-[50vh] min-h-[400px] mb-20">
         <Image
-          src={IMAGES.productTopdown}
+          src={resolveImageSrc(aboutHero)}
           alt="ARK craftsmanship"
           fill
           className="object-cover"

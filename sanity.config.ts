@@ -11,6 +11,26 @@ export default defineConfig({
   title: "ARK — Aesthetic Resin Kreations",
   projectId,
   dataset,
-  plugins: [structureTool(), visionTool()],
+  plugins: [
+    structureTool({
+      structure: (S) =>
+        S.list()
+          .title("Content")
+          .items([
+            S.listItem()
+              .title("Site Settings")
+              .child(
+                S.document()
+                  .schemaType("siteSettings")
+                  .documentId("siteSettings")
+              ),
+            S.divider(),
+            ...S.documentTypeListItems().filter(
+              (item) => item.getId() !== "siteSettings"
+            ),
+          ]),
+    }),
+    visionTool(),
+  ],
   schema: { types: schemaTypes },
 });

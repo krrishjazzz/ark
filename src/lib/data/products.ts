@@ -1,4 +1,3 @@
-import { IMAGES } from "@/lib/constants";
 import type { Product } from "@/types";
 
 export const products: Product[] = [
@@ -13,7 +12,7 @@ export const products: Product[] = [
       "A white Audi R8 frozen in motion against volcanic obsidian resin with crimson serpent details. Museum-grade gloss finish with integrated LED ambient lighting.",
     basePrice: 12000,
     compareAtPrice: 45000,
-    images: [IMAGES.collectionAudiR8, IMAGES.productWall, IMAGES.productEasel],
+    images: [],
     edition: { current: 12, total: 50 },
     featured: true,
     collection: "cars",
@@ -54,7 +53,7 @@ export const products: Product[] = [
       "A Rolls Royce captured mid-drift through marbled grey resin with metallic smoke textures. The pinnacle of automotive luxury, frozen forever.",
     basePrice: 15000,
     compareAtPrice: 52000,
-    images: [IMAGES.collectionRollsRoyce, IMAGES.productTopdown],
+    images: [],
     edition: { current: 4, total: 25 },
     featured: true,
     collection: "cars",
@@ -86,7 +85,7 @@ export const products: Product[] = [
       "A classic black Ford Mustang on a topographical ocean resin landscape with snow-textured islands. Bold, timeless, unmistakably American.",
     basePrice: 8000,
     compareAtPrice: 40000,
-    images: [IMAGES.collectionMustang, IMAGES.productEasel],
+    images: [],
     edition: { current: 7, total: 40 },
     featured: true,
     collection: "cars",
@@ -118,7 +117,7 @@ export const products: Product[] = [
       "The Ferrari SF-23 Formula 1 car immortalized on a bold Rosso Corsa resin canvas. For the Scuderia devotee who lives at the limit.",
     basePrice: 10000,
     compareAtPrice: 48000,
-    images: [IMAGES.collectionFerrariF1, IMAGES.productGrid],
+    images: [],
     edition: { current: 2, total: 30 },
     featured: true,
     collection: "cars",
@@ -148,7 +147,7 @@ export const products: Product[] = [
     description:
       "A museum-grade BMW Motorrad tribute — M 1000 RR model, racing glove, action photography, and M-stripe details layered on brushed metal with a gold-trimmed gallery frame.",
     basePrice: 42000,
-    images: [IMAGES.collectionBmwMotorrad],
+    images: [],
     edition: { current: 3, total: 30 },
     featured: false,
     collection: "motorcycles",
@@ -179,7 +178,7 @@ export const products: Product[] = [
     description:
       "A black Suzuki GSX-R frozen mid-drift across sculpted charcoal stone and deep mirror-gloss resin — chrome Suzuki branding embossed at the base.",
     basePrice: 36000,
-    images: [IMAGES.collectionSuzukiGsxr],
+    images: [],
     edition: { current: 5, total: 40 },
     featured: false,
     collection: "motorcycles",
@@ -210,7 +209,7 @@ export const products: Product[] = [
     description:
       "A shattered Johnnie Walker Double Black bottle suspended in deep obsidian resin with subtle crimson glitter. A statement piece for the discerning collector's bar or study.",
     basePrice: 32000,
-    images: [IMAGES.collectionJohnnieWalker],
+    images: [],
     edition: { current: 6, total: 40 },
     featured: true,
     collection: "wine-bottle",
@@ -240,7 +239,7 @@ export const products: Product[] = [
     description:
       "A green Jägermeister bottle exploded across rippling black resin — dynamic splashes frozen mid-motion. Raw energy meets refined gallery presentation.",
     basePrice: 28000,
-    images: [IMAGES.collectionJagermeister],
+    images: [],
     edition: { current: 9, total: 50 },
     featured: false,
     collection: "wine-bottle",
@@ -270,7 +269,7 @@ export const products: Product[] = [
     description:
       "Ballantine's Finest Scotch Whisky shattered across a mirror-gloss black resin canvas. Amber glass fragments catch light like cut gemstones.",
     basePrice: 30000,
-    images: [IMAGES.collectionBallantines],
+    images: [],
     edition: { current: 4, total: 35 },
     featured: false,
     collection: "wine-bottle",
@@ -300,7 +299,7 @@ export const products: Product[] = [
     description:
       "Jack Daniel's Old No. 7 captured in explosive fragmentation with swirling white smoke resin and a hammered black luxury frame. Monochrome drama at its finest.",
     basePrice: 35000,
-    images: [IMAGES.collectionJackDaniels],
+    images: [],
     edition: { current: 3, total: 30 },
     featured: true,
     collection: "wine-bottle",
@@ -330,7 +329,7 @@ export const products: Product[] = [
     description:
       "Iconic blue Bombay Sapphire glass shards scattered across jet-black resin — botanical illustrations preserved in crystal fragments. Elegant contrast for the modern collector.",
     basePrice: 31000,
-    images: [IMAGES.collectionBombaySapphire],
+    images: [],
     edition: { current: 7, total: 45 },
     featured: false,
     collection: "wine-bottle",
@@ -360,7 +359,7 @@ export const products: Product[] = [
     description:
       "A sculpted 3D Spider-Man mask in glossy red and black webbing, mounted on a splattered crimson panel inside a deep shadow-box frame. Hand-signed by the artist.",
     basePrice: 34000,
-    images: [IMAGES.collectionSpiderMan],
+    images: [],
     edition: { current: 4, total: 35 },
     featured: true,
     collection: "marvel",
@@ -391,7 +390,7 @@ export const products: Product[] = [
     description:
       "A brooding 3D Batman cowl in high-gloss black resin, set against a smoky charcoal shadow-box interior. Dramatic highlights, deep shadows, unmistakable presence.",
     basePrice: 36000,
-    images: [IMAGES.collectionBatman],
+    images: [],
     edition: { current: 2, total: 30 },
     featured: false,
     collection: "marvel",

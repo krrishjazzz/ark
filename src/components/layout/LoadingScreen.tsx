@@ -2,9 +2,12 @@
 
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
-import { IMAGES } from "@/lib/constants";
+import { useSiteSettings } from "@/components/providers/SiteSettingsProvider";
+import { resolveImageSrc } from "@/lib/images";
 
 export function LoadingScreen() {
+  const { logo } = useSiteSettings();
+
   return (
     <AnimatePresence>
       <motion.div
@@ -19,7 +22,7 @@ export function LoadingScreen() {
           className="relative"
         >
           <Image
-            src={IMAGES.logo}
+            src={resolveImageSrc(logo)}
             alt="ARK"
             width={120}
             height={120}

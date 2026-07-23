@@ -99,3 +99,19 @@ export const galleryImagesQuery = `*[_type == "galleryImage"] | order(_createdAt
   category,
   image
 }`;
+
+export const siteSettingsQuery = `*[_type == "siteSettings" && _id == "siteSettings"][0] {
+  logo,
+  heroImage,
+  craftsmanshipPrimary,
+  craftsmanshipSecondary,
+  brandBoardPrimary,
+  brandBoardSecondary,
+  configuratorPreview,
+  aboutHero,
+  packagingBox,
+  packagingCertificate,
+  packagingMicrofiber,
+  packagingThankYou,
+  instagramImages
+}`;

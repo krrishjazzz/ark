@@ -1,4 +1,3 @@
-import { IMAGES } from "@/lib/constants";
 import type { Testimonial } from "@/types";
 
 export const testimonials: Testimonial[] = [
@@ -9,7 +8,7 @@ export const testimonials: Testimonial[] = [
     rating: 5,
     quote:
       "The Audi R8 piece is the crown jewel of my collection. Every guest stops to admire it. ARK doesn't make wall art — they make statements.",
-    image: IMAGES.productWall,
+    image: "",
     product: "Audi R8 — Predator Edition",
   },
   {
@@ -19,7 +18,7 @@ export const testimonials: Testimonial[] = [
     rating: 5,
     quote:
       "I ordered a custom Porsche piece for my husband's birthday. The attention to detail and packaging exceeded every luxury brand I've experienced.",
-    image: IMAGES.packagingBox,
+    image: "",
     product: "Custom Porsche 911",
   },
   {
@@ -29,7 +28,7 @@ export const testimonials: Testimonial[] = [
     rating: 5,
     quote:
       "As an interior designer, I've specified ARK for three luxury projects. The craftsmanship is unmatched in the resin art space.",
-    image: IMAGES.productEasel,
+    image: "",
     product: "BMW S1000RR — Impact",
   },
   {
@@ -39,30 +38,30 @@ export const testimonials: Testimonial[] = [
     rating: 5,
     quote:
       "Edition 12 of 50. Knowing mine is one of only fifty makes it feel truly exclusive. The certificate of authenticity is a beautiful touch.",
-    image: IMAGES.productTopdown,
+    image: "",
     product: "Ferrari 488 — Velocity",
   },
 ];
 
 export const customerGallery = [
-  { id: "0", image: IMAGES.galleryWallHd, category: "Gallery Display", alt: "ARK car collection in luxury gallery setting" },
-  { id: "1", image: IMAGES.productWall, category: "Luxury Homes", alt: "ARK art in luxury living room" },
-  { id: "2", image: IMAGES.productEasel, category: "Offices", alt: "ARK art in executive office" },
-  { id: "3", image: IMAGES.productGrid, category: "Car Showrooms", alt: "ARK art in car showroom" },
-  { id: "4", image: IMAGES.productTopdown, category: "Gaming Rooms", alt: "ARK art in gaming setup" },
-  { id: "5", image: IMAGES.brandBoard1, category: "Wall Mockups", alt: "ARK brand display wall" },
-  { id: "6", image: IMAGES.packagingBox, category: "Luxury Homes", alt: "ARK packaging unboxing" },
-  { id: "7", image: IMAGES.brandBoard2, category: "Offices", alt: "ARK collection display" },
-  { id: "8", image: IMAGES.productWall, category: "Car Showrooms", alt: "ARK in automotive gallery" },
+  { id: "0", image: "", category: "Gallery Display", alt: "ARK car collection in luxury gallery setting" },
+  { id: "1", image: "", category: "Luxury Homes", alt: "ARK art in luxury living room" },
+  { id: "2", image: "", category: "Offices", alt: "ARK art in executive office" },
+  { id: "3", image: "", category: "Car Showrooms", alt: "ARK art in car showroom" },
+  { id: "4", image: "", category: "Gaming Rooms", alt: "ARK art in gaming setup" },
+  { id: "5", image: "", category: "Wall Mockups", alt: "ARK brand display wall" },
+  { id: "6", image: "", category: "Luxury Homes", alt: "ARK packaging unboxing" },
+  { id: "7", image: "", category: "Offices", alt: "ARK collection display" },
+  { id: "8", image: "", category: "Car Showrooms", alt: "ARK in automotive gallery" },
 ];
 
 export const instagramPosts = [
-  { id: "1", image: IMAGES.productWall, likes: 1240, caption: "Predator Edition — now available" },
-  { id: "2", image: IMAGES.productEasel, likes: 987, caption: "Crafted with precision" },
-  { id: "3", image: IMAGES.productGrid, likes: 1560, caption: "Every angle tells a story" },
-  { id: "4", image: IMAGES.packagingBox, likes: 834, caption: "The unboxing experience" },
-  { id: "5", image: IMAGES.productTopdown, likes: 1102, caption: "Frozen in time" },
-  { id: "6", image: IMAGES.brandBoard1, likes: 945, caption: "Beyond cars. Beyond limits." },
+  { id: "1", image: "", likes: 1240, caption: "Predator Edition — now available" },
+  { id: "2", image: "", likes: 987, caption: "Crafted with precision" },
+  { id: "3", image: "", likes: 1560, caption: "Every angle tells a story" },
+  { id: "4", image: "", likes: 834, caption: "The unboxing experience" },
+  { id: "5", image: "", likes: 1102, caption: "Frozen in time" },
+  { id: "6", image: "", likes: 945, caption: "Beyond cars. Beyond limits." },
 ];
 
 export const craftsmanshipFeatures = [
@@ -135,22 +134,22 @@ export const packagingItems = [
   {
     title: "Magnetic Box",
     description: "Heavy-duty matte black box with gold ARK monogram and magnetic closure.",
-    image: IMAGES.packagingBox,
+    imageKey: "box" as const,
   },
   {
     title: "Certificate",
     description: "Premium black card with gold foil — edition number, materials, and signature.",
-    image: IMAGES.packagingCertificate,
+    imageKey: "certificate" as const,
   },
   {
     title: "Microfiber Cloth",
     description: "Ultra-soft cleaning cloth to maintain the pristine gloss finish.",
-    image: IMAGES.packagingMicrofiber,
+    imageKey: "microfiber" as const,
   },
   {
     title: "Thank You Card",
     description: "Handwritten note from the founder, thanking you for joining the ARK family.",
-    image: IMAGES.packagingThankYou,
+    imageKey: "thankYou" as const,
   },
 ];
 

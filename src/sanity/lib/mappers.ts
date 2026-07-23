@@ -1,9 +1,10 @@
 import type { SanityImageSource } from "@sanity/image-url";
 import { getImageUrl } from "@/sanity/lib/image";
-import { FALLBACK_IMAGE } from "@/lib/constants";
-import { getProductBySlug } from "@/lib/data/products";
-import { getCollectionBySlug } from "@/lib/data/collections";
-import type { Product, Collection, Testimonial, Review } from "@/types";
+import type { Product, Collection, Testimonial } from "@/types";
+import {
+  EMPTY_SITE_SETTINGS,
+  type SiteSettings,
+} from "@/types/site-settings";
 
 interface SanityProduct {
   _id: string;
@@ -59,6 +60,22 @@ interface SanityGalleryImage {
   image?: SanityImageSource;
 }
 
+interface SanitySiteSettings {
+  logo?: SanityImageSource;
+  heroImage?: SanityImageSource;
+  craftsmanshipPrimary?: SanityImageSource;
+  craftsmanshipSecondary?: SanityImageSource;
+  brandBoardPrimary?: SanityImageSource;
+  brandBoardSecondary?: SanityImageSource;
+  configuratorPreview?: SanityImageSource;
+  aboutHero?: SanityImageSource;
+  packagingBox?: SanityImageSource;
+  packagingCertificate?: SanityImageSource;
+  packagingMicrofiber?: SanityImageSource;
+  packagingThankYou?: SanityImageSource;
+  instagramImages?: SanityImageSource[];
+}
+
 function mapImages(images?: SanityImageSource[]): string[] {
   if (!images?.length) return [];
   return images
@@ -66,37 +83,11 @@ function mapImages(images?: SanityImageSource[]): string[] {
     .filter((url): url is string => Boolean(url));
 }
 
-function resolveProductImages(
-  sanityImages?: SanityImageSource[],
-  slug?: string
-): string[] {
-  const mapped = mapImages(sanityImages);
-  if (mapped.length > 0) return mapped;
-
-  if (slug) {
-    const local = getProductBySlug(slug);
-    const localImages = local?.images?.filter((img) => img?.trim()) ?? [];
-    if (localImages.length > 0) return localImages;
-  }
-
-  return [FALLBACK_IMAGE];
-}
-
-function resolveCollectionImage(
-  sanityImage: SanityImageSource | undefined,
-  slug: string
-): string {
-  const mapped = getImageUrl(sanityImage, 1200);
-  if (mapped) return mapped;
-
-  const local = getCollectionBySlug(slug);
-  if (local?.image?.trim()) return local.image;
-
-  return FALLBACK_IMAGE;
+function mapImage(image?: SanityImageSource, width = 1200): string {
+  return getImageUrl(image, width) || "";
 }
 
 export function mapSanityProduct(doc: SanityProduct): Product {
-  const images = resolveProductImages(doc.images, doc.slug);
   return {
     id: doc._id,
     slug: doc.slug,
@@ -107,7 +98,7 @@ export function mapSanityProduct(doc: SanityProduct): Product {
     description: doc.description || "",
     basePrice: doc.basePrice || 0,
     compareAtPrice: doc.compareAtPrice,
-    images,
+    images: mapImages(doc.images),
     edition: {
       current: doc.editionCurrent || 1,
       total: doc.editionTotal || 50,
@@ -118,7 +109,7 @@ export function mapSanityProduct(doc: SanityProduct): Product {
     packaging: doc.packaging || [],
     shipping: doc.shipping || "",
     reviews: (doc.reviews || []).map(
-      (r, i): Review => ({
+      (r, i): Product["reviews"][number] => ({
         id: `review-${i}`,
         author: r.author || "Anonymous",
         rating: r.rating || 5,
@@ -136,7 +127,7 @@ export function mapSanityCollection(doc: SanityCollection): Collection {
     name: doc.name,
     tagline: doc.tagline || "",
     description: doc.description || "",
-    image: resolveCollectionImage(doc.image, doc.slug),
+    image: mapImage(doc.image, 1200),
     productCount: doc.productCount || 0,
     comingSoon: doc.comingSoon ?? false,
   };
@@ -150,15 +141,37 @@ export function mapSanityTestimonial(doc: SanityTestimonial): Testimonial {
     rating: doc.rating || 5,
     quote: doc.quote || "",
     product: doc.product || "",
-    image: getImageUrl(doc.image, 400) || FALLBACK_IMAGE,
+    image: mapImage(doc.image, 400),
   };
 }
 
 export function mapSanityGalleryImage(doc: SanityGalleryImage) {
   return {
     id: doc._id,
-    image: getImageUrl(doc.image, 800) || FALLBACK_IMAGE,
+    image: mapImage(doc.image, 800),
     category: doc.category || "Gallery",
     alt: doc.alt || "ARK gallery image",
+  };
+}
+
+export function mapSiteSettings(doc: SanitySiteSettings | null): SiteSettings {
+  if (!doc) return EMPTY_SITE_SETTINGS;
+
+  return {
+    logo: mapImage(doc.logo, 256),
+    heroImage: mapImage(doc.heroImage, 2560),
+    craftsmanshipPrimary: mapImage(doc.craftsmanshipPrimary, 1200),
+    craftsmanshipSecondary: mapImage(doc.craftsmanshipSecondary, 1200),
+    brandBoardPrimary: mapImage(doc.brandBoardPrimary, 1200),
+    brandBoardSecondary: mapImage(doc.brandBoardSecondary, 1200),
+    configuratorPreview: mapImage(doc.configuratorPreview, 1200),
+    aboutHero: mapImage(doc.aboutHero, 1600),
+    packaging: {
+      box: mapImage(doc.packagingBox, 1200),
+      certificate: mapImage(doc.packagingCertificate, 1200),
+      microfiber: mapImage(doc.packagingMicrofiber, 1200),
+      thankYou: mapImage(doc.packagingThankYou, 1200),
+    },
+    instagramImages: mapImages(doc.instagramImages),
   };
 }

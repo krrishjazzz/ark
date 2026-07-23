@@ -14,7 +14,8 @@ import { SectionHeading } from "@/components/animations/SectionHeading";
 import { FadeIn } from "@/components/animations/FadeIn";
 import { ParallaxImage } from "@/components/animations/ParallaxImage";
 import { craftsmanshipFeatures } from "@/lib/data/content";
-import { IMAGES } from "@/lib/constants";
+import { useSiteSettings } from "@/components/providers/SiteSettingsProvider";
+import { resolveImageSrc } from "@/lib/images";
 
 const iconMap: Record<string, LucideIcon> = {
   Droplets,
@@ -45,6 +46,8 @@ function CraftImageMobile({ src, alt }: { src: string; alt: string }) {
 }
 
 export function Craftsmanship() {
+  const { craftsmanshipPrimary, craftsmanshipSecondary } = useSiteSettings();
+
   return (
     <section className="section-padding px-6 lg:px-8 bg-card/30" aria-label="Craftsmanship">
       <div className="mx-auto max-w-7xl">
@@ -56,8 +59,8 @@ export function Craftsmanship() {
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-16 lg:gap-24 items-center mb-16 sm:mb-24">
           <FadeIn direction="left">
-            <CraftImageMobile src={IMAGES.collectionAudiR8} alt="Audi R8 resin art craftsmanship" />
-            <CraftImage src={IMAGES.collectionAudiR8} alt="Audi R8 resin art craftsmanship" />
+            <CraftImageMobile src={resolveImageSrc(craftsmanshipPrimary)} alt="Audi R8 resin art craftsmanship" />
+            <CraftImage src={resolveImageSrc(craftsmanshipPrimary)} alt="Audi R8 resin art craftsmanship" />
           </FadeIn>
           <FadeIn direction="right" delay={0.2}>
             <p className="font-button text-[10px] uppercase tracking-[0.3em] text-gold mb-4">
@@ -99,8 +102,8 @@ export function Craftsmanship() {
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-16 lg:gap-24 items-center">
           <FadeIn direction="left" delay={0.2} className="lg:order-2">
-            <CraftImageMobile src={IMAGES.collectionRollsRoyce} alt="Rolls Royce resin art detail" />
-            <CraftImage src={IMAGES.collectionRollsRoyce} alt="Rolls Royce resin art detail" />
+            <CraftImageMobile src={resolveImageSrc(craftsmanshipSecondary)} alt="Rolls Royce resin art detail" />
+            <CraftImage src={resolveImageSrc(craftsmanshipSecondary)} alt="Rolls Royce resin art detail" />
           </FadeIn>
           <FadeIn direction="right" className="lg:order-1">
             <p className="font-button text-[10px] uppercase tracking-[0.3em] text-gold mb-4">

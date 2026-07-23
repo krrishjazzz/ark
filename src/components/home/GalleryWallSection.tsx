@@ -4,13 +4,16 @@ import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { ArrowUpRight } from "lucide-react";
-import { IMAGES } from "@/lib/constants";
+import { useSiteSettings } from "@/components/providers/SiteSettingsProvider";
+import { resolveImageSrc } from "@/lib/images";
 
 /** Native resolution of gallery-wall-hd.jpg — avoids upscaling blur on large screens */
 const GALLERY_WALL_WIDTH = 1024;
 const GALLERY_WALL_HEIGHT = 682;
 
 export function GalleryWallSection() {
+  const { heroImage } = useSiteSettings();
+
   return (
     <section className="section-padding px-6 lg:px-8 bg-[#090909]" aria-label="Gallery display">
       <div className="mx-auto max-w-7xl">
@@ -43,7 +46,7 @@ export function GalleryWallSection() {
           className="relative rounded-[20px] overflow-hidden border border-border shadow-luxury bg-black"
         >
           <Image
-            src={IMAGES.galleryWallHd}
+            src={resolveImageSrc(heroImage)}
             alt="ARK resin art collection displayed in a luxury gallery — Mustang, Audi, Rolls Royce, and Ferrari F1 pieces"
             width={GALLERY_WALL_WIDTH}
             height={GALLERY_WALL_HEIGHT}

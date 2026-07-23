@@ -5,6 +5,7 @@ import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import { SectionHeading } from "@/components/animations/SectionHeading";
 import { cn } from "@/lib/utils";
+import { resolveImageSrc } from "@/lib/images";
 
 interface GalleryImage {
   id: string;
@@ -73,7 +74,7 @@ export function CustomerGallery({ images }: CustomerGalleryProps) {
               >
                 <div className="group relative rounded-[20px] overflow-hidden border border-border gold-glow-hover shadow-lift image-zoom-container">
                   <Image
-                    src={item.image}
+                    src={resolveImageSrc(item.image)}
                     alt={item.alt}
                     width={600}
                     height={index % 2 === 0 ? 800 : 500}

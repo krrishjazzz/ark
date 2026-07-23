@@ -7,15 +7,18 @@ import {
   collectionBySlugQuery,
   testimonialsQuery,
   galleryImagesQuery,
+  siteSettingsQuery,
 } from "@/sanity/queries";
 import {
   mapSanityProduct,
   mapSanityCollection,
   mapSanityTestimonial,
   mapSanityGalleryImage,
+  mapSiteSettings,
 } from "@/sanity/lib/mappers";
 import type { CMSAdapter } from "@/lib/cms/types";
 import type { Product, Collection, Testimonial } from "@/types";
+import type { SiteSettings } from "@/types/site-settings";
 
 export class SanityCMSAdapter implements CMSAdapter {
   async getProducts(): Promise<Product[]> {
@@ -56,6 +59,11 @@ export class SanityCMSAdapter implements CMSAdapter {
   async getGalleryImages() {
     const docs = await client.fetch(galleryImagesQuery);
     return docs.map(mapSanityGalleryImage);
+  }
+
+  async getSiteSettings(): Promise<SiteSettings> {
+    const doc = await client.fetch(siteSettingsQuery);
+    return mapSiteSettings(doc);
   }
 
   async submitCustomOrder(data: Record<string, unknown>) {

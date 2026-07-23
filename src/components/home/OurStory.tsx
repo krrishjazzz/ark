@@ -6,9 +6,11 @@ import { motion, useScroll, useTransform } from "framer-motion";
 import { SectionHeading } from "@/components/animations/SectionHeading";
 import { FadeIn } from "@/components/animations/FadeIn";
 import { timeline } from "@/lib/data/content";
-import { IMAGES } from "@/lib/constants";
+import { useSiteSettings } from "@/components/providers/SiteSettingsProvider";
+import { resolveImageSrc } from "@/lib/images";
 
 export function OurStory() {
+  const { brandBoardSecondary } = useSiteSettings();
   const timelineRef = useRef(null);
   const { scrollYProgress } = useScroll({
     target: timelineRef,
@@ -30,7 +32,7 @@ export function OurStory() {
           <FadeIn direction="left">
             <div className="relative aspect-[3/4] rounded-[20px] overflow-hidden border border-border">
               <Image
-                src={IMAGES.brandBoard2}
+                src={resolveImageSrc(brandBoardSecondary)}
                 alt="ARK founder studio"
                 fill
                 className="object-cover"

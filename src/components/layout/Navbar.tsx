@@ -12,7 +12,9 @@ import {
 } from "lucide-react";
 import { InstagramIcon } from "@/components/icons/SocialIcons";
 import { Button } from "@/components/ui/button";
-import { IMAGES, BRAND } from "@/lib/constants";
+import { BRAND } from "@/lib/constants";
+import { useSiteSettings } from "@/components/providers/SiteSettingsProvider";
+import { resolveImageSrc } from "@/lib/images";
 import { useStore } from "@/lib/store";
 import { cn } from "@/lib/utils";
 
@@ -30,6 +32,7 @@ export function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const { cartCount } = useStore();
+  const { logo } = useSiteSettings();
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 50);
@@ -61,7 +64,7 @@ export function Navbar() {
           {/* Logo */}
           <Link href="/" className="relative z-10 flex items-center gap-3 group">
             <Image
-              src={IMAGES.logo}
+              src={resolveImageSrc(logo)}
               alt={BRAND.name}
               width={40}
               height={40}

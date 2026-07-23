@@ -1,4 +1,3 @@
-import { IMAGES } from "@/lib/constants";
 import type { Collection } from "@/types";
 
 export const collections: Collection[] = [
@@ -7,9 +6,8 @@ export const collections: Collection[] = [
     slug: "cars",
     name: "Cars",
     tagline: "All cars possible.",
-    description:
-      "Every make. Every model. Every dream machine — handcrafted in museum-grade resin. Porsche, BMW, Audi, Ferrari, Rolls Royce, and beyond.",
-    image: IMAGES.collectionCars,
+    description: "Every make. Every model. Handcrafted in museum-grade resin.",
+    image: "",
     productCount: 4,
     comingSoon: false,
   },
@@ -18,9 +16,8 @@ export const collections: Collection[] = [
     slug: "motorcycles",
     name: "Motorcycles",
     tagline: "Built to thrill.",
-    description:
-      "Two-wheeled icons frozen in raw resin energy. Superbikes and classics for the passionate rider.",
-    image: IMAGES.collectionBmwMotorrad,
+    description: "Two-wheeled icons embedded in raw resin energy.",
+    image: "",
     productCount: 2,
     comingSoon: true,
   },
@@ -29,36 +26,28 @@ export const collections: Collection[] = [
     slug: "wine-bottle",
     name: "Wine Bottle",
     tagline: "Pour with passion.",
-    description:
-      "Luxury wine and spirits immortalized in flowing resin — for collectors and connoisseurs.",
-    image: IMAGES.collectionWineBottle,
+    description: "Luxury wine and spirits immortalized in flowing resin.",
+    image: "",
     productCount: 5,
     comingSoon: true,
   },
   {
-    id: "5",
+    id: "4",
     slug: "marvel",
     name: "Marvel",
     tagline: "Heroes immortalized.",
-    description:
-      "Iconic superheroes sculpted in 3D resin relief — Spider-Man, Batman, and beyond for the devoted collector.",
-    image: IMAGES.collectionMarvel,
+    description: "Iconic superheroes sculpted in 3D resin relief.",
+    image: "",
     productCount: 2,
     comingSoon: true,
   },
 ];
-
-export const activeCollections = collections.filter((c) => !c.comingSoon);
-export const comingSoonCollections = collections.filter((c) => c.comingSoon);
 
 export function getCollectionBySlug(slug: string): Collection | undefined {
   return collections.find((c) => c.slug === slug);
 }
 
 export function isComingSoonCollection(slug: string): boolean {
-  return getCollectionBySlug(slug)?.comingSoon ?? false;
-}
-
-export function isLiveCollection(slug: string): boolean {
-  return !isComingSoonCollection(slug);
+  const collection = getCollectionBySlug(slug);
+  return collection?.comingSoon ?? false;
 }

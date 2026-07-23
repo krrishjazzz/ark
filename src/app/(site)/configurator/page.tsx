@@ -5,7 +5,9 @@ import Image from "next/image";
 import { SectionHeading } from "@/components/animations/SectionHeading";
 import { FadeIn } from "@/components/animations/FadeIn";
 import { Button } from "@/components/ui/button";
-import { MANUFACTURERS, SIZES, FRAME_OPTIONS, IMAGES } from "@/lib/constants";
+import { MANUFACTURERS, SIZES, FRAME_OPTIONS } from "@/lib/constants";
+import { useSiteSettings } from "@/components/providers/SiteSettingsProvider";
+import { resolveImageSrc } from "@/lib/images";
 import { cn, formatPrice } from "@/lib/utils";
 
 const textures = [
@@ -24,6 +26,7 @@ const resinColors = [
 ];
 
 export default function ConfiguratorPage() {
+  const { configuratorPreview } = useSiteSettings();
   const [manufacturer, setManufacturer] = useState<string>(MANUFACTURERS[0]);
   const [model, setModel] = useState("911 GT3 RS");
   const [texture, setTexture] = useState(textures[0].value);
@@ -50,7 +53,7 @@ export default function ConfiguratorPage() {
             <div className="sticky top-28">
               <div className="relative aspect-[3/4] rounded-[20px] overflow-hidden border border-border shadow-luxury">
                 <Image
-                  src={IMAGES.productEasel}
+                  src={resolveImageSrc(configuratorPreview)}
                   alt="Configurator preview"
                   fill
                   className="object-cover"

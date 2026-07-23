@@ -6,6 +6,7 @@ import { Star } from "lucide-react";
 import { SectionHeading } from "@/components/animations/SectionHeading";
 import { staggerContainer, staggerItem } from "@/components/animations/FadeIn";
 import type { Testimonial } from "@/types";
+import { resolveImageSrc } from "@/lib/images";
 
 interface TestimonialsProps {
   items: Testimonial[];
@@ -58,7 +59,7 @@ export function Testimonials({ items }: TestimonialsProps) {
               <div className="flex items-start gap-4 mb-6">
                 <div className="relative h-14 w-14 rounded-full overflow-hidden border border-border shrink-0">
                   <Image
-                    src={testimonial.image}
+                    src={resolveImageSrc(testimonial.image)}
                     alt={testimonial.name}
                     fill
                     className="object-cover"

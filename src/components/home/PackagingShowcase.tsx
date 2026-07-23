@@ -4,8 +4,12 @@ import Image from "next/image";
 import { motion } from "framer-motion";
 import { SectionHeading } from "@/components/animations/SectionHeading";
 import { packagingItems } from "@/lib/data/content";
+import { useSiteSettings } from "@/components/providers/SiteSettingsProvider";
+import { resolveImageSrc } from "@/lib/images";
 
 export function PackagingShowcase() {
+  const { packaging } = useSiteSettings();
+
   return (
     <section className="section-padding px-6 lg:px-8 bg-card/30" aria-label="Packaging">
       <div className="mx-auto max-w-7xl">
@@ -39,7 +43,7 @@ export function PackagingShowcase() {
 
                 <div className="relative aspect-[16/10] sm:aspect-[4/3] md:aspect-[3/2] max-h-[220px] sm:max-h-[320px] md:max-h-none rounded-[20px] overflow-hidden border border-border image-zoom-container shadow-luxury spotlight-card">
                   <Image
-                    src={item.image}
+                    src={resolveImageSrc(packaging[item.imageKey])}
                     alt={item.title}
                     fill
                     className="object-cover"
