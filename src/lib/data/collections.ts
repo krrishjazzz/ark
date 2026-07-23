@@ -8,7 +8,7 @@ export const collections: Collection[] = [
     tagline: "All cars possible.",
     description: "Every make. Every model. Handcrafted in museum-grade resin.",
     image: "",
-    productCount: 4,
+    productCount: 5,
     comingSoon: false,
   },
   {
