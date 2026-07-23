@@ -1,4 +1,5 @@
 import { client, writeClient } from "@/sanity/lib/client";
+import { sanityFetchOptions } from "@/sanity/lib/fetch-options";
 import {
   productsQuery,
   productBySlugQuery,
@@ -22,17 +23,17 @@ import type { SiteSettings } from "@/types/site-settings";
 
 export class SanityCMSAdapter implements CMSAdapter {
   async getProducts(): Promise<Product[]> {
-    const docs = await client.fetch(productsQuery);
+    const docs = await client.fetch(productsQuery, {}, sanityFetchOptions);
     return docs.map(mapSanityProduct);
   }
 
   async getProduct(slug: string): Promise<Product | null> {
-    const doc = await client.fetch(productBySlugQuery, { slug });
+    const doc = await client.fetch(productBySlugQuery, { slug }, sanityFetchOptions);
     return doc ? mapSanityProduct(doc) : null;
   }
 
   async getFeaturedProducts(): Promise<Product[]> {
-    const docs = await client.fetch(featuredProductsQuery);
+    const docs = await client.fetch(featuredProductsQuery, {}, sanityFetchOptions);
     return docs.map(mapSanityProduct);
   }
 
@@ -42,27 +43,27 @@ export class SanityCMSAdapter implements CMSAdapter {
   }
 
   async getCollections(): Promise<Collection[]> {
-    const docs = await client.fetch(collectionsQuery);
+    const docs = await client.fetch(collectionsQuery, {}, sanityFetchOptions);
     return docs.map(mapSanityCollection);
   }
 
   async getCollection(slug: string): Promise<Collection | null> {
-    const doc = await client.fetch(collectionBySlugQuery, { slug });
+    const doc = await client.fetch(collectionBySlugQuery, { slug }, sanityFetchOptions);
     return doc ? mapSanityCollection(doc) : null;
   }
 
   async getTestimonials(): Promise<Testimonial[]> {
-    const docs = await client.fetch(testimonialsQuery);
+    const docs = await client.fetch(testimonialsQuery, {}, sanityFetchOptions);
     return docs.map(mapSanityTestimonial);
   }
 
   async getGalleryImages() {
-    const docs = await client.fetch(galleryImagesQuery);
+    const docs = await client.fetch(galleryImagesQuery, {}, sanityFetchOptions);
     return docs.map(mapSanityGalleryImage);
   }
 
   async getSiteSettings(): Promise<SiteSettings> {
-    const doc = await client.fetch(siteSettingsQuery);
+    const doc = await client.fetch(siteSettingsQuery, {}, sanityFetchOptions);
     return mapSiteSettings(doc);
   }
 
