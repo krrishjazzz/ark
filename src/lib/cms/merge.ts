@@ -1,5 +1,22 @@
 import type { Product, Collection } from "@/types";
 
+/** Sanity slug → local catalog slug (when Studio slug differs from code catalog) */
+const SANITY_SLUG_ALIASES: Record<string, string> = {
+  "ferrari-f1-sf24": "ferrari-f1-sf23",
+};
+
+function resolveLocalSlug(sanitySlug: string): string {
+  return SANITY_SLUG_ALIASES[sanitySlug] ?? sanitySlug;
+}
+
+/** Local slug → possible Sanity document slugs to fetch */
+export function getSanitySlugsForLocal(localSlug: string): string[] {
+  const aliased = Object.entries(SANITY_SLUG_ALIASES)
+    .filter(([, local]) => local === localSlug)
+    .map(([sanity]) => sanity);
+  return [...new Set([...aliased, localSlug])];
+}
+
 function hasText(value?: string | null): value is string {
   return Boolean(value?.trim());
 }
@@ -60,9 +77,10 @@ export function mergeProductCatalog(
   }
 
   for (const sanity of sanityProducts) {
-    const local = localBySlug.get(sanity.slug);
+    const localSlug = resolveLocalSlug(sanity.slug);
+    const local = localBySlug.get(localSlug);
     if (local) {
-      merged.set(sanity.slug, mergeProduct(local, sanity));
+      merged.set(localSlug, mergeProduct(local, { ...sanity, slug: localSlug }));
     } else if (hasText(sanity.name) && sanity.images.length > 0) {
       merged.set(sanity.slug, sanity);
     }

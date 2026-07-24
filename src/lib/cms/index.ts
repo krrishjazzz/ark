@@ -10,6 +10,7 @@ import {
   mergeCollectionCatalog,
   mergeSingleCollection,
   mergeProduct,
+  getSanitySlugsForLocal,
 } from "@/lib/cms/merge";
 import type { Product, Collection, Testimonial } from "@/types";
 import type { SiteSettings } from "@/types/site-settings";
@@ -58,20 +59,23 @@ export async function fetchProducts(): Promise<Product[]> {
 }
 
 export async function fetchProduct(slug: string): Promise<Product | null> {
+  const localProduct = await local.getProduct(slug);
+
   try {
-    const [sanityProduct, localProduct] = await Promise.all([
-      sanity.getProduct(slug),
-      local.getProduct(slug),
-    ]);
+    let sanityProduct: Product | null = null;
+    for (const sanitySlug of getSanitySlugsForLocal(slug)) {
+      sanityProduct = await sanity.getProduct(sanitySlug);
+      if (sanityProduct) break;
+    }
 
     if (localProduct && sanityProduct) {
-      return mergeProduct(localProduct, sanityProduct);
+      return mergeProduct(localProduct, { ...sanityProduct, slug });
     }
     if (sanityProduct) return sanityProduct;
   } catch (error) {
     console.warn("[CMS] Sanity fetch failed, using local data:", error);
   }
-  return local.getProduct(slug) ?? null;
+  return localProduct ?? null;
 }
 
 export async function fetchFeaturedProducts(): Promise<Product[]> {
@@ -140,15 +144,7 @@ export async function fetchGalleryImages() {
 
 export async function fetchSiteSettings(): Promise<SiteSettings> {
   try {
-    const settings = await sanity.getSiteSettings();
-    if (
-      settings.logo ||
-      settings.heroImage ||
-      settings.packaging.box ||
-      settings.instagramImages.length > 0
-    ) {
-      return settings;
-    }
+    return await sanity.getSiteSettings();
   } catch (error) {
     console.warn("[CMS] Sanity site settings fetch failed:", error);
   }

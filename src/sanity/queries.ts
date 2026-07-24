@@ -1,3 +1,5 @@
+import { imageAssetFields } from "./queries/image-projection";
+
 export const productsQuery = `*[_type == "product"] | order(name asc) {
   _id,
   name,
@@ -8,7 +10,7 @@ export const productsQuery = `*[_type == "product"] | order(name asc) {
   description,
   basePrice,
   compareAtPrice,
-  images,
+  images[]{ ${imageAssetFields} },
   editionCurrent,
   editionTotal,
   featured,
@@ -29,7 +31,7 @@ export const productBySlugQuery = `*[_type == "product" && slug.current == $slug
   description,
   basePrice,
   compareAtPrice,
-  images,
+  images[]{ ${imageAssetFields} },
   editionCurrent,
   editionTotal,
   featured,
@@ -50,7 +52,7 @@ export const featuredProductsQuery = `*[_type == "product" && featured == true] 
   description,
   basePrice,
   compareAtPrice,
-  images,
+  images[]{ ${imageAssetFields} },
   editionCurrent,
   editionTotal,
   featured,
@@ -67,7 +69,7 @@ export const collectionsQuery = `*[_type == "collection"] | order(name asc) {
   "slug": slug.current,
   tagline,
   description,
-  image,
+  image{ ${imageAssetFields} },
   productCount,
   comingSoon
 }`;
@@ -78,7 +80,7 @@ export const collectionBySlugQuery = `*[_type == "collection" && slug.current ==
   "slug": slug.current,
   tagline,
   description,
-  image,
+  image{ ${imageAssetFields} },
   productCount,
   comingSoon
 }`;
@@ -90,28 +92,28 @@ export const testimonialsQuery = `*[_type == "testimonial"] | order(_createdAt d
   rating,
   quote,
   product,
-  image
+  image{ ${imageAssetFields} }
 }`;
 
 export const galleryImagesQuery = `*[_type == "galleryImage"] | order(_createdAt desc) {
   _id,
   alt,
   category,
-  image
+  image{ ${imageAssetFields} }
 }`;
 
 export const siteSettingsQuery = `*[_type == "siteSettings" && _id == "siteSettings"][0] {
-  logo,
-  heroImage,
-  craftsmanshipPrimary,
-  craftsmanshipSecondary,
-  brandBoardPrimary,
-  brandBoardSecondary,
-  configuratorPreview,
-  aboutHero,
-  packagingBox,
-  packagingCertificate,
-  packagingMicrofiber,
-  packagingThankYou,
-  instagramImages
+  logo{ ${imageAssetFields} },
+  heroImage{ ${imageAssetFields} },
+  craftsmanshipPrimary{ ${imageAssetFields} },
+  craftsmanshipSecondary{ ${imageAssetFields} },
+  brandBoardPrimary{ ${imageAssetFields} },
+  brandBoardSecondary{ ${imageAssetFields} },
+  configuratorPreview{ ${imageAssetFields} },
+  aboutHero{ ${imageAssetFields} },
+  packagingBox{ ${imageAssetFields} },
+  packagingCertificate{ ${imageAssetFields} },
+  packagingMicrofiber{ ${imageAssetFields} },
+  packagingThankYou{ ${imageAssetFields} },
+  instagramImages[]{ ${imageAssetFields} }
 }`;

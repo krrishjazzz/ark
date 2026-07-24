@@ -79,6 +79,7 @@ interface SanitySiteSettings {
 function mapImages(images?: SanityImageSource[]): string[] {
   if (!images?.length) return [];
   return images
+    .filter(Boolean)
     .map((img) => getImageUrl(img, 1600))
     .filter((url): url is string => Boolean(url));
 }
