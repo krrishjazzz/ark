@@ -5,8 +5,6 @@ import {
   Hand,
   Sun,
   Gem,
-  Award,
-  Frame,
   type LucideIcon,
 } from "lucide-react";
 import Image from "next/image";
@@ -21,12 +19,11 @@ const iconMap: Record<string, LucideIcon> = {
   Hand,
   Sun,
   Gem,
-  Award,
-  Frame,
 };
 
 export function Craftsmanship() {
   const { craftsmanshipPrimary } = useSiteSettings();
+  const features = craftsmanshipFeatures.slice(0, 4);
 
   return (
     <FadeIn>
@@ -38,36 +35,60 @@ export function Craftsmanship() {
           src={resolveImageSrc(craftsmanshipPrimary)}
           alt="ARK craftsmanship"
           fill
-          className="object-cover object-center transition-transform duration-700 group-hover:scale-[1.03]"
+          className="object-cover object-center transition-transform duration-[1.1s] ease-out group-hover:scale-110"
           sizes="(max-width: 768px) 100vw, 50vw"
         />
 
-        <div className="absolute inset-0 bg-gradient-to-t from-background via-background/70 to-background/20 opacity-0 group-hover:opacity-100 group-focus-within:opacity-100 transition-opacity duration-500 flex flex-col justify-end p-5 sm:p-6">
-          <p className="font-button text-[9px] uppercase tracking-[0.28em] text-gold mb-1.5">
+        {/* Always-on soft base so the card never feels empty */}
+        <div className="absolute inset-0 bg-gradient-to-t from-background/50 via-transparent to-transparent" />
+
+        {/* Idle label */}
+        <div className="absolute bottom-4 left-4 right-4 transition-all duration-500 group-hover:opacity-0 group-hover:translate-y-2">
+          <p className="font-button text-[9px] uppercase tracking-[0.28em] text-gold mb-1">
             The Process
           </p>
-          <h2 className="font-heading text-2xl sm:text-3xl font-light text-foreground mb-2 leading-tight">
+          <h2 className="font-heading text-xl sm:text-2xl font-light text-foreground">
             Craftsmanship
           </h2>
-          <p className="text-xs sm:text-sm text-grey leading-snug mb-3">
-            40+ hours. Hand-poured. Museum finish.
-          </p>
-          <ul className="space-y-1.5 mb-3">
-            {craftsmanshipFeatures.slice(0, 4).map((feature) => {
-              const Icon = iconMap[feature.icon] || Gem;
-              return (
-                <li key={feature.title} className="flex items-center gap-2">
-                  <Icon size={12} className="text-gold shrink-0" />
-                  <span className="text-sm text-foreground/95 font-light">
+        </div>
+
+        {/* Hover reveal */}
+        <div className="absolute inset-0 opacity-0 group-hover:opacity-100 group-focus-within:opacity-100 transition-opacity duration-500">
+          <div className="absolute inset-0 bg-background/55 backdrop-blur-[2px]" />
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(201,164,91,0.12),transparent_55%)]" />
+
+          <div className="relative h-full flex flex-col items-center justify-center text-center px-5 sm:px-8">
+            <p className="font-button text-[9px] uppercase tracking-[0.35em] text-gold mb-2 translate-y-3 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500 delay-75">
+              The Process
+            </p>
+            <h2 className="font-heading text-3xl sm:text-4xl font-light text-foreground mb-2 translate-y-3 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500 delay-100">
+              Craftsmanship
+            </h2>
+            <div className="h-px w-10 bg-gold/50 mb-3 translate-y-3 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500 delay-150" />
+            <p className="text-xs sm:text-sm text-foreground/70 font-light mb-5 max-w-xs translate-y-3 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500 delay-200">
+              Forty hours. One pour at a time.
+            </p>
+
+            <div className="flex flex-wrap justify-center gap-2 mb-5 translate-y-3 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500 delay-300">
+              {features.map((feature) => {
+                const Icon = iconMap[feature.icon] || Gem;
+                return (
+                  <span
+                    key={feature.title}
+                    className="inline-flex items-center gap-1.5 rounded-full border border-gold/25 bg-background/40 px-3 py-1.5 text-[10px] uppercase tracking-[0.14em] text-foreground/85 backdrop-blur-sm"
+                  >
+                    <Icon size={11} className="text-gold" />
                     {feature.title}
                   </span>
-                </li>
-              );
-            })}
-          </ul>
-          <span className="font-button text-[9px] uppercase tracking-[0.2em] text-gold">
-            See the process →
-          </span>
+                );
+              })}
+            </div>
+
+            <span className="font-button text-[9px] uppercase tracking-[0.22em] text-gold inline-flex items-center gap-2 translate-y-3 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500 delay-[350ms]">
+              Enter the studio
+              <span className="transition-transform duration-500 group-hover:translate-x-1">→</span>
+            </span>
+          </div>
         </div>
       </Link>
     </FadeIn>
