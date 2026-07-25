@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import { SectionHeading } from "@/components/animations/SectionHeading";
 import { FadeIn } from "@/components/animations/FadeIn";
+import { WhyARK } from "@/components/home/WhyARK";
 import { timeline, craftsmanshipFeatures } from "@/lib/data/content";
 import { BRAND } from "@/lib/constants";
 import { fetchSiteSettings } from "@/lib/cms";
@@ -73,7 +74,11 @@ export default async function AboutPage() {
             </p>
           </FadeIn>
         </div>
+      </div>
 
+      <WhyARK />
+
+      <div className="mx-auto max-w-7xl px-6 lg:px-8">
         {/* Craftsmanship */}
         <SectionHeading
           label="Process"

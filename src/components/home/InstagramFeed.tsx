@@ -10,7 +10,39 @@ import { BRAND } from "@/lib/constants";
 import { useSiteSettings } from "@/components/providers/SiteSettingsProvider";
 import { resolveImageSrc } from "@/lib/images";
 
-export function InstagramFeed() {
+interface InstagramFeedProps {
+  variant?: "cta" | "feed";
+}
+
+function CommunityCta() {
+  return (
+    <section className="py-12 md:py-16 px-6 lg:px-8" aria-label="Community">
+      <div className="mx-auto max-w-2xl text-center">
+        <p className="font-button text-[9px] uppercase tracking-[0.28em] text-gold mb-2">
+          Social
+        </p>
+        <h2 className="font-heading text-2xl sm:text-3xl font-light text-foreground mb-3">
+          Join Our Community
+        </h2>
+        <p className="text-sm text-grey mb-6">
+          Follow @{BRAND.instagramHandle} for new pieces, studio moments, and
+          collector stories.
+        </p>
+        <a
+          href={BRAND.instagram}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-flex items-center gap-2.5 font-button text-[10px] uppercase tracking-[0.18em] px-7 py-3 rounded-sm border border-gold/50 text-gold hover:border-gold hover:bg-gold/5 transition-all duration-500"
+        >
+          <InstagramIcon size={14} className="text-gold" />
+          Follow on Instagram
+        </a>
+      </div>
+    </section>
+  );
+}
+
+function InstagramGrid() {
   const { instagramImages } = useSiteSettings();
 
   const posts = instagramPosts.map((post, index) => ({
@@ -64,4 +96,9 @@ export function InstagramFeed() {
       </div>
     </section>
   );
+}
+
+export function InstagramFeed({ variant = "feed" }: InstagramFeedProps) {
+  if (variant === "cta") return <CommunityCta />;
+  return <InstagramGrid />;
 }

@@ -12,7 +12,7 @@ export default async function GalleryPage() {
 
   return (
     <div className="pt-20">
-      <CustomerGallery images={images} />
+      <CustomerGallery images={images} variant="grid" />
     </div>
   );
 }

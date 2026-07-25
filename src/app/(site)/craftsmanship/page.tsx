@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import { SectionHeading } from "@/components/animations/SectionHeading";
 import { FadeIn } from "@/components/animations/FadeIn";
+import { InstagramFeed } from "@/components/home/InstagramFeed";
 import { craftsmanshipFeatures } from "@/lib/data/content";
 import { fetchSiteSettings } from "@/lib/cms";
 import { resolveImageSrc } from "@/lib/images";
@@ -76,6 +77,8 @@ export default async function CraftsmanshipPage() {
           </div>
         </FadeIn>
       </div>
+
+      <InstagramFeed />
     </div>
   );
 }

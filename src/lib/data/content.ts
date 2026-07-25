@@ -68,32 +68,32 @@ export const craftsmanshipFeatures = [
   {
     icon: "Droplets",
     title: "Premium Resin",
-    description: "Museum-grade epoxy resin with 7-layer pour technique for depth and clarity.",
+    description: "7-layer museum-grade pour.",
   },
   {
     icon: "Hand",
     title: "Handcrafted",
-    description: "Every texture, every detail sculpted by hand over 40+ hours of meticulous work.",
+    description: "40+ hours, hand-finished.",
   },
   {
     icon: "Sun",
     title: "UV Resistant",
-    description: "Professional UV coating ensures your artwork retains its brilliance for decades.",
+    description: "Built to hold its brilliance.",
   },
   {
     icon: "Gem",
     title: "Museum Finish",
-    description: "Hand-polished to a mirror gloss that rivals the finest gallery installations.",
+    description: "Mirror-gloss polish.",
   },
   {
     icon: "Award",
     title: "Limited Edition",
-    description: "Numbered editions with certificate of authenticity. Once sold, never reproduced.",
+    description: "Numbered. Never reproduced.",
   },
   {
     icon: "Frame",
     title: "Solid Wood Frame",
-    description: "Premium hardwood frames with precision-mitered corners and hidden mounting.",
+    description: "Hardwood, precision-cut.",
   },
 ];
 

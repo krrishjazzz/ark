@@ -1,10 +1,9 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import Image from "next/image";
-import { motion } from "framer-motion";
-import { Star } from "lucide-react";
-import { SectionHeading } from "@/components/animations/SectionHeading";
-import { staggerContainer, staggerItem } from "@/components/animations/FadeIn";
+import { AnimatePresence, motion } from "framer-motion";
+import { ChevronLeft, ChevronRight, Star } from "lucide-react";
 import type { Testimonial } from "@/types";
 import { resolveImageSrc } from "@/lib/images";
 
@@ -16,75 +15,127 @@ function StarRating({ rating }: { rating: number }) {
   return (
     <div className="flex gap-1" aria-label={`${rating} out of 5 stars`}>
       {Array.from({ length: 5 }).map((_, i) => (
-        <motion.div
+        <Star
           key={i}
-          initial={{ opacity: 0, scale: 0 }}
-          whileInView={{ opacity: 1, scale: 1 }}
-          viewport={{ once: true }}
-          transition={{ delay: i * 0.1, duration: 0.4, type: "spring" }}
-        >
-          <Star
-            size={14}
-            className={i < rating ? "fill-gold text-gold" : "text-border"}
-          />
-        </motion.div>
+          size={12}
+          className={i < rating ? "fill-gold text-gold" : "text-border"}
+        />
       ))}
     </div>
   );
 }
 
 export function Testimonials({ items }: TestimonialsProps) {
-  return (
-    <section className="section-padding px-6 lg:px-8" aria-label="Testimonials">
-      <div className="mx-auto max-w-7xl">
-        <SectionHeading
-          label="Collectors"
-          title="What They Say"
-          description="Trusted by enthusiasts, designers, and collectors worldwide."
-        />
+  const [index, setIndex] = useState(0);
+  const [direction, setDirection] = useState(0);
 
-        <motion.div
-          variants={staggerContainer}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-80px" }}
-          className="grid grid-cols-1 md:grid-cols-2 gap-6"
-        >
-          {items.map((testimonial) => (
+  const count = items.length;
+  const current = items[index];
+
+  const goTo = (next: number, dir: number) => {
+    setDirection(dir);
+    setIndex((next + count) % count);
+  };
+
+  useEffect(() => {
+    if (count <= 1) return;
+    const timer = window.setInterval(() => {
+      setDirection(1);
+      setIndex((prev) => (prev + 1) % count);
+    }, 5500);
+    return () => window.clearInterval(timer);
+  }, [count]);
+
+  if (!current) return null;
+
+  return (
+    <section className="py-12 md:py-16 px-6 lg:px-8" aria-label="Testimonials">
+      <div className="mx-auto max-w-2xl text-center">
+        <p className="font-button text-[9px] uppercase tracking-[0.28em] text-gold mb-2">
+          Collectors
+        </p>
+        <h2 className="font-heading text-2xl sm:text-3xl font-light text-foreground mb-8">
+          What They Say
+        </h2>
+
+        <div className="relative overflow-hidden rounded-[14px] border border-border glass px-6 py-8 sm:px-10 sm:py-10 min-h-[260px] sm:min-h-[240px]">
+          <AnimatePresence mode="wait" custom={direction}>
             <motion.div
-              key={testimonial.id}
-              variants={staggerItem}
-              className="p-8 md:p-10 rounded-[20px] border border-border glass gold-glow-hover"
+              key={current.id}
+              custom={direction}
+              initial={{ opacity: 0, x: direction >= 0 ? 40 : -40 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: direction >= 0 ? -40 : 40 }}
+              transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
             >
-              <div className="flex items-start gap-4 mb-6">
-                <div className="relative h-14 w-14 rounded-full overflow-hidden border border-border shrink-0">
+              <div className="flex flex-col items-center gap-3 mb-5">
+                <div className="relative h-12 w-12 rounded-full overflow-hidden border border-border">
                   <Image
-                    src={resolveImageSrc(testimonial.image)}
-                    alt={testimonial.name}
+                    src={resolveImageSrc(current.image)}
+                    alt={current.name}
                     fill
                     className="object-cover"
-                    sizes="56px"
+                    sizes="48px"
                   />
                 </div>
                 <div>
-                  <p className="font-heading text-lg text-foreground">
-                    {testimonial.name}
+                  <p className="font-heading text-base text-foreground">
+                    {current.name}
                   </p>
-                  <p className="text-xs text-grey">{testimonial.location}</p>
-                  <StarRating rating={testimonial.rating} />
+                  <p className="text-[11px] text-grey">{current.location}</p>
+                  <div className="flex justify-center mt-1.5">
+                    <StarRating rating={current.rating} />
+                  </div>
                 </div>
               </div>
 
-              <blockquote className="text-foreground/80 leading-relaxed font-light italic">
-                &ldquo;{testimonial.quote}&rdquo;
+              <blockquote className="text-sm sm:text-base text-foreground/80 leading-relaxed font-light italic">
+                &ldquo;{current.quote}&rdquo;
               </blockquote>
 
-              <p className="mt-6 font-button text-[9px] uppercase tracking-[0.15em] text-gold">
-                {testimonial.product}
+              <p className="mt-4 font-button text-[9px] uppercase tracking-[0.15em] text-gold">
+                {current.product}
               </p>
             </motion.div>
-          ))}
-        </motion.div>
+          </AnimatePresence>
+
+          {count > 1 && (
+            <>
+              <button
+                type="button"
+                onClick={() => goTo(index - 1, -1)}
+                className="absolute left-2 top-1/2 -translate-y-1/2 h-8 w-8 rounded-full border border-border/80 text-grey hover:text-gold hover:border-gold/40 transition-colors flex items-center justify-center"
+                aria-label="Previous review"
+              >
+                <ChevronLeft size={16} />
+              </button>
+              <button
+                type="button"
+                onClick={() => goTo(index + 1, 1)}
+                className="absolute right-2 top-1/2 -translate-y-1/2 h-8 w-8 rounded-full border border-border/80 text-grey hover:text-gold hover:border-gold/40 transition-colors flex items-center justify-center"
+                aria-label="Next review"
+              >
+                <ChevronRight size={16} />
+              </button>
+            </>
+          )}
+        </div>
+
+        {count > 1 && (
+          <div className="flex justify-center gap-1.5 mt-5">
+            {items.map((item, i) => (
+              <button
+                key={item.id}
+                type="button"
+                onClick={() => goTo(i, i > index ? 1 : -1)}
+                className={`h-1.5 rounded-full transition-all duration-300 ${
+                  i === index ? "w-5 bg-gold" : "w-1.5 bg-border hover:bg-grey"
+                }`}
+                aria-label={`Go to review ${i + 1}`}
+              />
+            ))}
+          </div>
+        )}
       </div>
     </section>
   );

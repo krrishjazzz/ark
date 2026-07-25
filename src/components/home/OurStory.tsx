@@ -1,9 +1,7 @@
 "use client";
 
-import { useRef } from "react";
 import Image from "next/image";
-import { motion, useScroll, useTransform } from "framer-motion";
-import { SectionHeading } from "@/components/animations/SectionHeading";
+import Link from "next/link";
 import { FadeIn } from "@/components/animations/FadeIn";
 import { timeline } from "@/lib/data/content";
 import { useSiteSettings } from "@/components/providers/SiteSettingsProvider";
@@ -11,88 +9,63 @@ import { resolveImageSrc } from "@/lib/images";
 
 export function OurStory() {
   const { brandBoardSecondary } = useSiteSettings();
-  const timelineRef = useRef(null);
-  const { scrollYProgress } = useScroll({
-    target: timelineRef,
-    offset: ["start end", "end start"],
-  });
-  const lineHeight = useTransform(scrollYProgress, [0.1, 0.9], ["0%", "100%"]);
+  const highlights = timeline.filter((_, i) => i === 0 || i === timeline.length - 1 || i === Math.floor(timeline.length / 2));
 
   return (
-    <section className="section-padding px-6 lg:px-8" aria-label="Our Story">
+    <section className="py-12 md:py-16 px-6 lg:px-8" aria-label="Our Story">
       <div className="mx-auto max-w-7xl">
-        <SectionHeading
-          label="Heritage"
-          title="Our Story"
-          description="Born from a garage, refined in the studio. ARK exists to freeze moments that move you."
-        />
-
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-start">
-          {/* Founder image placeholder */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-10 lg:gap-14 items-center">
           <FadeIn direction="left">
-            <div className="relative aspect-[3/4] rounded-[20px] overflow-hidden border border-border">
+            <div className="relative aspect-[4/3] md:aspect-[5/4] max-h-[320px] md:max-h-[360px] w-full rounded-[14px] overflow-hidden border border-border shadow-luxury">
               <Image
                 src={resolveImageSrc(brandBoardSecondary)}
                 alt="ARK founder studio"
                 fill
                 className="object-cover"
-                sizes="(max-width: 1024px) 100vw, 50vw"
+                sizes="(max-width: 768px) 100vw, 50vw"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-background/80 to-transparent" />
-              <div className="absolute bottom-8 left-8 right-8">
-                <p className="font-heading text-2xl italic text-gold-light">
+              <div className="absolute inset-0 bg-gradient-to-t from-background/80 via-transparent to-transparent" />
+              <div className="absolute bottom-4 left-4 right-4">
+                <p className="font-heading text-base sm:text-lg italic text-gold-light">
                   &ldquo;We don&apos;t make art. We freeze emotion.&rdquo;
                 </p>
-                <p className="font-button text-[10px] uppercase tracking-[0.2em] text-grey mt-4">
+                <p className="font-button text-[8px] uppercase tracking-[0.2em] text-grey mt-2">
                   — Founder, ARK
                 </p>
               </div>
             </div>
           </FadeIn>
 
-          {/* Story text + timeline */}
-          <FadeIn direction="right" delay={0.2}>
-            <p className="text-grey leading-relaxed text-base md:text-lg mb-6">
-              ARK began in 2019 with a simple belief: the machines that move us
-              deserve to be immortalized. What started as a passion project in a
-              small studio has grown into a globally recognized brand, trusted by
-              collectors, interior designers, and automotive enthusiasts across
-              15 countries.
+          <FadeIn direction="right" delay={0.1}>
+            <p className="font-button text-[9px] uppercase tracking-[0.28em] text-gold mb-2">
+              Heritage
             </p>
-            <p className="text-grey leading-relaxed text-base md:text-lg mb-12">
-              Every piece we create is a collaboration between artisan and
-              machine — where resin meets passion, and craftsmanship meets
-              legacy.
+            <h2 className="font-heading text-2xl sm:text-3xl font-light text-foreground mb-2 leading-tight">
+              Our Story
+            </h2>
+            <p className="text-xs sm:text-sm text-grey leading-snug mb-5 max-w-md">
+              Born in 2019. Built for collectors who feel machines.
             </p>
 
-            {/* Timeline */}
-            <div ref={timelineRef} className="relative pl-8">
-              <div className="absolute left-[3px] top-0 bottom-0 w-[1px] bg-border" />
-              <motion.div
-                className="absolute left-[3px] top-0 w-[1px] bg-gold origin-top"
-                style={{ height: lineHeight }}
-              />
-
-              {timeline.map((item, index) => (
-                <motion.div
-                  key={item.year}
-                  className="relative mb-8 last:mb-0"
-                  initial={{ opacity: 0, x: 20 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true, margin: "-40px" }}
-                  transition={{ delay: index * 0.1, duration: 0.6 }}
-                >
-                  <div className="absolute -left-8 top-1.5 h-[7px] w-[7px] rounded-full border border-gold bg-background" />
-                  <p className="font-button text-[10px] uppercase tracking-[0.2em] text-gold">
+            <ul className="space-y-2.5 mb-6">
+              {highlights.map((item) => (
+                <li key={item.year} className="flex items-baseline gap-3">
+                  <span className="font-button text-[9px] uppercase tracking-[0.2em] text-gold shrink-0 w-10">
                     {item.year}
-                  </p>
-                  <h4 className="font-heading text-lg text-foreground mt-1">
+                  </span>
+                  <span className="text-sm text-foreground/90 font-light">
                     {item.title}
-                  </h4>
-                  <p className="text-sm text-grey mt-1">{item.description}</p>
-                </motion.div>
+                  </span>
+                </li>
               ))}
-            </div>
+            </ul>
+
+            <Link
+              href="/about"
+              className="font-button text-[9px] uppercase tracking-[0.2em] text-gold hover:text-gold-light transition-colors"
+            >
+              Read our story →
+            </Link>
           </FadeIn>
         </div>
       </div>

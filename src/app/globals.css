@@ -165,6 +165,43 @@ body {
   padding-bottom: clamp(80px, 12vw, 160px);
 }
 
+/* Horizontal gallery marquee */
+@keyframes gallery-marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@keyframes gallery-zoom {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.08);
+  }
+}
+
+.gallery-marquee-track {
+  animation: gallery-marquee var(--gallery-duration, 28s) linear infinite;
+}
+
+.gallery-marquee-track:hover {
+  animation-play-state: paused;
+}
+
+.gallery-zoom-image {
+  animation: gallery-zoom 8s ease-in-out infinite;
+}
+
+.group:hover .gallery-zoom-image {
+  animation-play-state: paused;
+  transform: scale(1.1);
+}
+
 /* Horizontal scroll hide scrollbar */
 .hide-scrollbar {
   -ms-overflow-style: none;
