@@ -13,7 +13,7 @@ export function Hero() {
     target: containerRef,
     offset: ["start start", "end start"],
   });
-  const imageScale = useTransform(scrollYProgress, [0, 1], [1, 1.05]);
+  const scrollScale = useTransform(scrollYProgress, [0, 1], [1, 1.06]);
 
   return (
     <section
@@ -22,23 +22,43 @@ export function Hero() {
       aria-label="Hero"
     >
       <motion.div
-        className="absolute inset-0 flex items-center justify-center md:block"
-        style={{ scale: imageScale }}
-        initial={{ scale: 1.03 }}
-        animate={{ scale: 1 }}
-        transition={{ duration: 10, ease: [0.16, 1, 0.3, 1] }}
+        className="absolute inset-0 flex items-center justify-center md:block will-change-transform"
+        style={{ scale: scrollScale }}
       >
-        <Image
-          src={resolveImageSrc(heroImage)}
-          alt="ARK resin art"
-          fill
-          className="object-contain object-center md:object-cover md:object-center"
-          priority
-          quality={100}
-          unoptimized
-          sizes="100vw"
-        />
+        <motion.div
+          className="absolute inset-0"
+          animate={{ scale: [1, 1.1, 1] }}
+          transition={{
+            duration: 18,
+            ease: "easeInOut",
+            repeat: Infinity,
+          }}
+        >
+          <Image
+            src={resolveImageSrc(heroImage)}
+            alt="ARK resin art"
+            fill
+            className="object-contain object-center md:object-cover md:object-center"
+            priority
+            quality={100}
+            unoptimized
+            sizes="100vw"
+          />
+        </motion.div>
       </motion.div>
+
+      {/* Moving black shadow / light reveal */}
+      <div className="hero-reveal-shadow pointer-events-none absolute inset-0 z-[1]" aria-hidden />
+
+      {/* Soft edge vignette */}
+      <div
+        className="pointer-events-none absolute inset-0 z-[2]"
+        aria-hidden
+        style={{
+          background:
+            "radial-gradient(ellipse 70% 65% at 50% 50%, transparent 35%, rgba(0,0,0,0.45) 100%)",
+        }}
+      />
     </section>
   );
 }

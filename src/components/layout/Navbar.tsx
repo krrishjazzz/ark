@@ -58,38 +58,45 @@ export function Navbar() {
         )}
       >
         <nav
-          className="mx-auto flex h-20 max-w-7xl items-center justify-between px-6 lg:px-8"
+          className="relative mx-auto flex h-20 max-w-7xl items-center justify-between px-6 lg:px-8"
           aria-label="Main navigation"
         >
-          {/* Logo */}
-          <Link href="/" className="relative z-10 flex items-center gap-3 group">
-            <Image
-              src={resolveImageSrc(logo)}
-              alt={BRAND.name}
-              width={40}
-              height={40}
-              className="object-contain transition-transform duration-500 group-hover:scale-105"
-            />
-            <span className="hidden sm:block font-button text-[10px] uppercase tracking-[0.3em] text-gold">
-              {BRAND.name}
+          {/* Left — logo + desktop links */}
+          <div className="relative z-10 flex items-center gap-6 lg:gap-8 min-w-0">
+            <Link href="/" className="flex items-center gap-3 group shrink-0">
+              <Image
+                src={resolveImageSrc(logo)}
+                alt={BRAND.name}
+                width={40}
+                height={40}
+                className="object-contain transition-transform duration-500 group-hover:scale-105"
+              />
+            </Link>
+            <div className="hidden xl:flex items-center gap-5">
+              {navLinks.map((link) => (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  className="font-button text-[9px] uppercase tracking-[0.15em] text-foreground/60 hover:text-gold transition-colors duration-500 gold-line pb-1"
+                >
+                  {link.label}
+                </Link>
+              ))}
+            </div>
+          </div>
+
+          {/* Center — brand name */}
+          <Link
+            href="/"
+            className="absolute left-1/2 top-1/2 z-10 -translate-x-1/2 -translate-y-1/2 text-center max-w-[55%] sm:max-w-none"
+          >
+            <span className="font-button text-[8px] sm:text-[10px] uppercase tracking-[0.22em] sm:tracking-[0.32em] text-gold leading-tight">
+              {BRAND.fullName}
             </span>
           </Link>
 
-          {/* Center Links - Desktop */}
-          <div className="hidden lg:flex items-center gap-8">
-            {navLinks.map((link) => (
-              <Link
-                key={link.href}
-                href={link.href}
-                className="font-button text-[10px] uppercase tracking-[0.15em] text-foreground/60 hover:text-gold transition-colors duration-500 gold-line pb-1"
-              >
-                {link.label}
-              </Link>
-            ))}
-          </div>
-
-          {/* Right Actions */}
-          <div className="flex items-center gap-3">
+          {/* Right — actions */}
+          <div className="relative z-10 flex items-center gap-2 sm:gap-3 shrink-0">
             <Link
               href="/search"
               className="hidden sm:flex h-10 w-10 items-center justify-center rounded-full text-foreground/60 hover:text-gold transition-colors duration-300"
@@ -122,7 +129,7 @@ export function Navbar() {
               <Link href="/collections">Shop Collection</Link>
             </Button>
             <button
-              className="lg:hidden h-10 w-10 flex items-center justify-center text-foreground/80"
+              className="xl:hidden h-10 w-10 flex items-center justify-center text-foreground/80"
               onClick={() => setMobileOpen(!mobileOpen)}
               aria-label={mobileOpen ? "Close menu" : "Open menu"}
             >
@@ -140,7 +147,7 @@ export function Navbar() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.4 }}
-            className="fixed inset-0 z-40 bg-background/98 backdrop-blur-2xl lg:hidden"
+            className="fixed inset-0 z-40 bg-background/98 backdrop-blur-2xl xl:hidden"
           >
             <motion.nav
               initial={{ opacity: 0, y: 20 }}
