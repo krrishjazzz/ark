@@ -4,6 +4,7 @@ import Image from "next/image";
 import { ArrowUpRight, Clock } from "lucide-react";
 import { SectionHeading } from "@/components/animations/SectionHeading";
 import { ProductCard } from "@/components/product/ProductCard";
+import { CustomOrderCard } from "@/components/product/CustomOrderCard";
 import { fetchProducts, fetchCollections } from "@/lib/cms";
 import { isComingSoonCollection } from "@/lib/data/collections";
 import { resolveImageSrc } from "@/lib/images";
@@ -60,10 +61,20 @@ export default async function CollectionsPage() {
                       View collection →
                     </Link>
                   </div>
-                  <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-8">
+                  <div className="flex flex-wrap justify-center gap-3 sm:gap-8">
                     {collectionProducts.map((product) => (
-                      <ProductCard key={product.id} product={product} />
+                      <div
+                        key={product.id}
+                        className="w-[calc(50%-0.375rem)] sm:w-[calc(50%-1rem)] lg:w-[calc(33.333%-1.375rem)]"
+                      >
+                        <ProductCard product={product} />
+                      </div>
                     ))}
+                    {collection.slug === "cars" && (
+                      <div className="w-[calc(50%-0.375rem)] sm:w-[calc(50%-1rem)] lg:w-[calc(33.333%-1.375rem)]">
+                        <CustomOrderCard />
+                      </div>
+                    )}
                   </div>
                 </div>
               );

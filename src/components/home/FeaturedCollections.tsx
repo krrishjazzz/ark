@@ -6,6 +6,7 @@ import { motion } from "framer-motion";
 import { Clock } from "lucide-react";
 import { FadeIn, staggerContainer, staggerItem } from "@/components/animations/FadeIn";
 import { ProductCard } from "@/components/product/ProductCard";
+import { CustomOrderCard } from "@/components/product/CustomOrderCard";
 import { resolveImageSrc } from "@/lib/images";
 import { isComingSoonCollection } from "@/lib/data/collections";
 import type { Collection, Product } from "@/types";
@@ -115,18 +116,23 @@ export function FeaturedCollections({ collections, products }: FeaturedCollectio
               initial="hidden"
               whileInView="visible"
               viewport={{ once: true, margin: "-80px" }}
-              className={cn(
-                "grid grid-cols-2 gap-3 sm:gap-5",
-                liveProducts.length >= 5
-                  ? "lg:grid-cols-5"
-                  : "lg:grid-cols-4"
-              )}
+              className="flex flex-wrap justify-center gap-3 sm:gap-5"
             >
               {liveProducts.map((product) => (
-                <motion.div key={product.id} variants={staggerItem}>
+                <motion.div
+                  key={product.id}
+                  variants={staggerItem}
+                  className="w-[calc(50%-0.375rem)] sm:w-[calc(50%-0.625rem)] lg:w-[calc(33.333%-0.875rem)]"
+                >
                   <ProductCard product={product} />
                 </motion.div>
               ))}
+              <motion.div
+                variants={staggerItem}
+                className="w-[calc(50%-0.375rem)] sm:w-[calc(50%-0.625rem)] lg:w-[calc(33.333%-0.875rem)]"
+              >
+                <CustomOrderCard />
+              </motion.div>
             </motion.div>
           </>
         )}

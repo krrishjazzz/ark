@@ -19,13 +19,17 @@ import { useStore } from "@/lib/store";
 import { cn } from "@/lib/utils";
 
 const navLinks = [
-  { href: "/", label: "Home" },
   { href: "/collections", label: "Collections" },
   { href: "/gallery", label: "Gallery" },
   { href: "/craftsmanship", label: "Craftsmanship" },
-  { href: "/custom-orders", label: "Custom Orders" },
+  { href: "/custom-orders", label: "Custom" },
   { href: "/about", label: "About" },
   { href: "/contact", label: "Contact" },
+];
+
+const mobileLinks = [
+  { href: "/", label: "Home" },
+  ...navLinks,
 ];
 
 export function Navbar() {
@@ -35,7 +39,7 @@ export function Navbar() {
   const { logo } = useSiteSettings();
 
   useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 50);
+    const handleScroll = () => setScrolled(window.scrollY > 40);
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
@@ -51,122 +55,122 @@ export function Navbar() {
     <>
       <header
         className={cn(
-          "fixed top-0 left-0 right-0 z-50 transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)]",
-          scrolled
-            ? "bg-background/95 backdrop-blur-xl border-b border-border shadow-[0_4px_30px_rgba(0,0,0,0.3)]"
-            : "bg-transparent"
+          "fixed top-0 left-0 right-0 z-50 transition-all duration-500",
+          scrolled || mobileOpen
+            ? "bg-background/90 backdrop-blur-xl border-b border-border"
+            : "bg-gradient-to-b from-background/70 to-transparent"
         )}
       >
         <nav
-          className="relative mx-auto flex h-20 max-w-7xl items-center justify-between px-6 lg:px-8"
+          className="mx-auto grid h-[4.5rem] max-w-7xl grid-cols-[auto_1fr_auto] items-center gap-4 px-5 lg:px-8"
           aria-label="Main navigation"
         >
-          {/* Left — logo + desktop links */}
-          <div className="relative z-10 flex items-center gap-6 lg:gap-8 min-w-0">
-            <Link href="/" className="flex items-center gap-3 group shrink-0">
-              <Image
-                src={resolveImageSrc(logo)}
-                alt={BRAND.name}
-                width={40}
-                height={40}
-                className="object-contain transition-transform duration-500 group-hover:scale-105"
-              />
-            </Link>
-            <div className="hidden xl:flex items-center gap-5">
-              {navLinks.map((link) => (
-                <Link
-                  key={link.href}
-                  href={link.href}
-                  className="font-button text-[9px] uppercase tracking-[0.15em] text-foreground/60 hover:text-gold transition-colors duration-500 gold-line pb-1"
-                >
-                  {link.label}
-                </Link>
-              ))}
-            </div>
-          </div>
-
-          {/* Center — brand name */}
-          <Link
-            href="/"
-            className="absolute left-1/2 top-1/2 z-10 -translate-x-1/2 -translate-y-1/2 text-center max-w-[55%] sm:max-w-none"
-          >
-            <span className="font-button text-[8px] sm:text-[10px] uppercase tracking-[0.22em] sm:tracking-[0.32em] text-gold leading-tight">
-              {BRAND.fullName}
+          {/* Left — mark + short wordmark */}
+          <Link href="/" className="flex items-center gap-2.5 group shrink-0">
+            <Image
+              src={resolveImageSrc(logo)}
+              alt={BRAND.name}
+              width={36}
+              height={36}
+              className="object-contain transition-transform duration-500 group-hover:scale-105"
+            />
+            <span className="font-button text-[11px] uppercase tracking-[0.28em] text-gold">
+              {BRAND.name}
             </span>
           </Link>
 
+          {/* Center — desktop links */}
+          <div className="hidden lg:flex items-center justify-center gap-7 xl:gap-9">
+            {navLinks.map((link) => (
+              <Link
+                key={link.href}
+                href={link.href}
+                className="font-button text-[10px] uppercase tracking-[0.18em] text-foreground/55 hover:text-gold transition-colors duration-300"
+              >
+                {link.label}
+              </Link>
+            ))}
+          </div>
+
           {/* Right — actions */}
-          <div className="relative z-10 flex items-center gap-2 sm:gap-3 shrink-0">
+          <div className="flex items-center justify-end gap-1 sm:gap-2">
             <Link
               href="/search"
-              className="hidden sm:flex h-10 w-10 items-center justify-center rounded-full text-foreground/60 hover:text-gold transition-colors duration-300"
+              className="hidden sm:flex h-9 w-9 items-center justify-center text-foreground/55 hover:text-gold transition-colors"
               aria-label="Search"
             >
-              <Search size={18} />
+              <Search size={17} />
             </Link>
             <a
               href={BRAND.instagram}
               target="_blank"
               rel="noopener noreferrer"
-              className="hidden sm:flex h-10 w-10 items-center justify-center rounded-full text-foreground/60 hover:text-gold transition-colors duration-300"
+              className="hidden sm:flex h-9 w-9 items-center justify-center text-foreground/55 hover:text-gold transition-colors"
               aria-label="Instagram"
             >
-              <InstagramIcon size={18} />
+              <InstagramIcon size={17} />
             </a>
             <Link
               href="/cart"
-              className="relative h-10 w-10 flex items-center justify-center rounded-full text-foreground/60 hover:text-gold transition-colors duration-300"
+              className="relative h-9 w-9 flex items-center justify-center text-foreground/55 hover:text-gold transition-colors"
               aria-label={`Cart, ${cartCount} items`}
             >
-              <ShoppingBag size={18} />
+              <ShoppingBag size={17} />
               {cartCount > 0 && (
-                <span className="absolute -top-0.5 -right-0.5 flex h-4 w-4 items-center justify-center rounded-full bg-gold text-[9px] font-bold text-background">
+                <span className="absolute top-0.5 right-0.5 flex h-3.5 w-3.5 items-center justify-center rounded-full bg-gold text-[8px] font-bold text-background">
                   {cartCount}
                 </span>
               )}
             </Link>
-            <Button asChild variant="default" size="sm" className="hidden md:inline-flex">
-              <Link href="/collections">Shop Collection</Link>
+            <Button
+              asChild
+              variant="default"
+              size="sm"
+              className="hidden md:inline-flex ml-1 h-9 px-4 text-[9px]"
+            >
+              <Link href="/collections">Shop</Link>
             </Button>
             <button
-              className="xl:hidden h-10 w-10 flex items-center justify-center text-foreground/80"
+              className="lg:hidden h-9 w-9 flex items-center justify-center text-foreground/80 ml-0.5"
               onClick={() => setMobileOpen(!mobileOpen)}
               aria-label={mobileOpen ? "Close menu" : "Open menu"}
             >
-              {mobileOpen ? <X size={22} /> : <Menu size={22} />}
+              {mobileOpen ? <X size={20} /> : <Menu size={20} />}
             </button>
           </div>
         </nav>
       </header>
 
-      {/* Mobile Menu */}
       <AnimatePresence>
         {mobileOpen && (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 0.4 }}
-            className="fixed inset-0 z-40 bg-background/98 backdrop-blur-2xl xl:hidden"
+            transition={{ duration: 0.35 }}
+            className="fixed inset-0 z-40 bg-background/98 backdrop-blur-2xl lg:hidden"
           >
             <motion.nav
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: 20 }}
-              transition={{ duration: 0.5, delay: 0.1 }}
-              className="flex flex-col items-center justify-center h-full gap-8"
+              exit={{ opacity: 0, y: 16 }}
+              transition={{ duration: 0.4, delay: 0.05 }}
+              className="flex flex-col items-center justify-center h-full gap-7 px-6"
             >
-              {navLinks.map((link, i) => (
+              <p className="font-button text-[9px] uppercase tracking-[0.3em] text-gold mb-2">
+                {BRAND.fullName}
+              </p>
+              {mobileLinks.map((link, i) => (
                 <motion.div
                   key={link.href}
-                  initial={{ opacity: 0, y: 20 }}
+                  initial={{ opacity: 0, y: 16 }}
                   animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.1 + i * 0.05 }}
+                  transition={{ delay: 0.08 + i * 0.04 }}
                 >
                   <Link
                     href={link.href}
                     onClick={() => setMobileOpen(false)}
-                    className="font-heading text-3xl text-foreground/80 hover:text-gold transition-colors duration-300"
+                    className="font-heading text-3xl text-foreground/85 hover:text-gold transition-colors"
                   >
                     {link.label}
                   </Link>
