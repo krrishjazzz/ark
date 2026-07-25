@@ -26,15 +26,7 @@ export function Hero() {
         className="absolute inset-0 flex items-center justify-center md:block will-change-transform"
         style={{ scale: scrollScale }}
       >
-        <motion.div
-          className="absolute inset-0"
-          animate={{ scale: [1, 1.1, 1] }}
-          transition={{
-            duration: 18,
-            ease: "easeInOut",
-            repeat: Infinity,
-          }}
-        >
+        <div className="hero-ken-burns absolute inset-0">
           <Image
             src={resolveImageSrc(heroImage)}
             alt="ARK resin art"
@@ -45,7 +37,7 @@ export function Hero() {
             unoptimized
             sizes="100vw"
           />
-        </motion.div>
+        </div>
       </motion.div>
 
       <div className="hero-reveal-shadow pointer-events-none absolute inset-0 z-[1]" aria-hidden />

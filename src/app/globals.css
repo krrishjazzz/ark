@@ -189,17 +189,20 @@ body {
   animation: gallery-marquee var(--gallery-duration, 28s) linear infinite;
 }
 
-.gallery-marquee-track:hover {
-  animation-play-state: paused;
-}
-
 .gallery-zoom-image {
   animation: gallery-zoom 8s ease-in-out infinite;
 }
 
-.group:hover .gallery-zoom-image {
-  animation-play-state: paused;
-  transform: scale(1.1);
+/* Pause only on real hover devices — iOS sticky :hover freezes the marquee */
+@media (hover: hover) and (pointer: fine) {
+  .gallery-marquee-track:hover {
+    animation-play-state: paused;
+  }
+
+  .group:hover .gallery-zoom-image {
+    animation-play-state: paused;
+    transform: scale(1.1);
+  }
 }
 
 /* Horizontal scroll hide scrollbar */
@@ -278,6 +281,22 @@ body {
   animation: hero-reveal-drift 14s ease-in-out infinite;
 }
 
+/* Slow Ken Burns — CSS so it survives Framer reduced-motion defaults on iOS */
+@keyframes hero-ken-burns {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+}
+
+.hero-ken-burns {
+  animation: hero-ken-burns 18s ease-in-out infinite;
+  will-change: transform;
+}
+
 /* Image zoom container */
 .image-zoom-container {
   overflow: hidden;
@@ -344,7 +363,7 @@ body {
   outline-offset: 2px;
 }
 
-/* Reduced motion */
+/* Reduced motion — soften transitions, keep gentle decorative loops */
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
@@ -353,5 +372,22 @@ body {
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
+  }
+
+  /* Slow pan/zoom loops are not vestibular; keep them on iOS Reduce Motion */
+  .gallery-marquee-track {
+    animation: gallery-marquee var(--gallery-duration, 28s) linear infinite !important;
+  }
+
+  .gallery-zoom-image {
+    animation: gallery-zoom 8s ease-in-out infinite !important;
+  }
+
+  .hero-reveal-shadow {
+    animation: hero-reveal-drift 14s ease-in-out infinite !important;
+  }
+
+  .hero-ken-burns {
+    animation: hero-ken-burns 18s ease-in-out infinite !important;
   }
 }
