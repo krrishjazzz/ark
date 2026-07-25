@@ -9,6 +9,10 @@ import { fetchProducts, fetchCollections } from "@/lib/cms";
 import { isComingSoonCollection } from "@/lib/data/collections";
 import { resolveImageSrc } from "@/lib/images";
 import { Badge } from "@/components/ui/badge";
+import {
+  buildCollectionInterestMessage,
+  buildWhatsAppUrl,
+} from "@/lib/whatsapp";
 
 export const metadata: Metadata = {
   title: "Collections",
@@ -84,12 +88,25 @@ export default async function CollectionsPage() {
 
         {upcoming.length > 0 && (
           <>
-            <SectionHeading
-              label="Upcoming"
-              title="Coming Soon"
-              description="New collections in development — click to preview pieces inside each collection."
-              align="left"
-            />
+            <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-2">
+              <SectionHeading
+                label="Upcoming"
+                title="Coming Soon"
+                description="New collections in development — preview pieces, or register interest to be notified."
+                align="left"
+                className="mb-0"
+              />
+              <a
+                href={buildWhatsAppUrl(
+                  buildCollectionInterestMessage(upcoming[0].name)
+                )}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="font-button text-[9px] uppercase tracking-[0.18em] px-5 py-2.5 rounded-sm bg-gold text-background hover:bg-gold-light transition-colors shrink-0 text-center sm:mb-8"
+              >
+                WhatsApp — Notify Me
+              </a>
+            </div>
             <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-6 mb-24">
               {upcoming.map((collection) => (
                 <Link

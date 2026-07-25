@@ -13,6 +13,10 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { resolveImageSrc } from "@/lib/images";
 import { BRAND } from "@/lib/constants";
+import {
+  buildCollectionInterestMessage,
+  buildWhatsAppUrl,
+} from "@/lib/whatsapp";
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -39,6 +43,9 @@ export default async function CollectionDetailPage({ params }: Props) {
   if (!collection) notFound();
 
   const products = await fetchProductsByCollection(slug);
+  const interestHref = buildWhatsAppUrl(
+    buildCollectionInterestMessage(collection.name)
+  );
 
   return (
     <div className="pt-32 pb-20">
@@ -75,14 +82,23 @@ export default async function CollectionDetailPage({ params }: Props) {
         {products.length > 0 ? (
           <>
             {collection.comingSoon && (
-              <div className="mb-10 rounded-[20px] border border-gold/20 bg-gold/5 px-6 py-4">
-                <p className="font-button text-[10px] uppercase tracking-[0.2em] text-gold mb-1">
-                  Early Preview
-                </p>
-                <p className="text-sm text-grey">
-                  This collection is still launching — browse pieces below and follow{" "}
-                  <span className="text-foreground">@{BRAND.instagramHandle}</span> for updates.
-                </p>
+              <div className="mb-10 rounded-[20px] border border-gold/20 bg-gold/5 px-6 py-5 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                <div>
+                  <p className="font-button text-[10px] uppercase tracking-[0.2em] text-gold mb-1">
+                    Early Preview
+                  </p>
+                  <p className="text-sm text-grey max-w-xl">
+                    Launching soon — browse pieces below, or register interest to be notified.
+                  </p>
+                </div>
+                <a
+                  href={interestHref}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="font-button text-[9px] uppercase tracking-[0.18em] px-5 py-2.5 rounded-sm bg-gold text-background hover:bg-gold-light transition-colors shrink-0 text-center"
+                >
+                  WhatsApp — Notify Me
+                </a>
               </div>
             )}
             <div className="flex flex-wrap justify-center gap-3 sm:gap-8">
@@ -102,10 +118,20 @@ export default async function CollectionDetailPage({ params }: Props) {
             </div>
           </>
         ) : collection.comingSoon ? (
-          <SectionHeading
-            title="Launching Soon"
-            description={`This collection is currently in development. Follow us on Instagram @${BRAND.instagramHandle} for updates.`}
-          />
+          <div className="text-center max-w-xl mx-auto">
+            <SectionHeading
+              title="Launching Soon"
+              description={`This collection is in development. Register interest and we will notify you — or follow @${BRAND.instagramHandle}.`}
+            />
+            <a
+              href={interestHref}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex font-button text-[9px] uppercase tracking-[0.18em] px-6 py-3 rounded-sm bg-gold text-background hover:bg-gold-light transition-colors"
+            >
+              WhatsApp — Notify Me
+            </a>
+          </div>
         ) : (
           <SectionHeading
             title="Coming Soon"

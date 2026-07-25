@@ -12,3 +12,7 @@ export function buildProductEnquiryMessage(productName: string, comingSoon = fal
 
   return `Hi ARK! ${intent}:\n\n*${productName}*\n\nPlease share availability and details.`;
 }
+
+export function buildCollectionInterestMessage(collectionName: string): string {
+  return `Hi ARK! Please notify me when the *${collectionName}* collection launches. I'd like to register my interest.`;
+}

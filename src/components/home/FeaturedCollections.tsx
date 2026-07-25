@@ -9,6 +9,10 @@ import { ProductCard } from "@/components/product/ProductCard";
 import { CustomOrderCard } from "@/components/product/CustomOrderCard";
 import { resolveImageSrc } from "@/lib/images";
 import { isComingSoonCollection } from "@/lib/data/collections";
+import {
+  buildCollectionInterestMessage,
+  buildWhatsAppUrl,
+} from "@/lib/whatsapp";
 import type { Collection, Product } from "@/types";
 import { cn } from "@/lib/utils";
 
@@ -18,19 +22,33 @@ interface FeaturedCollectionsProps {
 }
 
 function ComingSoonStrip({ collections }: { collections: Collection[] }) {
+  const firstInterestHref = buildWhatsAppUrl(
+    buildCollectionInterestMessage(collections[0]?.name ?? "upcoming collection")
+  );
+
   return (
     <div className="pt-8 md:pt-10 mt-10 md:mt-12 border-t border-border/50">
       <FadeIn>
-        <div className="flex items-baseline justify-between gap-3 mb-4">
+        <div className="flex flex-wrap items-baseline justify-between gap-3 mb-4">
           <p className="font-button text-[9px] uppercase tracking-[0.28em] text-grey">
             Coming Soon
           </p>
-          <Link
-            href="/collections"
-            className="font-button text-[9px] uppercase tracking-[0.2em] text-grey hover:text-gold transition-colors"
-          >
-            All →
-          </Link>
+          <div className="flex items-center gap-4">
+            <a
+              href={firstInterestHref}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="font-button text-[9px] uppercase tracking-[0.2em] text-gold hover:text-gold-light transition-colors"
+            >
+              Notify me →
+            </a>
+            <Link
+              href="/collections"
+              className="font-button text-[9px] uppercase tracking-[0.2em] text-grey hover:text-gold transition-colors"
+            >
+              All →
+            </Link>
+          </div>
         </div>
       </FadeIn>
 

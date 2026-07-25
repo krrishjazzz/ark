@@ -2,6 +2,7 @@
 
 import { useRef } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { useSiteSettings } from "@/components/providers/SiteSettingsProvider";
 import { resolveImageSrc } from "@/lib/images";
@@ -47,10 +48,8 @@ export function Hero() {
         </motion.div>
       </motion.div>
 
-      {/* Moving black shadow / light reveal */}
       <div className="hero-reveal-shadow pointer-events-none absolute inset-0 z-[1]" aria-hidden />
 
-      {/* Soft edge vignette */}
       <div
         className="pointer-events-none absolute inset-0 z-[2]"
         aria-hidden
@@ -59,6 +58,29 @@ export function Hero() {
             "radial-gradient(ellipse 70% 65% at 50% 50%, transparent 35%, rgba(0,0,0,0.45) 100%)",
         }}
       />
+
+      {/* Micro CTA strip — art stays dominant */}
+      <motion.div
+        className="absolute bottom-0 left-0 right-0 z-10 px-6 pb-8 pt-16 bg-gradient-to-t from-background via-background/70 to-transparent"
+        initial={{ opacity: 0, y: 12 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.8, duration: 0.7 }}
+      >
+        <div className="mx-auto max-w-7xl flex flex-col sm:flex-row items-center justify-center gap-2.5 sm:gap-3">
+          <Link
+            href="/collections/cars"
+            className="font-button text-[9px] sm:text-[10px] uppercase tracking-[0.18em] px-7 py-3 rounded-sm bg-gold text-background hover:bg-gold-light transition-all duration-500 text-center min-w-[180px]"
+          >
+            Explore Collection
+          </Link>
+          <Link
+            href="/custom-orders"
+            className="font-button text-[9px] sm:text-[10px] uppercase tracking-[0.18em] px-7 py-3 rounded-sm border border-gold/50 text-gold hover:border-gold hover:bg-gold/5 transition-all duration-500 text-center min-w-[180px]"
+          >
+            Custom Order
+          </Link>
+        </div>
+      </motion.div>
     </section>
   );
 }

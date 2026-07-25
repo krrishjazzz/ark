@@ -8,8 +8,11 @@ import { SectionHeading } from "@/components/animations/SectionHeading";
 import { FadeIn } from "@/components/animations/FadeIn";
 import { fetchProduct, fetchProducts, fetchRelatedProducts, fetchCollection } from "@/lib/cms";
 import { isComingSoonCollection } from "@/lib/data/collections";
+import { ensureProductImages } from "@/lib/images";
 import { Star } from "lucide-react";
 import { ProductViewTracker } from "@/components/product/ProductViewTracker";
+
+const MIN_360_FRAMES = 12;
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -44,6 +47,8 @@ export default async function ProductPage({ params }: Props) {
   const collection = await fetchCollection(product.collection);
   const comingSoon =
     collection?.comingSoon ?? isComingSoonCollection(product.collection);
+  const angleFrames = ensureProductImages(product.images);
+  const show360 = angleFrames.length >= MIN_360_FRAMES;
 
   return (
     <div className="pt-28 pb-20">
@@ -53,12 +58,14 @@ export default async function ProductPage({ params }: Props) {
         <div className="grid grid-cols-1 lg:grid-cols-5 gap-12 lg:gap-16">
           <div className="lg:col-span-3 space-y-8">
             <ProductGallery images={product.images} name={product.name} />
-            <div>
-              <p className="font-button text-[10px] uppercase tracking-[0.2em] text-gold mb-4">
-                360° View
-              </p>
-              <ProductViewer360 images={product.images} name={product.name} />
-            </div>
+            {show360 && (
+              <div>
+                <p className="font-button text-[10px] uppercase tracking-[0.2em] text-gold mb-4">
+                  360° View
+                </p>
+                <ProductViewer360 images={product.images} name={product.name} />
+              </div>
+            )}
           </div>
           <div className="lg:col-span-2">
             <StickyPurchaseCard product={product} comingSoon={comingSoon} />

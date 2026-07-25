@@ -49,7 +49,7 @@ export function CustomOrderCard({ className }: CustomOrderCardProps) {
           Custom Order
         </h3>
         <p className="text-xs text-grey mt-1 hidden sm:block">
-          Commission your own ARK piece
+          Bespoke · 40+ hrs · WhatsApp brief
         </p>
         <p className="font-button text-[8px] sm:text-[9px] uppercase tracking-[0.2em] text-gold/70 mt-2 sm:mt-3">
           Start yours →

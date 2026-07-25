@@ -3,7 +3,8 @@ import Image from "next/image";
 import { SectionHeading } from "@/components/animations/SectionHeading";
 import { FadeIn } from "@/components/animations/FadeIn";
 import { WhyARK } from "@/components/home/WhyARK";
-import { timeline, craftsmanshipFeatures } from "@/lib/data/content";
+import { OurStory } from "@/components/home/OurStory";
+import { craftsmanshipFeatures } from "@/lib/data/content";
 import { BRAND } from "@/lib/constants";
 import { fetchSiteSettings } from "@/lib/cms";
 import { resolveImageSrc } from "@/lib/images";
@@ -85,7 +86,7 @@ export default async function AboutPage() {
           title="Our Craftsmanship"
           description="40+ hours of meticulous handcrafting goes into every single piece."
         />
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-24">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
           {craftsmanshipFeatures.map((feature, i) => (
             <FadeIn key={feature.title} delay={i * 0.1}>
               <div className="p-8 rounded-[20px] border border-border">
@@ -97,27 +98,9 @@ export default async function AboutPage() {
             </FadeIn>
           ))}
         </div>
-
-        {/* Timeline */}
-        <SectionHeading label="Journey" title="Our Timeline" />
-        <div className="max-w-2xl mx-auto">
-          {timeline.map((item, i) => (
-            <FadeIn key={item.year} delay={i * 0.08}>
-              <div className="flex gap-8 mb-8 pb-8 border-b border-border last:border-0">
-                <p className="font-button text-[10px] uppercase tracking-[0.2em] text-gold w-16 shrink-0 pt-1">
-                  {item.year}
-                </p>
-                <div>
-                  <h4 className="font-heading text-lg text-foreground">
-                    {item.title}
-                  </h4>
-                  <p className="text-sm text-grey mt-1">{item.description}</p>
-                </div>
-              </div>
-            </FadeIn>
-          ))}
-        </div>
       </div>
+
+      <OurStory />
     </div>
   );
 }

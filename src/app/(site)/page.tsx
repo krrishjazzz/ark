@@ -2,7 +2,6 @@ import { Hero } from "@/components/home/Hero";
 import { FeaturedCollections } from "@/components/home/FeaturedCollections";
 import { Craftsmanship } from "@/components/home/Craftsmanship";
 import { PackagingShowcase } from "@/components/home/PackagingShowcase";
-import { OurStory } from "@/components/home/OurStory";
 import { CustomerGallery } from "@/components/home/CustomerGallery";
 import { Testimonials } from "@/components/home/Testimonials";
 import { InstagramFeed } from "@/components/home/InstagramFeed";
@@ -32,9 +31,8 @@ export default async function HomePage() {
           <PackagingShowcase />
         </div>
       </section>
-      <OurStory />
-      <CustomerGallery images={galleryImages} />
       <Testimonials items={testimonials} />
+      <CustomerGallery images={galleryImages} />
       <InstagramFeed variant="cta" />
     </>
   );
