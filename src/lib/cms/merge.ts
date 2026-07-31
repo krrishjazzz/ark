@@ -58,6 +58,8 @@ export function mergeProduct(local: Product, sanity: Product): Product {
     },
     featured: sanity.featured ?? local.featured,
     collection: pickString(sanity.collection, local.collection),
+    sizes: pickArray(sanity.sizes ?? [], local.sizes ?? []),
+    frames: pickArray(sanity.frames ?? [], local.frames ?? []),
     craftsmanship: pickArray(sanity.craftsmanship, local.craftsmanship),
     packaging: pickArray(sanity.packaging, local.packaging),
     shipping: pickString(sanity.shipping, local.shipping),

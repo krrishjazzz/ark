@@ -682,6 +682,45 @@ async function seed() {
     "brand-board-1.png",
   ]);
 
+  const commerceOptions = {
+    sizes: [
+      { _key: "size-12x18", _type: "sizeOption", label: '12" × 18"', value: "12x18", priceMultiplier: 1 },
+      { _key: "size-16x24", _type: "sizeOption", label: '16" × 24"', value: "16x24", priceMultiplier: 1.35 },
+      { _key: "size-20x30", _type: "sizeOption", label: '20" × 30"', value: "20x30", priceMultiplier: 1.75 },
+      { _key: "size-24x36", _type: "sizeOption", label: '24" × 36"', value: "24x36", priceMultiplier: 2.2 },
+      { _key: "size-custom", _type: "sizeOption", label: "Custom Size", value: "custom", priceMultiplier: 2.5 },
+    ],
+    frames: [
+      { _key: "frame-black", _type: "frameOption", label: "Matte Black", value: "black", hex: "#111111" },
+      { _key: "frame-walnut", _type: "frameOption", label: "Walnut", value: "walnut", hex: "#5C4033" },
+      { _key: "frame-natural", _type: "frameOption", label: "Natural Oak", value: "natural", hex: "#C4A77D" },
+    ],
+    manufacturers: [
+      "Porsche",
+      "BMW",
+      "Audi",
+      "Mercedes",
+      "Ferrari",
+      "Lamborghini",
+      "McLaren",
+      "Bentley",
+    ],
+    textures: [
+      { _key: "tex-volcanic", _type: "textureOption", label: "Volcanic Obsidian", value: "volcanic" },
+      { _key: "tex-splash", _type: "textureOption", label: "Resin Splash", value: "splash" },
+      { _key: "tex-smoke", _type: "textureOption", label: "Smoke Flow", value: "smoke" },
+      { _key: "tex-tracks", _type: "textureOption", label: "Tire Tracks", value: "tracks" },
+      { _key: "tex-gold", _type: "textureOption", label: "Gold Veins", value: "gold" },
+    ],
+    resinColors: [
+      { _key: "resin-black", _type: "resinColorOption", label: "Deep Black", value: "black", hex: "#111111" },
+      { _key: "resin-charcoal", _type: "resinColorOption", label: "Charcoal", value: "charcoal", hex: "#333333" },
+      { _key: "resin-grey", _type: "resinColorOption", label: "Smoky Grey", value: "grey", hex: "#666666" },
+      { _key: "resin-gold", _type: "resinColorOption", label: "Gold Accent", value: "gold", hex: "#C9A45B" },
+    ],
+    configuratorBasePrice: 40000,
+  };
+
   const siteSettingsDoc = {
     _type: "siteSettings",
     _id: "siteSettings",
@@ -698,6 +737,7 @@ async function seed() {
     ...(packagingMicrofiber && { packagingMicrofiber }),
     ...(packagingThankYou && { packagingThankYou }),
     ...(instagramImages.length > 0 && { instagramImages }),
+    ...commerceOptions,
   };
 
   console.log("\n💾 Saving documents...\n");
@@ -720,7 +760,7 @@ async function seed() {
   console.log(`   • ${collectionDocs.length} collections with cover images`);
   console.log(`   • ${testimonialDocs.length} testimonials`);
   console.log(`   • ${galleryDocs.length} gallery images`);
-  console.log("   • Site settings (logo, hero, packaging, instagram)");
+  console.log("   • Site settings (images + sizes/frames/configurator)");
   console.log(`\n🖼  ${uploadedAssets.size} unique assets on cdn.sanity.io`);
   console.log("\n   Manage images in Studio: http://localhost:3000/studio");
 }

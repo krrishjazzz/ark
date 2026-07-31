@@ -5,38 +5,30 @@ import Image from "next/image";
 import { SectionHeading } from "@/components/animations/SectionHeading";
 import { FadeIn } from "@/components/animations/FadeIn";
 import { Button } from "@/components/ui/button";
-import { MANUFACTURERS, SIZES, FRAME_OPTIONS } from "@/lib/constants";
 import { useSiteSettings } from "@/components/providers/SiteSettingsProvider";
 import { resolveImageSrc } from "@/lib/images";
 import { cn, formatPrice } from "@/lib/utils";
 
-const textures = [
-  { label: "Volcanic Obsidian", value: "volcanic" },
-  { label: "Resin Splash", value: "splash" },
-  { label: "Smoke Flow", value: "smoke" },
-  { label: "Tire Tracks", value: "tracks" },
-  { label: "Gold Veins", value: "gold" },
-];
-
-const resinColors = [
-  { label: "Deep Black", value: "black", hex: "#111111" },
-  { label: "Charcoal", value: "charcoal", hex: "#333333" },
-  { label: "Smoky Grey", value: "grey", hex: "#666666" },
-  { label: "Gold Accent", value: "gold", hex: "#C9A45B" },
-];
-
 export default function ConfiguratorPage() {
-  const { configuratorPreview } = useSiteSettings();
-  const [manufacturer, setManufacturer] = useState<string>(MANUFACTURERS[0]);
-  const [model, setModel] = useState("911 GT3 RS");
-  const [texture, setTexture] = useState(textures[0].value);
-  const [resin, setResin] = useState(resinColors[0].value);
-  const [size, setSize] = useState<string>(SIZES[1].value);
-  const [frame, setFrame] = useState<string>(FRAME_OPTIONS[0].value);
+  const {
+    configuratorPreview,
+    manufacturers,
+    textures,
+    resinColors,
+    sizes,
+    frames,
+    configuratorBasePrice,
+  } = useSiteSettings();
 
-  const basePrice = 40000;
-  const sizeMultiplier = SIZES.find((s) => s.value === size)?.priceMultiplier ?? 1;
-  const price = Math.round(basePrice * sizeMultiplier);
+  const [manufacturer, setManufacturer] = useState<string>(manufacturers[0] ?? "");
+  const [model, setModel] = useState("911 GT3 RS");
+  const [texture, setTexture] = useState(textures[0]?.value ?? "");
+  const [resin, setResin] = useState(resinColors[0]?.value ?? "");
+  const [size, setSize] = useState<string>(sizes[1]?.value ?? sizes[0]?.value ?? "");
+  const [frame, setFrame] = useState<string>(frames[0]?.value ?? "");
+
+  const sizeMultiplier = sizes.find((s) => s.value === size)?.priceMultiplier ?? 1;
+  const price = Math.round(configuratorBasePrice * sizeMultiplier);
 
   return (
     <div className="pt-32 pb-20">
@@ -48,7 +40,6 @@ export default function ConfiguratorPage() {
         />
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
-          {/* Preview */}
           <FadeIn direction="left">
             <div className="sticky top-28">
               <div className="relative aspect-[3/4] rounded-[20px] overflow-hidden border border-border shadow-luxury">
@@ -73,16 +64,14 @@ export default function ConfiguratorPage() {
             </div>
           </FadeIn>
 
-          {/* Options */}
           <FadeIn direction="right" delay={0.2}>
             <div className="space-y-10">
-              {/* Manufacturer */}
               <div>
                 <p className="font-button text-[10px] uppercase tracking-[0.2em] text-grey mb-4">
                   Manufacturer
                 </p>
                 <div className="flex flex-wrap gap-2">
-                  {MANUFACTURERS.map((m) => (
+                  {manufacturers.map((m) => (
                     <button
                       key={m}
                       onClick={() => setManufacturer(m)}
@@ -99,7 +88,6 @@ export default function ConfiguratorPage() {
                 </div>
               </div>
 
-              {/* Model */}
               <div>
                 <p className="font-button text-[10px] uppercase tracking-[0.2em] text-grey mb-4">
                   Model
@@ -113,7 +101,6 @@ export default function ConfiguratorPage() {
                 />
               </div>
 
-              {/* Texture */}
               <div>
                 <p className="font-button text-[10px] uppercase tracking-[0.2em] text-grey mb-4">
                   Background Texture
@@ -136,7 +123,6 @@ export default function ConfiguratorPage() {
                 </div>
               </div>
 
-              {/* Resin color */}
               <div>
                 <p className="font-button text-[10px] uppercase tracking-[0.2em] text-grey mb-4">
                   Resin Color
@@ -165,13 +151,12 @@ export default function ConfiguratorPage() {
                 </div>
               </div>
 
-              {/* Size */}
               <div>
                 <p className="font-button text-[10px] uppercase tracking-[0.2em] text-grey mb-4">
                   Frame Size
                 </p>
                 <div className="flex flex-wrap gap-2">
-                  {SIZES.map((s) => (
+                  {sizes.map((s) => (
                     <button
                       key={s.value}
                       onClick={() => setSize(s.value)}
@@ -188,13 +173,12 @@ export default function ConfiguratorPage() {
                 </div>
               </div>
 
-              {/* Frame */}
               <div>
                 <p className="font-button text-[10px] uppercase tracking-[0.2em] text-grey mb-4">
                   Frame Finish
                 </p>
-                <div className="flex gap-3">
-                  {FRAME_OPTIONS.map((f) => (
+                <div className="flex gap-3 flex-wrap">
+                  {frames.map((f) => (
                     <button
                       key={f.value}
                       onClick={() => setFrame(f.value)}

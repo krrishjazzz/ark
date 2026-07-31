@@ -1,11 +1,16 @@
-import { SIZES } from "@/lib/constants";
+import { DEFAULT_SIZES } from "@/lib/constants";
 import type { CartItem } from "@/types";
+import type { SizeOption } from "@/types/site-settings";
 
 export const SHIPPING_FEE = 2500;
 export const FREE_SHIPPING_THRESHOLD = 50000;
 
-export function calculatePrice(basePrice: number, size: string): number {
-  const sizeOption = SIZES.find((s) => s.value === size);
+export function calculatePrice(
+  basePrice: number,
+  size: string,
+  sizes: readonly SizeOption[] = DEFAULT_SIZES
+): number {
+  const sizeOption = sizes.find((s) => s.value === size);
   return Math.round(basePrice * (sizeOption?.priceMultiplier ?? 1));
 }
 

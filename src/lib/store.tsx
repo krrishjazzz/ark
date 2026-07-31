@@ -10,8 +10,11 @@ import {
   type ReactNode,
 } from "react";
 import type { CartItem, Product } from "@/types";
-import { SIZES, FRAME_OPTIONS } from "@/lib/constants";
+import type { SizeOption } from "@/types/site-settings";
+import { useSiteSettings } from "@/components/providers/SiteSettingsProvider";
 import { getProductPrimaryImage } from "@/lib/images";
+import { calculatePrice as calcPrice } from "@/lib/checkout";
+import { resolveProductSizes } from "@/lib/commerce";
 
 interface StoreContextType {
   cart: CartItem[];
@@ -29,7 +32,11 @@ interface StoreContextType {
   isInCompare: (productId: string) => boolean;
   cartCount: number;
   clearCart: () => void;
-  calculatePrice: (basePrice: number, size: string) => number;
+  calculatePrice: (
+    basePrice: number,
+    size: string,
+    sizeOptions?: SizeOption[]
+  ) => number;
 }
 
 const StoreContext = createContext<StoreContextType | null>(null);
@@ -57,6 +64,7 @@ function readStoredStore() {
 }
 
 export function StoreProvider({ children }: { children: ReactNode }) {
+  const { sizes } = useSiteSettings();
   const [hydrated, setHydrated] = useState(false);
   const [cart, setCart] = useState<CartItem[]>([]);
   const [wishlist, setWishlist] = useState<string[]>([]);
@@ -84,10 +92,11 @@ export function StoreProvider({ children }: { children: ReactNode }) {
     }
   }, [cart, wishlist, recentlyViewed, hydrated]);
 
-  const calculatePrice = useCallback((basePrice: number, size: string) => {
-    const sizeOption = SIZES.find((s) => s.value === size);
-    return Math.round(basePrice * (sizeOption?.priceMultiplier ?? 1));
-  }, []);
+  const calculatePrice = useCallback(
+    (basePrice: number, size: string, sizeOptions?: SizeOption[]) =>
+      calcPrice(basePrice, size, sizeOptions ?? sizes),
+    [sizes]
+  );
 
   const addToCart = useCallback((item: Omit<CartItem, "quantity">) => {
     setCart((prev) => {
@@ -222,7 +231,9 @@ export function useStore() {
 
 export function useAddProductToCart(product: Product, size: string, frame: string) {
   const { addToCart, calculatePrice } = useStore();
+  const { sizes: siteSizes } = useSiteSettings();
   return () => {
+    const sizeOptions = resolveProductSizes(product, siteSizes);
     addToCart({
       productId: product.id,
       slug: product.slug,
@@ -230,7 +241,7 @@ export function useAddProductToCart(product: Product, size: string, frame: strin
       image: getProductPrimaryImage(product.images),
       size,
       frame,
-      price: calculatePrice(product.basePrice, size),
+      price: calculatePrice(product.basePrice, size, sizeOptions),
     });
   };
 }

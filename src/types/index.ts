@@ -1,3 +1,5 @@
+import type { FrameOption, SizeOption } from "@/types/site-settings";
+
 export interface Product {
   id: string;
   slug: string;
@@ -12,6 +14,10 @@ export interface Product {
   edition: { current: number; total: number };
   featured?: boolean;
   collection: string;
+  /** Per-product sizes from Sanity; empty/undefined → Site Settings defaults */
+  sizes?: SizeOption[];
+  /** Per-product frames from Sanity; empty/undefined → Site Settings defaults */
+  frames?: FrameOption[];
   craftsmanship: string[];
   packaging: string[];
   shipping: string;

@@ -8,7 +8,8 @@ import { useStore } from "@/lib/store";
 import { getProductPrimaryImage } from "@/lib/images";
 import { ProductPrice } from "@/components/product/ProductPrice";
 import { ProductMobileBuyBar } from "@/components/product/ProductMobileBuyBar";
-import { SIZES, FRAME_OPTIONS } from "@/lib/constants";
+import { useSiteSettings } from "@/components/providers/SiteSettingsProvider";
+import { resolveProductFrames, resolveProductSizes } from "@/lib/commerce";
 import type { Product } from "@/types";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
@@ -20,13 +21,18 @@ interface StickyPurchaseCardProps {
 }
 
 export function StickyPurchaseCard({ product, comingSoon = false }: StickyPurchaseCardProps) {
-  const [selectedSize, setSelectedSize] = useState<string>(SIZES[1].value);
-  const [selectedFrame, setSelectedFrame] = useState<string>(FRAME_OPTIONS[0].value);
+  const siteSettings = useSiteSettings();
+  const sizes = resolveProductSizes(product, siteSettings.sizes);
+  const frames = resolveProductFrames(product, siteSettings.frames);
+  const defaultSize = sizes[1]?.value ?? sizes[0]?.value ?? "";
+  const defaultFrame = frames[0]?.value ?? "";
+  const [selectedSize, setSelectedSize] = useState<string>(defaultSize);
+  const [selectedFrame, setSelectedFrame] = useState<string>(defaultFrame);
   const { addToCart, calculatePrice, toggleWishlist, isInWishlist } = useStore();
 
-  const price = calculatePrice(product.basePrice, selectedSize);
+  const price = calculatePrice(product.basePrice, selectedSize, sizes);
   const compareAtPrice = product.compareAtPrice
-    ? calculatePrice(product.compareAtPrice, selectedSize)
+    ? calculatePrice(product.compareAtPrice, selectedSize, sizes)
     : undefined;
   const wished = isInWishlist(product.id);
   const whatsappHref = buildWhatsAppUrl(
@@ -129,7 +135,7 @@ export function StickyPurchaseCard({ product, comingSoon = false }: StickyPurcha
                 Size
               </p>
               <div className="flex flex-wrap gap-2">
-                {SIZES.map((size) => (
+                {sizes.map((size) => (
                   <button
                     key={size.value}
                     onClick={() => setSelectedSize(size.value)}
@@ -151,7 +157,7 @@ export function StickyPurchaseCard({ product, comingSoon = false }: StickyPurcha
                 Frame
               </p>
               <div className="flex flex-wrap gap-3">
-                {FRAME_OPTIONS.map((frame) => (
+                {frames.map((frame) => (
                   <button
                     key={frame.value}
                     onClick={() => setSelectedFrame(frame.value)}

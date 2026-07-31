@@ -15,7 +15,38 @@ import {
 import type { Product, Collection, Testimonial } from "@/types";
 import type { SiteSettings } from "@/types/site-settings";
 import { EMPTY_SITE_SETTINGS } from "@/types/site-settings";
+import {
+  DEFAULT_CONFIGURATOR_BASE_PRICE,
+  DEFAULT_FRAME_OPTIONS,
+  DEFAULT_MANUFACTURERS,
+  DEFAULT_RESIN_COLORS,
+  DEFAULT_SIZES,
+  DEFAULT_TEXTURES,
+} from "@/lib/constants";
 import { getRelatedProducts } from "@/lib/data/products";
+
+function siteSettingsWithCommerceDefaults(
+  settings: SiteSettings = EMPTY_SITE_SETTINGS
+): SiteSettings {
+  return {
+    ...settings,
+    sizes: settings.sizes.length > 0 ? settings.sizes : [...DEFAULT_SIZES],
+    frames: settings.frames.length > 0 ? settings.frames : [...DEFAULT_FRAME_OPTIONS],
+    manufacturers:
+      settings.manufacturers.length > 0
+        ? settings.manufacturers
+        : [...DEFAULT_MANUFACTURERS],
+    textures: settings.textures.length > 0 ? settings.textures : [...DEFAULT_TEXTURES],
+    resinColors:
+      settings.resinColors.length > 0
+        ? settings.resinColors
+        : [...DEFAULT_RESIN_COLORS],
+    configuratorBasePrice:
+      settings.configuratorBasePrice > 0
+        ? settings.configuratorBasePrice
+        : DEFAULT_CONFIGURATOR_BASE_PRICE,
+  };
+}
 
 const sanity = new SanityCMSAdapter();
 const local = new LocalCMSAdapter();
@@ -144,11 +175,11 @@ export async function fetchGalleryImages() {
 
 export async function fetchSiteSettings(): Promise<SiteSettings> {
   try {
-    return await sanity.getSiteSettings();
+    return siteSettingsWithCommerceDefaults(await sanity.getSiteSettings());
   } catch (error) {
     console.warn("[CMS] Sanity site settings fetch failed:", error);
   }
-  return EMPTY_SITE_SETTINGS;
+  return siteSettingsWithCommerceDefaults();
 }
 
 export async function fetchRelatedProducts(slug: string, limit = 4) {
