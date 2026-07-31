@@ -1,10 +1,9 @@
 import type { Metadata } from "next";
 import Image from "next/image";
-import { SectionHeading } from "@/components/animations/SectionHeading";
+import Link from "next/link";
 import { FadeIn } from "@/components/animations/FadeIn";
 import { WhyARK } from "@/components/home/WhyARK";
 import { OurStory } from "@/components/home/OurStory";
-import { craftsmanshipFeatures } from "@/lib/data/content";
 import { BRAND } from "@/lib/constants";
 import { fetchSiteSettings } from "@/lib/cms";
 import { resolveImageSrc } from "@/lib/images";
@@ -19,7 +18,6 @@ export default async function AboutPage() {
 
   return (
     <div className="pt-32 pb-20">
-      {/* Hero */}
       <div className="relative h-[60vh] min-h-[500px] mb-20">
         <Image
           src={resolveImageSrc(brandBoardPrimary)}
@@ -45,7 +43,6 @@ export default async function AboutPage() {
       </div>
 
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
-        {/* Mission & Vision */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-16 mb-24">
           <FadeIn>
             <p className="font-button text-[10px] uppercase tracking-[0.3em] text-gold mb-4">
@@ -75,31 +72,26 @@ export default async function AboutPage() {
             </p>
           </FadeIn>
         </div>
+
+        <FadeIn>
+          <div className="flex flex-wrap gap-4 mb-8">
+            <Link
+              href="/craftsmanship"
+              className="font-button text-[10px] uppercase tracking-[0.2em] text-gold border border-gold/30 rounded-full px-5 py-2.5 hover:bg-gold/10 transition-colors"
+            >
+              Explore Craftsmanship →
+            </Link>
+            <Link
+              href="/unboxing"
+              className="font-button text-[10px] uppercase tracking-[0.2em] text-grey border border-border rounded-full px-5 py-2.5 hover:border-gold/30 hover:text-gold transition-colors"
+            >
+              Unboxing Experience →
+            </Link>
+          </div>
+        </FadeIn>
       </div>
 
       <WhyARK />
-
-      <div className="mx-auto max-w-7xl px-6 lg:px-8">
-        {/* Craftsmanship */}
-        <SectionHeading
-          label="Process"
-          title="Our Craftsmanship"
-          description="40+ hours of meticulous handcrafting goes into every single piece."
-        />
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
-          {craftsmanshipFeatures.map((feature, i) => (
-            <FadeIn key={feature.title} delay={i * 0.1}>
-              <div className="p-8 rounded-[20px] border border-border">
-                <h3 className="font-heading text-xl text-foreground mb-2">
-                  {feature.title}
-                </h3>
-                <p className="text-sm text-grey">{feature.description}</p>
-              </div>
-            </FadeIn>
-          ))}
-        </div>
-      </div>
-
       <OurStory />
     </div>
   );

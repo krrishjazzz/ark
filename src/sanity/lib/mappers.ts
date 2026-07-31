@@ -10,12 +10,21 @@ import {
   DEFAULT_TEXTURES,
 } from "@/lib/constants";
 import {
+  craftsmanshipFeatures as DEFAULT_CRAFTSMANSHIP,
+  packagingItems as DEFAULT_PACKAGING_ITEMS,
+  timeline as DEFAULT_TIMELINE,
+  whyARK as DEFAULT_WHY_ARK,
+} from "@/lib/data/content";
+import {
   EMPTY_SITE_SETTINGS,
+  type ContentFeature,
   type FrameOption,
   type LabeledOption,
+  type PackagingContentItem,
   type ResinColorOption,
   type SiteSettings,
   type SizeOption,
+  type TimelineItem,
 } from "@/types/site-settings";
 
 interface SanityProduct {
@@ -34,7 +43,12 @@ interface SanityProduct {
   featured?: boolean;
   collection?: string;
   sizes?: Array<{ label?: string; value?: string; priceMultiplier?: number }>;
-  frames?: Array<{ label?: string; value?: string; hex?: string }>;
+  frames?: Array<{
+    label?: string;
+    value?: string;
+    hex?: string;
+    priceMultiplier?: number;
+  }>;
   craftsmanship?: string[];
   packaging?: string[];
   shipping?: string;
@@ -44,6 +58,26 @@ interface SanityProduct {
     comment?: string;
     date?: string;
   }>;
+}
+
+function mapFrameList(
+  frames?: Array<{
+    label?: string;
+    value?: string;
+    hex?: string;
+    priceMultiplier?: number;
+  }>
+): FrameOption[] {
+  return (
+    frames
+      ?.filter((f) => f?.label && f?.value && f?.hex)
+      .map((f) => ({
+        label: f.label!,
+        value: f.value!,
+        hex: f.hex!,
+        priceMultiplier: f.priceMultiplier ?? 1,
+      })) ?? []
+  );
 }
 
 /** Map product-level options; empty means “use Site Settings defaults” at runtime */
@@ -64,14 +98,7 @@ function mapProductSizes(
 function mapProductFrames(
   frames?: SanityProduct["frames"]
 ): FrameOption[] | undefined {
-  const mapped =
-    frames
-      ?.filter((f) => f?.label && f?.value && f?.hex)
-      .map((f) => ({
-        label: f.label!,
-        value: f.value!,
-        hex: f.hex!,
-      })) ?? [];
+  const mapped = mapFrameList(frames);
   return mapped.length > 0 ? mapped : undefined;
 }
 
@@ -118,11 +145,79 @@ interface SanitySiteSettings {
   packagingThankYou?: SanityImageSource;
   instagramImages?: SanityImageSource[];
   sizes?: Array<{ label?: string; value?: string; priceMultiplier?: number }>;
-  frames?: Array<{ label?: string; value?: string; hex?: string }>;
+  frames?: Array<{
+    label?: string;
+    value?: string;
+    hex?: string;
+    priceMultiplier?: number;
+  }>;
   manufacturers?: string[];
   textures?: Array<{ label?: string; value?: string }>;
   resinColors?: Array<{ label?: string; value?: string; hex?: string }>;
   configuratorBasePrice?: number;
+  craftsmanshipFeatures?: Array<{
+    icon?: string;
+    title?: string;
+    description?: string;
+  }>;
+  whyARK?: Array<{ icon?: string; title?: string; description?: string }>;
+  packagingItems?: Array<{
+    title?: string;
+    description?: string;
+    imageKey?: string;
+  }>;
+  timeline?: Array<{ year?: string; title?: string; description?: string }>;
+}
+
+const PACKAGING_KEYS = new Set(["box", "certificate", "microfiber", "thankYou"]);
+
+function mapContentFeatures(
+  items: SanitySiteSettings["craftsmanshipFeatures"],
+  fallback: ContentFeature[]
+): ContentFeature[] {
+  const mapped =
+    items
+      ?.filter((i) => i?.title && i?.description)
+      .map((i) => ({
+        icon: i.icon || "Gem",
+        title: i.title!,
+        description: i.description!,
+      })) ?? [];
+  return mapped.length > 0 ? mapped : fallback;
+}
+
+function mapPackagingItems(
+  items: SanitySiteSettings["packagingItems"]
+): PackagingContentItem[] {
+  const mapped =
+    items
+      ?.filter(
+        (i) =>
+          i?.title &&
+          i?.description &&
+          i.imageKey &&
+          PACKAGING_KEYS.has(i.imageKey)
+      )
+      .map((i) => ({
+        title: i.title!,
+        description: i.description!,
+        imageKey: i.imageKey as PackagingContentItem["imageKey"],
+      })) ?? [];
+  return mapped.length > 0 ? mapped : [...DEFAULT_PACKAGING_ITEMS];
+}
+
+function mapTimeline(
+  items: SanitySiteSettings["timeline"]
+): TimelineItem[] {
+  const mapped =
+    items
+      ?.filter((i) => i?.year && i?.title && i?.description)
+      .map((i) => ({
+        year: i.year!,
+        title: i.title!,
+        description: i.description!,
+      })) ?? [];
+  return mapped.length > 0 ? mapped : [...DEFAULT_TIMELINE];
 }
 
 function mapSizes(
@@ -142,14 +237,7 @@ function mapSizes(
 function mapFrames(
   frames?: SanitySiteSettings["frames"]
 ): FrameOption[] {
-  const mapped =
-    frames
-      ?.filter((f) => f?.label && f?.value && f?.hex)
-      .map((f) => ({
-        label: f.label!,
-        value: f.value!,
-        hex: f.hex!,
-      })) ?? [];
+  const mapped = mapFrameList(frames);
   return mapped.length > 0 ? mapped : [...DEFAULT_FRAME_OPTIONS];
 }
 
@@ -274,6 +362,10 @@ export function mapSiteSettings(doc: SanitySiteSettings | null): SiteSettings {
       textures: [...DEFAULT_TEXTURES],
       resinColors: [...DEFAULT_RESIN_COLORS],
       configuratorBasePrice: DEFAULT_CONFIGURATOR_BASE_PRICE,
+      craftsmanshipFeatures: [...DEFAULT_CRAFTSMANSHIP],
+      whyARK: [...DEFAULT_WHY_ARK],
+      packagingItems: [...DEFAULT_PACKAGING_ITEMS],
+      timeline: [...DEFAULT_TIMELINE],
     };
   }
 
@@ -302,5 +394,12 @@ export function mapSiteSettings(doc: SanitySiteSettings | null): SiteSettings {
       typeof doc.configuratorBasePrice === "number" && doc.configuratorBasePrice > 0
         ? doc.configuratorBasePrice
         : DEFAULT_CONFIGURATOR_BASE_PRICE,
+    craftsmanshipFeatures: mapContentFeatures(
+      doc.craftsmanshipFeatures,
+      [...DEFAULT_CRAFTSMANSHIP]
+    ),
+    whyARK: mapContentFeatures(doc.whyARK, [...DEFAULT_WHY_ARK]),
+    packagingItems: mapPackagingItems(doc.packagingItems),
+    timeline: mapTimeline(doc.timeline),
   };
 }

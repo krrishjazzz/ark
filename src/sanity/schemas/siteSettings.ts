@@ -5,6 +5,11 @@ import {
   sizesArrayMember,
   texturesArrayMember,
 } from "./objects/commerceOptions";
+import {
+  featureItemMember,
+  packagingItemMember,
+  timelineItemMember,
+} from "./objects/contentBlocks";
 
 export const siteSettings = defineType({
   name: "siteSettings",
@@ -14,6 +19,7 @@ export const siteSettings = defineType({
     { name: "images", title: "Images", default: true },
     { name: "commerce", title: "Sizes & Frames" },
     { name: "configurator", title: "Configurator" },
+    { name: "content", title: "Page Content" },
   ],
   fields: [
     defineField({
@@ -120,9 +126,9 @@ export const siteSettings = defineType({
     }),
     defineField({
       name: "frames",
-      title: "Default Frame Finishes",
+      title: "Default Frame Materials",
       description:
-        "Global defaults used when a product has no frames of its own. Override per product under Product → Sizes & Frames.",
+        "Default materials (Acrylic, Wooden, Aluminum, …) with price multipliers. Override per product under Product → Sizes & Frames. Add, edit, or remove here.",
       type: "array",
       of: [framesArrayMember],
       group: "commerce",
@@ -159,6 +165,39 @@ export const siteSettings = defineType({
       type: "array",
       of: [resinColorsArrayMember],
       group: "configurator",
+    }),
+
+    defineField({
+      name: "craftsmanshipFeatures",
+      title: "Craftsmanship Features",
+      description: "Process steps on /craftsmanship. Add, edit, or remove freely.",
+      type: "array",
+      of: [featureItemMember],
+      group: "content",
+    }),
+    defineField({
+      name: "whyARK",
+      title: "Why ARK",
+      description: "Value props on the About page. Add, edit, or remove freely.",
+      type: "array",
+      of: [featureItemMember],
+      group: "content",
+    }),
+    defineField({
+      name: "packagingItems",
+      title: "Unboxing / Packaging Items",
+      description: "Items on /unboxing. Image maps to packaging photos above.",
+      type: "array",
+      of: [packagingItemMember],
+      group: "content",
+    }),
+    defineField({
+      name: "timeline",
+      title: "Our Story Timeline",
+      description: "Timeline on the About page. Add, edit, or remove freely.",
+      type: "array",
+      of: [timelineItemMember],
+      group: "content",
     }),
   ],
   preview: {

@@ -3,13 +3,12 @@
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { FadeIn } from "@/components/animations/FadeIn";
-import { packagingItems } from "@/lib/data/content";
 import { useSiteSettings } from "@/components/providers/SiteSettingsProvider";
 import { resolveImageSrc } from "@/lib/images";
 import { cn } from "@/lib/utils";
 
 export function PackagingShowcase() {
-  const { packaging } = useSiteSettings();
+  const { packaging, packagingItems } = useSiteSettings();
   const [isOpen, setIsOpen] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
 

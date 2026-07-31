@@ -10,7 +10,6 @@ import {
 import Image from "next/image";
 import Link from "next/link";
 import { FadeIn } from "@/components/animations/FadeIn";
-import { craftsmanshipFeatures } from "@/lib/data/content";
 import { useSiteSettings } from "@/components/providers/SiteSettingsProvider";
 import { resolveImageSrc } from "@/lib/images";
 
@@ -22,7 +21,7 @@ const iconMap: Record<string, LucideIcon> = {
 };
 
 export function Craftsmanship() {
-  const { craftsmanshipPrimary } = useSiteSettings();
+  const { craftsmanshipPrimary, craftsmanshipFeatures } = useSiteSettings();
   const features = craftsmanshipFeatures.slice(0, 4);
 
   return (

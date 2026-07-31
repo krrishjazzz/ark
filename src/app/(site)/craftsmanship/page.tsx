@@ -1,9 +1,8 @@
 import type { Metadata } from "next";
 import Image from "next/image";
+import Link from "next/link";
 import { SectionHeading } from "@/components/animations/SectionHeading";
 import { FadeIn } from "@/components/animations/FadeIn";
-import { InstagramFeed } from "@/components/home/InstagramFeed";
-import { craftsmanshipFeatures } from "@/lib/data/content";
 import { fetchSiteSettings } from "@/lib/cms";
 import { resolveImageSrc } from "@/lib/images";
 
@@ -13,7 +12,7 @@ export const metadata: Metadata = {
 };
 
 export default async function CraftsmanshipPage() {
-  const { aboutHero } = await fetchSiteSettings();
+  const { aboutHero, craftsmanshipFeatures } = await fetchSiteSettings();
 
   return (
     <div className="pt-32 pb-20">
@@ -63,22 +62,28 @@ export default async function CraftsmanshipPage() {
           ))}
         </div>
 
-        {/* Craftsmanship film placeholder */}
         <FadeIn>
-          <div className="relative aspect-video rounded-[20px] overflow-hidden border border-border bg-card flex items-center justify-center">
-            <div className="text-center">
+          <div className="relative aspect-video rounded-[20px] overflow-hidden border border-border bg-card flex items-center justify-center mb-12">
+            <div className="text-center px-6">
               <p className="font-button text-[10px] uppercase tracking-[0.3em] text-gold mb-4">
                 Craftsmanship Film
               </p>
               <p className="font-heading text-2xl text-foreground/60">
-                Resin pouring · Polishing · Assembling · Packaging
+                Resin pouring · Polishing · Assembling
               </p>
             </div>
           </div>
         </FadeIn>
-      </div>
 
-      <InstagramFeed />
+        <FadeIn>
+          <p className="text-center text-sm text-grey">
+            Curious about the arrival ritual?{" "}
+            <Link href="/unboxing" className="text-gold hover:underline">
+              See the unboxing experience
+            </Link>
+          </p>
+        </FadeIn>
+      </div>
     </div>
   );
 }

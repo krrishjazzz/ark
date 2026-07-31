@@ -17,6 +17,7 @@ const footerLinks = {
   company: [
     { href: "/about", label: "About" },
     { href: "/craftsmanship", label: "Craftsmanship" },
+    { href: "/unboxing", label: "Unboxing" },
     { href: "/gallery", label: "Gallery" },
     { href: "/contact", label: "Contact" },
   ],

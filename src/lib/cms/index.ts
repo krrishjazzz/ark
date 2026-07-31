@@ -23,6 +23,12 @@ import {
   DEFAULT_SIZES,
   DEFAULT_TEXTURES,
 } from "@/lib/constants";
+import {
+  craftsmanshipFeatures as DEFAULT_CRAFTSMANSHIP,
+  packagingItems as DEFAULT_PACKAGING_ITEMS,
+  timeline as DEFAULT_TIMELINE,
+  whyARK as DEFAULT_WHY_ARK,
+} from "@/lib/data/content";
 import { getRelatedProducts } from "@/lib/data/products";
 
 function siteSettingsWithCommerceDefaults(
@@ -45,6 +51,16 @@ function siteSettingsWithCommerceDefaults(
       settings.configuratorBasePrice > 0
         ? settings.configuratorBasePrice
         : DEFAULT_CONFIGURATOR_BASE_PRICE,
+    craftsmanshipFeatures:
+      settings.craftsmanshipFeatures.length > 0
+        ? settings.craftsmanshipFeatures
+        : [...DEFAULT_CRAFTSMANSHIP],
+    whyARK: settings.whyARK.length > 0 ? settings.whyARK : [...DEFAULT_WHY_ARK],
+    packagingItems:
+      settings.packagingItems.length > 0
+        ? settings.packagingItems
+        : [...DEFAULT_PACKAGING_ITEMS],
+    timeline: settings.timeline.length > 0 ? settings.timeline : [...DEFAULT_TIMELINE],
   };
 }
 

@@ -28,7 +28,9 @@ export default function ConfiguratorPage() {
   const [frame, setFrame] = useState<string>(frames[0]?.value ?? "");
 
   const sizeMultiplier = sizes.find((s) => s.value === size)?.priceMultiplier ?? 1;
-  const price = Math.round(configuratorBasePrice * sizeMultiplier);
+  const frameMultiplier =
+    frames.find((f) => f.value === frame)?.priceMultiplier ?? 1;
+  const price = Math.round(configuratorBasePrice * sizeMultiplier * frameMultiplier);
 
   return (
     <div className="pt-32 pb-20">
@@ -175,7 +177,7 @@ export default function ConfiguratorPage() {
 
               <div>
                 <p className="font-button text-[10px] uppercase tracking-[0.2em] text-grey mb-4">
-                  Frame Finish
+                  Frame Material
                 </p>
                 <div className="flex gap-3 flex-wrap">
                   {frames.map((f) => (

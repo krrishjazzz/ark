@@ -28,27 +28,38 @@ export const sizeOptionFields = [
 export const frameOptionFields = [
   defineField({
     name: "label",
-    title: "Label",
+    title: "Material",
     type: "string",
+    description: "e.g. Acrylic, Wooden, Aluminum",
     validation: (rule) => rule.required(),
   }),
   defineField({
     name: "value",
     title: "Value",
     type: "string",
-    description: "Stable ID used in cart/checkout, e.g. black",
+    description: "Stable ID used in cart/checkout, e.g. acrylic",
     validation: (rule) => rule.required(),
   }),
   defineField({
     name: "hex",
-    title: "Color",
+    title: "Swatch Color",
     type: "string",
-    description: "Hex swatch, e.g. #111111",
+    description: "Hex swatch shown on the product page, e.g. #C0C0C0",
+    initialValue: "#888888",
     validation: (rule) =>
       rule.required().regex(/^#([0-9A-Fa-f]{3}|[0-9A-Fa-f]{6})$/, {
         name: "hex color",
         invert: false,
       }),
+  }),
+  defineField({
+    name: "priceMultiplier",
+    title: "Price Multiplier",
+    type: "number",
+    description:
+      "Final price = base × size multiplier × frame multiplier. Acrylic 1, Wooden 1.15, Aluminum 1.3, etc.",
+    initialValue: 1,
+    validation: (rule) => rule.required().positive(),
   }),
 ];
 
@@ -103,11 +114,16 @@ export const framesArrayMember = defineArrayMember({
   title: "Frame",
   fields: frameOptionFields,
   preview: {
-    select: { title: "label", subtitle: "value", hex: "hex" },
-    prepare({ title, subtitle, hex }) {
+    select: {
+      title: "label",
+      subtitle: "value",
+      hex: "hex",
+      multiplier: "priceMultiplier",
+    },
+    prepare({ title, subtitle, hex, multiplier }) {
       return {
         title: title || "Frame",
-        subtitle: `${subtitle || "—"} · ${hex || ""}`,
+        subtitle: `${subtitle || "—"} · ${hex || ""} · ×${multiplier ?? 1}`,
       };
     },
   },

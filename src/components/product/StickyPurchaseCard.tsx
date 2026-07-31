@@ -30,9 +30,21 @@ export function StickyPurchaseCard({ product, comingSoon = false }: StickyPurcha
   const [selectedFrame, setSelectedFrame] = useState<string>(defaultFrame);
   const { addToCart, calculatePrice, toggleWishlist, isInWishlist } = useStore();
 
-  const price = calculatePrice(product.basePrice, selectedSize, sizes);
+  const price = calculatePrice(
+    product.basePrice,
+    selectedSize,
+    sizes,
+    selectedFrame,
+    frames
+  );
   const compareAtPrice = product.compareAtPrice
-    ? calculatePrice(product.compareAtPrice, selectedSize, sizes)
+    ? calculatePrice(
+        product.compareAtPrice,
+        selectedSize,
+        sizes,
+        selectedFrame,
+        frames
+      )
     : undefined;
   const wished = isInWishlist(product.id);
   const whatsappHref = buildWhatsAppUrl(
@@ -127,7 +139,7 @@ export function StickyPurchaseCard({ product, comingSoon = false }: StickyPurcha
               className="mb-2"
             />
             <p className="text-[11px] text-grey mb-6">
-              Price updates with size
+              Price updates with size and frame
             </p>
 
             <div className="mb-6">
@@ -154,7 +166,7 @@ export function StickyPurchaseCard({ product, comingSoon = false }: StickyPurcha
 
             <div className="mb-8">
               <p className="font-button text-[10px] uppercase tracking-[0.2em] text-grey mb-3">
-                Frame
+                Frame Material
               </p>
               <div className="flex flex-wrap gap-3">
                 {frames.map((frame) => (

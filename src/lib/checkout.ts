@@ -1,17 +1,24 @@
-import { DEFAULT_SIZES } from "@/lib/constants";
+import { DEFAULT_FRAME_OPTIONS, DEFAULT_SIZES } from "@/lib/constants";
 import type { CartItem } from "@/types";
-import type { SizeOption } from "@/types/site-settings";
+import type { FrameOption, SizeOption } from "@/types/site-settings";
 
 export const SHIPPING_FEE = 2500;
 export const FREE_SHIPPING_THRESHOLD = 50000;
 
+/** Final price = base × sizeMultiplier × frameMultiplier */
 export function calculatePrice(
   basePrice: number,
   size: string,
-  sizes: readonly SizeOption[] = DEFAULT_SIZES
+  sizes: readonly SizeOption[] = DEFAULT_SIZES,
+  frame?: string,
+  frames: readonly FrameOption[] = DEFAULT_FRAME_OPTIONS
 ): number {
-  const sizeOption = sizes.find((s) => s.value === size);
-  return Math.round(basePrice * (sizeOption?.priceMultiplier ?? 1));
+  const sizeMultiplier =
+    sizes.find((s) => s.value === size)?.priceMultiplier ?? 1;
+  const frameMultiplier = frame
+    ? (frames.find((f) => f.value === frame)?.priceMultiplier ?? 1)
+    : 1;
+  return Math.round(basePrice * sizeMultiplier * frameMultiplier);
 }
 
 export function calculateCartTotals(items: Pick<CartItem, "price" | "quantity">[]) {

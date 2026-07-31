@@ -22,6 +22,7 @@ const navLinks = [
   { href: "/collections", label: "Collections" },
   { href: "/gallery", label: "Gallery" },
   { href: "/craftsmanship", label: "Craftsmanship" },
+  { href: "/unboxing", label: "Unboxing" },
   { href: "/custom-orders", label: "Custom" },
   { href: "/about", label: "About" },
   { href: "/contact", label: "Contact" },

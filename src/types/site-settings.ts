@@ -8,6 +8,8 @@ export interface FrameOption {
   label: string;
   value: string;
   hex: string;
+  /** Applied with size: base × sizeMultiplier × frameMultiplier */
+  priceMultiplier: number;
 }
 
 export interface LabeledOption {
@@ -17,6 +19,24 @@ export interface LabeledOption {
 
 export interface ResinColorOption extends LabeledOption {
   hex: string;
+}
+
+export interface ContentFeature {
+  icon: string;
+  title: string;
+  description: string;
+}
+
+export interface PackagingContentItem {
+  title: string;
+  description: string;
+  imageKey: "box" | "certificate" | "microfiber" | "thankYou";
+}
+
+export interface TimelineItem {
+  year: string;
+  title: string;
+  description: string;
 }
 
 export interface SiteSettings {
@@ -37,7 +57,7 @@ export interface SiteSettings {
   instagramImages: string[];
   /** Product purchase + configurator size options (editable in Sanity) */
   sizes: SizeOption[];
-  /** Frame finish options (editable in Sanity) */
+  /** Frame materials (editable in Sanity) */
   frames: FrameOption[];
   /** Garage / configurator manufacturer filters */
   manufacturers: string[];
@@ -47,6 +67,10 @@ export interface SiteSettings {
   resinColors: ResinColorOption[];
   /** Configurator starting price before size multiplier */
   configuratorBasePrice: number;
+  craftsmanshipFeatures: ContentFeature[];
+  whyARK: ContentFeature[];
+  packagingItems: PackagingContentItem[];
+  timeline: TimelineItem[];
 }
 
 export const EMPTY_SITE_SETTINGS: SiteSettings = {
@@ -71,4 +95,8 @@ export const EMPTY_SITE_SETTINGS: SiteSettings = {
   textures: [],
   resinColors: [],
   configuratorBasePrice: 0,
+  craftsmanshipFeatures: [],
+  whyARK: [],
+  packagingItems: [],
+  timeline: [],
 };

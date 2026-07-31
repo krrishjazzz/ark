@@ -3,12 +3,11 @@
 import Image from "next/image";
 import Link from "next/link";
 import { FadeIn } from "@/components/animations/FadeIn";
-import { timeline } from "@/lib/data/content";
 import { useSiteSettings } from "@/components/providers/SiteSettingsProvider";
 import { resolveImageSrc } from "@/lib/images";
 
 export function OurStory() {
-  const { brandBoardSecondary } = useSiteSettings();
+  const { brandBoardSecondary, timeline } = useSiteSettings();
 
   return (
     <section className="py-12 md:py-16 px-6 lg:px-8" aria-label="Our Story">

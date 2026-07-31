@@ -37,7 +37,13 @@ export async function validateAndPriceCart(items: ClientCartItem[]): Promise<Car
     }
 
     const quantity = Math.min(Math.max(1, item.quantity), 10);
-    const price = calculatePrice(product.basePrice, item.size, sizes);
+    const price = calculatePrice(
+      product.basePrice,
+      item.size,
+      sizes,
+      item.frame,
+      frames
+    );
     const image = product.images[0] ?? "/images/collection-car-grid.png";
 
     validated.push({

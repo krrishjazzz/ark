@@ -92,15 +92,15 @@ export const craftsmanshipFeatures = [
   },
   {
     icon: "Frame",
-    title: "Solid Wood Frame",
-    description: "Hardwood, precision-cut.",
+    title: "Premium Frames",
+    description: "Acrylic, wooden, or aluminum.",
   },
 ];
 
 export const whyARK = [
   {
     title: "Premium Materials",
-    description: "Only the finest resin, diecast models, and hardwood frames make it into an ARK piece.",
+    description: "Only the finest resin, diecast models, and frame materials make it into an ARK piece.",
     icon: "Gem",
   },
   {

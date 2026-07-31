@@ -103,9 +103,9 @@ export const product = defineType({
     }),
     defineField({
       name: "frames",
-      title: "Available Frames",
+      title: "Available Frame Materials",
       description:
-        "Frame finishes for this product only. Leave empty to use the global defaults from Site Settings.",
+        "Acrylic, Wooden, Aluminum, etc. — each with its own price multiplier. Leave empty to use Site Settings defaults. Add, edit, or remove freely.",
       type: "array",
       of: [framesArrayMember],
       group: "commerce",

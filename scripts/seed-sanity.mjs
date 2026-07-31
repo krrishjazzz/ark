@@ -691,9 +691,9 @@ async function seed() {
       { _key: "size-custom", _type: "sizeOption", label: "Custom Size", value: "custom", priceMultiplier: 2.5 },
     ],
     frames: [
-      { _key: "frame-black", _type: "frameOption", label: "Matte Black", value: "black", hex: "#111111" },
-      { _key: "frame-walnut", _type: "frameOption", label: "Walnut", value: "walnut", hex: "#5C4033" },
-      { _key: "frame-natural", _type: "frameOption", label: "Natural Oak", value: "natural", hex: "#C4A77D" },
+      { _key: "frame-acrylic", _type: "frameOption", label: "Acrylic", value: "acrylic", hex: "#B8D4E3", priceMultiplier: 1 },
+      { _key: "frame-wooden", _type: "frameOption", label: "Wooden", value: "wooden", hex: "#8B5A2B", priceMultiplier: 1.15 },
+      { _key: "frame-aluminum", _type: "frameOption", label: "Aluminum", value: "aluminum", hex: "#C0C0C0", priceMultiplier: 1.3 },
     ],
     manufacturers: [
       "Porsche",

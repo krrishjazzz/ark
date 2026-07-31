@@ -12,7 +12,7 @@ import {
 import { motion } from "framer-motion";
 import { SectionHeading } from "@/components/animations/SectionHeading";
 import { staggerContainer, staggerItem } from "@/components/animations/FadeIn";
-import { whyARK } from "@/lib/data/content";
+import { useSiteSettings } from "@/components/providers/SiteSettingsProvider";
 
 const iconMap: Record<string, LucideIcon> = {
   Gem,
@@ -24,6 +24,8 @@ const iconMap: Record<string, LucideIcon> = {
 };
 
 export function WhyARK() {
+  const { whyARK } = useSiteSettings();
+
   return (
     <section className="section-padding px-6 lg:px-8" aria-label="Why ARK">
       <div className="mx-auto max-w-7xl">

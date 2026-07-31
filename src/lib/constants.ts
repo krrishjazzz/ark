@@ -24,9 +24,9 @@ export const DEFAULT_SIZES = [
 ] as const;
 
 export const DEFAULT_FRAME_OPTIONS = [
-  { label: "Matte Black", value: "black", hex: "#111111" },
-  { label: "Walnut", value: "walnut", hex: "#5C4033" },
-  { label: "Natural Oak", value: "natural", hex: "#C4A77D" },
+  { label: "Acrylic", value: "acrylic", hex: "#B8D4E3", priceMultiplier: 1 },
+  { label: "Wooden", value: "wooden", hex: "#8B5A2B", priceMultiplier: 1.15 },
+  { label: "Aluminum", value: "aluminum", hex: "#C0C0C0", priceMultiplier: 1.3 },
 ] as const;
 
 export const DEFAULT_MANUFACTURERS = [
