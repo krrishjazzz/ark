@@ -54,11 +54,17 @@ interface SanityProduct {
   editionTotal?: number;
   featured?: boolean;
   collection?: string;
-  sizes?: Array<{ label?: string; value?: string; priceMultiplier?: number }>;
+  sizes?: Array<{
+    label?: string;
+    value?: string;
+    priceAdd?: number;
+    priceMultiplier?: number;
+  }>;
   frames?: Array<{
     label?: string;
     value?: string;
     hex?: string;
+    priceAdd?: number;
     priceMultiplier?: number;
   }>;
   craftsmanship?: string[];
@@ -70,6 +76,15 @@ interface SanityProduct {
     comment?: string;
     date?: string;
   }>;
+}
+
+function resolvePriceFields(
+  priceAdd?: number,
+  priceMultiplier?: number
+): { priceAdd?: number; priceMultiplier?: number } {
+  if (typeof priceAdd === "number") return { priceAdd };
+  if (typeof priceMultiplier === "number") return { priceMultiplier };
+  return { priceAdd: 0 };
 }
 
 function resolveSeriesFields(series?: string | SanitySeriesRef): {
@@ -92,17 +107,24 @@ function mapFrameList(
     label?: string;
     value?: string;
     hex?: string;
+    priceAdd?: number;
     priceMultiplier?: number;
   }>
 ): FrameOption[] {
   return (
     frames
-      ?.filter((f) => f?.label && f?.value && f?.hex)
+      ?.filter(
+        (f) =>
+          f?.label &&
+          f?.value &&
+          f?.hex &&
+          f.value !== "wooden" // removed until re-added in Studio
+      )
       .map((f) => ({
         label: f.label!,
         value: f.value!,
         hex: f.hex!,
-        priceMultiplier: f.priceMultiplier ?? 1,
+        ...resolvePriceFields(f.priceAdd, f.priceMultiplier),
       })) ?? []
   );
 }
@@ -117,7 +139,7 @@ function mapProductSizes(
       .map((s) => ({
         label: s.label!,
         value: s.value!,
-        priceMultiplier: s.priceMultiplier ?? 1,
+        ...resolvePriceFields(s.priceAdd, s.priceMultiplier),
       })) ?? [];
   return mapped.length > 0 ? mapped : undefined;
 }
@@ -171,11 +193,17 @@ interface SanitySiteSettings {
   packagingMicrofiber?: SanityImageSource;
   packagingThankYou?: SanityImageSource;
   instagramImages?: SanityImageSource[];
-  sizes?: Array<{ label?: string; value?: string; priceMultiplier?: number }>;
+  sizes?: Array<{
+    label?: string;
+    value?: string;
+    priceAdd?: number;
+    priceMultiplier?: number;
+  }>;
   frames?: Array<{
     label?: string;
     value?: string;
     hex?: string;
+    priceAdd?: number;
     priceMultiplier?: number;
   }>;
   manufacturers?: string[];
@@ -256,7 +284,7 @@ function mapSizes(
       .map((s) => ({
         label: s.label!,
         value: s.value!,
-        priceMultiplier: s.priceMultiplier ?? 1,
+        ...resolvePriceFields(s.priceAdd, s.priceMultiplier),
       })) ?? [];
   return mapped.length > 0 ? mapped : [...DEFAULT_SIZES];
 }

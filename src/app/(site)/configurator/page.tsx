@@ -6,6 +6,7 @@ import { SectionHeading } from "@/components/animations/SectionHeading";
 import { FadeIn } from "@/components/animations/FadeIn";
 import { Button } from "@/components/ui/button";
 import { useSiteSettings } from "@/components/providers/SiteSettingsProvider";
+import { calculatePrice } from "@/lib/checkout";
 import { resolveImageSrc } from "@/lib/images";
 import { cn, formatPrice } from "@/lib/utils";
 
@@ -24,13 +25,16 @@ export default function ConfiguratorPage() {
   const [model, setModel] = useState("911 GT3 RS");
   const [texture, setTexture] = useState(textures[0]?.value ?? "");
   const [resin, setResin] = useState(resinColors[0]?.value ?? "");
-  const [size, setSize] = useState<string>(sizes[1]?.value ?? sizes[0]?.value ?? "");
+  const [size, setSize] = useState<string>(sizes[0]?.value ?? "");
   const [frame, setFrame] = useState<string>(frames[0]?.value ?? "");
 
-  const sizeMultiplier = sizes.find((s) => s.value === size)?.priceMultiplier ?? 1;
-  const frameMultiplier =
-    frames.find((f) => f.value === frame)?.priceMultiplier ?? 1;
-  const price = Math.round(configuratorBasePrice * sizeMultiplier * frameMultiplier);
+  const price = calculatePrice(
+    configuratorBasePrice,
+    size,
+    sizes,
+    frame,
+    frames
+  );
 
   return (
     <div className="pt-32 pb-20">

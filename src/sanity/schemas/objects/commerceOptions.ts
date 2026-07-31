@@ -16,12 +16,12 @@ export const sizeOptionFields = [
     validation: (rule) => rule.required(),
   }),
   defineField({
-    name: "priceMultiplier",
-    title: "Price Multiplier",
+    name: "priceAdd",
+    title: "Extra Price (₹)",
     type: "number",
-    description: "Multiplied by product base price",
-    initialValue: 1,
-    validation: (rule) => rule.required().positive(),
+    description: "Added to the product sale price. Keep 0 when you only have one size.",
+    initialValue: 0,
+    validation: (rule) => rule.required().min(0),
   }),
 ];
 
@@ -53,13 +53,12 @@ export const frameOptionFields = [
       }),
   }),
   defineField({
-    name: "priceMultiplier",
-    title: "Price Multiplier",
+    name: "priceAdd",
+    title: "Extra Price (₹)",
     type: "number",
-    description:
-      "Final price = base × size multiplier × frame multiplier. Acrylic 1, Wooden 1.15, Aluminum 1.3, etc.",
-    initialValue: 1,
-    validation: (rule) => rule.required().positive(),
+    description: "Added to the product sale price. Acrylic = 0.",
+    initialValue: 0,
+    validation: (rule) => rule.required().min(0),
   }),
 ];
 
@@ -92,17 +91,22 @@ export const resinColorFields = [
   }),
 ];
 
+function formatAdd(add?: number) {
+  if (add == null || add === 0) return "+₹0";
+  return `+₹${add.toLocaleString("en-IN")}`;
+}
+
 export const sizesArrayMember = defineArrayMember({
   type: "object",
   name: "sizeOption",
   title: "Size",
   fields: sizeOptionFields,
   preview: {
-    select: { title: "label", subtitle: "value", multiplier: "priceMultiplier" },
-    prepare({ title, subtitle, multiplier }) {
+    select: { title: "label", subtitle: "value", add: "priceAdd" },
+    prepare({ title, subtitle, add }) {
       return {
         title: title || "Size",
-        subtitle: `${subtitle || "—"} · ×${multiplier ?? 1}`,
+        subtitle: `${subtitle || "—"} · ${formatAdd(add)}`,
       };
     },
   },
@@ -118,12 +122,12 @@ export const framesArrayMember = defineArrayMember({
       title: "label",
       subtitle: "value",
       hex: "hex",
-      multiplier: "priceMultiplier",
+      add: "priceAdd",
     },
-    prepare({ title, subtitle, hex, multiplier }) {
+    prepare({ title, subtitle, hex, add }) {
       return {
         title: title || "Frame",
-        subtitle: `${subtitle || "—"} · ${hex || ""} · ×${multiplier ?? 1}`,
+        subtitle: `${subtitle || "—"} · ${hex || ""} · ${formatAdd(add)}`,
       };
     },
   },

@@ -14,19 +14,14 @@ export const BRAND = {
   whatsapp: "https://wa.me/919163034822",
 } as const;
 
-/** Fallback defaults when Sanity Site Settings commerce arrays are empty */
+/** One standard size for all products — add more later in Sanity if needed */
 export const DEFAULT_SIZES = [
-  { label: '12" × 18"', value: "12x18", priceMultiplier: 1 },
-  { label: '16" × 24"', value: "16x24", priceMultiplier: 1.35 },
-  { label: '20" × 30"', value: "20x30", priceMultiplier: 1.75 },
-  { label: '24" × 36"', value: "24x36", priceMultiplier: 2.2 },
-  { label: "Custom Size", value: "custom", priceMultiplier: 2.5 },
+  { label: '16" × 24"', value: "16x24", priceAdd: 0 },
 ] as const;
 
+/** Acrylic only for now — add Wooden / Aluminum later in Sanity */
 export const DEFAULT_FRAME_OPTIONS = [
-  { label: "Acrylic", value: "acrylic", hex: "#B8D4E3", priceMultiplier: 1 },
-  { label: "Wooden", value: "wooden", hex: "#8B5A2B", priceMultiplier: 1.15 },
-  { label: "Aluminum", value: "aluminum", hex: "#C0C0C0", priceMultiplier: 1.3 },
+  { label: "Acrylic", value: "acrylic", hex: "#B8D4E3", priceAdd: 0 },
 ] as const;
 
 export const DEFAULT_MANUFACTURERS = [

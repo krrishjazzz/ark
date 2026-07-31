@@ -5,7 +5,10 @@ import type { FrameOption, SizeOption } from "@/types/site-settings";
 export const SHIPPING_FEE = 2500;
 export const FREE_SHIPPING_THRESHOLD = 50000;
 
-/** Final price = base × sizeMultiplier × frameMultiplier */
+/**
+ * Final price = sale price + size extra (₹) + frame extra (₹).
+ * With one size and Acrylic only, extras are 0 → price equals sale price.
+ */
 export function calculatePrice(
   basePrice: number,
   size: string,
@@ -13,12 +16,23 @@ export function calculatePrice(
   frame?: string,
   frames: readonly FrameOption[] = DEFAULT_FRAME_OPTIONS
 ): number {
-  const sizeMultiplier =
-    sizes.find((s) => s.value === size)?.priceMultiplier ?? 1;
-  const frameMultiplier = frame
-    ? (frames.find((f) => f.value === frame)?.priceMultiplier ?? 1)
-    : 1;
-  return Math.round(basePrice * sizeMultiplier * frameMultiplier);
+  const sizeOpt = sizes.find((s) => s.value === size);
+  const frameOpt = frame ? frames.find((f) => f.value === frame) : undefined;
+
+  const sizeAdd =
+    typeof sizeOpt?.priceAdd === "number"
+      ? sizeOpt.priceAdd
+      : typeof sizeOpt?.priceMultiplier === "number"
+        ? Math.round(basePrice * sizeOpt.priceMultiplier) - basePrice
+        : 0;
+  const frameAdd =
+    typeof frameOpt?.priceAdd === "number"
+      ? frameOpt.priceAdd
+      : typeof frameOpt?.priceMultiplier === "number"
+        ? Math.round(basePrice * frameOpt.priceMultiplier) - basePrice
+        : 0;
+
+  return Math.max(0, Math.round(basePrice + sizeAdd + frameAdd));
 }
 
 export function calculateCartTotals(items: Pick<CartItem, "price" | "quantity">[]) {

@@ -136,61 +136,66 @@ export function StickyPurchaseCard({ product, comingSoon = false }: StickyPurcha
               price={price}
               compareAtPrice={compareAtPrice}
               size="lg"
-              className="mb-2"
+              className="mb-6"
             />
-            <p className="text-[11px] text-grey mb-6">
-              Price updates with size and frame
-            </p>
 
-            <div className="mb-6">
-              <p className="font-button text-[10px] uppercase tracking-[0.2em] text-grey mb-3">
-                Size
-              </p>
-              <div className="flex flex-wrap gap-2">
-                {sizes.map((size) => (
-                  <button
-                    key={size.value}
-                    onClick={() => setSelectedSize(size.value)}
-                    className={cn(
-                      "font-button text-[9px] uppercase tracking-wider px-4 py-2.5 rounded-full border transition-all duration-300",
-                      selectedSize === size.value
-                        ? "border-gold bg-gold/10 text-gold"
-                        : "border-border text-grey hover:border-gold/30"
-                    )}
-                  >
-                    {size.label}
-                  </button>
-                ))}
+            {sizes.length > 1 && (
+              <div className="mb-6">
+                <p className="font-button text-[10px] uppercase tracking-[0.2em] text-grey mb-3">
+                  Size
+                </p>
+                <div className="flex flex-wrap gap-2">
+                  {sizes.map((size) => (
+                    <button
+                      key={size.value}
+                      onClick={() => setSelectedSize(size.value)}
+                      className={cn(
+                        "font-button text-[9px] uppercase tracking-wider px-4 py-2.5 rounded-full border transition-all duration-300",
+                        selectedSize === size.value
+                          ? "border-gold bg-gold/10 text-gold"
+                          : "border-border text-grey hover:border-gold/30"
+                      )}
+                    >
+                      {size.label}
+                    </button>
+                  ))}
+                </div>
               </div>
-            </div>
+            )}
 
-            <div className="mb-8">
-              <p className="font-button text-[10px] uppercase tracking-[0.2em] text-grey mb-3">
-                Frame Material
-              </p>
-              <div className="flex flex-wrap gap-3">
-                {frames.map((frame) => (
-                  <button
-                    key={frame.value}
-                    onClick={() => setSelectedFrame(frame.value)}
-                    className={cn(
-                      "flex items-center gap-2 px-4 py-2.5 rounded-full border transition-all duration-300",
-                      selectedFrame === frame.value
-                        ? "border-gold bg-gold/10"
-                        : "border-border hover:border-gold/30"
-                    )}
-                  >
-                    <span
-                      className="h-4 w-4 rounded-full border border-border"
-                      style={{ backgroundColor: frame.hex }}
-                    />
-                    <span className="font-button text-[9px] uppercase tracking-wider text-grey">
-                      {frame.label}
-                    </span>
-                  </button>
-                ))}
+            {frames.length > 1 && (
+              <div className="mb-8">
+                <p className="font-button text-[10px] uppercase tracking-[0.2em] text-grey mb-3">
+                  Frame Material
+                </p>
+                <div className="flex flex-wrap gap-3">
+                  {frames.map((frame) => (
+                    <button
+                      key={frame.value}
+                      onClick={() => setSelectedFrame(frame.value)}
+                      className={cn(
+                        "flex items-center gap-2 px-4 py-2.5 rounded-full border transition-all duration-300",
+                        selectedFrame === frame.value
+                          ? "border-gold bg-gold/10"
+                          : "border-border hover:border-gold/30"
+                      )}
+                    >
+                      <span
+                        className="h-4 w-4 rounded-full border border-border"
+                        style={{ backgroundColor: frame.hex }}
+                      />
+                      <span className="font-button text-[9px] uppercase tracking-wider text-grey">
+                        {frame.label}
+                      </span>
+                    </button>
+                  ))}
+                </div>
               </div>
-            </div>
+            )}
+
+            {sizes.length <= 1 && frames.length <= 1 && (
+              <div className="mb-8" />
+            )}
 
             <div className="flex flex-col gap-3 mb-4">
               <Button asChild variant="gold" className="w-full btn-shimmer">

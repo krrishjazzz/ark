@@ -129,7 +129,7 @@ export const siteSettings = defineType({
       name: "frames",
       title: "Default Frame Materials",
       description:
-        "Default materials (Acrylic, Wooden, Aluminum, …) with price multipliers. Override per product under Product → Sizes & Frames. Add, edit, or remove here.",
+        "Frame materials for all products. Acrylic only for now — add Wooden/Aluminum here when ready.",
       type: "array",
       of: [framesArrayMember],
       group: "commerce",

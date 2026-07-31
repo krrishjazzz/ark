@@ -91,21 +91,24 @@ export const product = defineType({
       name: "basePrice",
       title: "Sale Price (INR)",
       type: "number",
-      description: "This product’s own price — set per product.",
+      description:
+        "This is the price shown on the homepage and product page. Edit here — the site uses this value.",
       group: "commerce",
+      validation: (rule) => rule.required().min(0),
     }),
     defineField({
       name: "compareAtPrice",
-      title: "Original Price (INR)",
+      title: "Original Price (INR) — optional",
       type: "number",
-      description: "Shown crossed out when higher than the sale price.",
+      description:
+        "Only fill if you want a crossed-out “was” price. Leave empty to show sale price alone.",
       group: "commerce",
     }),
     defineField({
       name: "sizes",
       title: "Available Sizes",
       description:
-        "Sizes & multipliers for this product only.",
+        "Leave empty to use Site Settings (one size for all). Add only for product-specific sizes.",
       type: "array",
       of: [sizesArrayMember],
       group: "commerce",
@@ -114,7 +117,7 @@ export const product = defineType({
       name: "frames",
       title: "Available Frame Materials",
       description:
-        "Acrylic, Wooden, Aluminum — each with its own price multiplier for this product.",
+        "Leave empty to use Site Settings (Acrylic only for now). Add Wooden later when ready.",
       type: "array",
       of: [framesArrayMember],
       group: "commerce",

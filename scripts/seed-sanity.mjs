@@ -684,16 +684,10 @@ async function seed() {
 
   const commerceOptions = {
     sizes: [
-      { _key: "size-12x18", _type: "sizeOption", label: '12" × 18"', value: "12x18", priceMultiplier: 1 },
-      { _key: "size-16x24", _type: "sizeOption", label: '16" × 24"', value: "16x24", priceMultiplier: 1.35 },
-      { _key: "size-20x30", _type: "sizeOption", label: '20" × 30"', value: "20x30", priceMultiplier: 1.75 },
-      { _key: "size-24x36", _type: "sizeOption", label: '24" × 36"', value: "24x36", priceMultiplier: 2.2 },
-      { _key: "size-custom", _type: "sizeOption", label: "Custom Size", value: "custom", priceMultiplier: 2.5 },
+      { _key: "size-16x24", _type: "sizeOption", label: '16" × 24"', value: "16x24", priceAdd: 0 },
     ],
     frames: [
-      { _key: "frame-acrylic", _type: "frameOption", label: "Acrylic", value: "acrylic", hex: "#B8D4E3", priceMultiplier: 1 },
-      { _key: "frame-wooden", _type: "frameOption", label: "Wooden", value: "wooden", hex: "#8B5A2B", priceMultiplier: 1.15 },
-      { _key: "frame-aluminum", _type: "frameOption", label: "Aluminum", value: "aluminum", hex: "#C0C0C0", priceMultiplier: 1.3 },
+      { _key: "frame-acrylic", _type: "frameOption", label: "Acrylic", value: "acrylic", hex: "#B8D4E3", priceAdd: 0 },
     ],
     manufacturers: [
       "Porsche",

@@ -1,15 +1,20 @@
 export interface SizeOption {
   label: string;
   value: string;
-  priceMultiplier: number;
+  /** Extra ₹ on top of sale price (usually 0 when only one size) */
+  priceAdd?: number;
+  /** @deprecated use priceAdd */
+  priceMultiplier?: number;
 }
 
 export interface FrameOption {
   label: string;
   value: string;
   hex: string;
-  /** Applied with size: base × sizeMultiplier × frameMultiplier */
-  priceMultiplier: number;
+  /** Extra ₹ on top of sale price (Acrylic = 0) */
+  priceAdd?: number;
+  /** @deprecated use priceAdd */
+  priceMultiplier?: number;
 }
 
 export interface LabeledOption {
@@ -65,7 +70,7 @@ export interface SiteSettings {
   textures: LabeledOption[];
   /** Configurator resin colors */
   resinColors: ResinColorOption[];
-  /** Configurator starting price before size multiplier */
+  /** Configurator starting sale price before size/frame extras */
   configuratorBasePrice: number;
   craftsmanshipFeatures: ContentFeature[];
   whyARK: ContentFeature[];

@@ -47,8 +47,12 @@ export function mergeProduct(local: Product, sanity: Product): Product {
       : local.manufacturer,
     tagline: pickString(sanity.tagline, local.tagline),
     description: pickString(sanity.description, local.description),
-    basePrice: local.basePrice > 0 ? local.basePrice : pickPrice(sanity.basePrice, local.basePrice),
-    compareAtPrice: local.compareAtPrice ?? sanity.compareAtPrice,
+    // Sanity wins for pricing so Studio edits show on the site
+    basePrice: pickPrice(sanity.basePrice, local.basePrice),
+    compareAtPrice:
+      sanity.compareAtPrice != null && sanity.compareAtPrice > 0
+        ? sanity.compareAtPrice
+        : undefined,
     images: sanity.images.length > 0 ? sanity.images : local.images,
     edition: {
       current:
