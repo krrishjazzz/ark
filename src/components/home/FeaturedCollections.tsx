@@ -6,7 +6,6 @@ import { motion } from "framer-motion";
 import { Clock } from "lucide-react";
 import { FadeIn, staggerContainer, staggerItem } from "@/components/animations/FadeIn";
 import { ProductCard } from "@/components/product/ProductCard";
-import { CustomOrderCard } from "@/components/product/CustomOrderCard";
 import { resolveImageSrc } from "@/lib/images";
 import { isComingSoonCollection } from "@/lib/data/collections";
 import {
@@ -92,10 +91,24 @@ function ComingSoonStrip({ collections }: { collections: Collection[] }) {
   );
 }
 
+function isFordProduct(product: Product): boolean {
+  const manufacturer = product.manufacturer?.toLowerCase() ?? "";
+  const slug = product.slug.toLowerCase();
+  const name = product.name.toLowerCase();
+  return (
+    manufacturer === "ford" ||
+    slug.includes("ford") ||
+    slug.includes("mustang") ||
+    name.includes("ford") ||
+    name.includes("mustang")
+  );
+}
+
 export function FeaturedCollections({ collections, products }: FeaturedCollectionsProps) {
   const upcoming = collections.filter((c) => c.comingSoon);
+  // Home: hide Ford pieces — Custom Frame card fills that slot instead
   const liveProducts = products.filter(
-    (p) => !isComingSoonCollection(p.collection)
+    (p) => !isComingSoonCollection(p.collection) && !isFordProduct(p)
   );
   const liveCollections = collections.filter((c) => !c.comingSoon);
 
@@ -145,12 +158,6 @@ export function FeaturedCollections({ collections, products }: FeaturedCollectio
                   <ProductCard product={product} />
                 </motion.div>
               ))}
-              <motion.div
-                variants={staggerItem}
-                className="w-[calc(50%-0.375rem)] sm:w-[calc(50%-0.625rem)] lg:w-[calc(33.333%-0.875rem)]"
-              >
-                <CustomOrderCard />
-              </motion.div>
             </motion.div>
           </>
         )}

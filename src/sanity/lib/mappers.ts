@@ -1,6 +1,6 @@
 import type { SanityImageSource } from "@sanity/image-url";
 import { getImageUrl } from "@/sanity/lib/image";
-import type { Product, Collection, Testimonial } from "@/types";
+import type { Product, ProductSeries, Collection, Testimonial } from "@/types";
 import {
   DEFAULT_CONFIGURATOR_BASE_PRICE,
   DEFAULT_FRAME_OPTIONS,
@@ -27,11 +27,23 @@ import {
   type TimelineItem,
 } from "@/types/site-settings";
 
+interface SanitySeriesRef {
+  _id?: string;
+  name?: string;
+  slug?: string;
+  collection?: string;
+  sortOrder?: number;
+  slotCount?: number;
+  description?: string;
+  comingSoon?: boolean;
+}
+
 interface SanityProduct {
   _id: string;
   slug: string;
   name: string;
-  series?: string;
+  /** Reference object after migration, or legacy string */
+  series?: string | SanitySeriesRef;
   manufacturer?: string;
   tagline?: string;
   description?: string;
@@ -58,6 +70,21 @@ interface SanityProduct {
     comment?: string;
     date?: string;
   }>;
+}
+
+function resolveSeriesFields(series?: string | SanitySeriesRef): {
+  series: string;
+  seriesSlug?: string;
+  seriesOrder?: number;
+} {
+  if (!series) return { series: "" };
+  if (typeof series === "string") return { series };
+  return {
+    series: series.name || "",
+    seriesSlug: series.slug || undefined,
+    seriesOrder:
+      typeof series.sortOrder === "number" ? series.sortOrder : undefined,
+  };
 }
 
 function mapFrameList(
@@ -284,11 +311,12 @@ function mapImage(image?: SanityImageSource, width = 1200): string {
 }
 
 export function mapSanityProduct(doc: SanityProduct): Product {
+  const seriesFields = resolveSeriesFields(doc.series);
   return {
     id: doc._id,
     slug: doc.slug,
     name: doc.name,
-    series: doc.series || "",
+    ...seriesFields,
     manufacturer: doc.manufacturer,
     tagline: doc.tagline || "",
     description: doc.description || "",
@@ -315,6 +343,20 @@ export function mapSanityProduct(doc: SanityProduct): Product {
         date: r.date || new Date().toISOString().split("T")[0],
       })
     ),
+  };
+}
+
+export function mapSanitySeries(doc: SanitySeriesRef & { _id: string }): ProductSeries {
+  return {
+    id: doc._id,
+    name: doc.name || "",
+    slug: doc.slug || "",
+    collection: doc.collection || "",
+    sortOrder: doc.sortOrder ?? 99,
+    slotCount:
+      typeof doc.slotCount === "number" && doc.slotCount > 0 ? doc.slotCount : 3,
+    description: doc.description || "",
+    comingSoon: doc.comingSoon ?? false,
   };
 }
 

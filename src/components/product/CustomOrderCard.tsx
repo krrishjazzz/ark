@@ -26,7 +26,7 @@ export function CustomOrderCard({ className }: CustomOrderCardProps) {
               Your Piece
             </p>
             <p className="font-heading text-lg sm:text-2xl font-light text-foreground/40 leading-snug">
-              Empty Frame
+              Custom Frame
             </p>
             <p className="mt-3 text-[10px] sm:text-xs text-grey max-w-[10rem] leading-snug">
               Any car. Any vision. Made for you.
@@ -46,7 +46,7 @@ export function CustomOrderCard({ className }: CustomOrderCardProps) {
           Bespoke
         </p>
         <h3 className="font-heading text-sm sm:text-xl font-light text-foreground group-hover:text-gold transition-colors duration-500 leading-snug">
-          Custom Order
+          Custom Frame
         </h3>
         <p className="text-xs text-grey mt-1 hidden sm:block">
           Bespoke · 40+ hrs · WhatsApp brief

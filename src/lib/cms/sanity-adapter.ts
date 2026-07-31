@@ -9,16 +9,19 @@ import {
   testimonialsQuery,
   galleryImagesQuery,
   siteSettingsQuery,
+  seriesByCollectionQuery,
+  siteSettingsSeriesQuery,
 } from "@/sanity/queries";
 import {
   mapSanityProduct,
   mapSanityCollection,
+  mapSanitySeries,
   mapSanityTestimonial,
   mapSanityGalleryImage,
   mapSiteSettings,
 } from "@/sanity/lib/mappers";
 import type { CMSAdapter } from "@/lib/cms/types";
-import type { Product, Collection, Testimonial } from "@/types";
+import type { Product, ProductSeries, Collection, Testimonial } from "@/types";
 import type { SiteSettings } from "@/types/site-settings";
 
 export class SanityCMSAdapter implements CMSAdapter {
@@ -65,6 +68,24 @@ export class SanityCMSAdapter implements CMSAdapter {
   async getSiteSettings(): Promise<SiteSettings> {
     const doc = await client.fetch(siteSettingsQuery, {}, sanityFetchOptions);
     return mapSiteSettings(doc);
+  }
+
+  async getSeriesByCollection(collection: string): Promise<ProductSeries[]> {
+    const docs = await client.fetch(
+      seriesByCollectionQuery,
+      { collection },
+      sanityFetchOptions
+    );
+    return (docs || []).map(mapSanitySeries);
+  }
+
+  async getSeriesFromSiteSettings(collection: string): Promise<ProductSeries[]> {
+    const doc = await client.fetch(siteSettingsSeriesQuery, {}, sanityFetchOptions);
+    const list = (doc?.collectionSeries || [])
+      .filter(Boolean)
+      .map(mapSanitySeries)
+      .filter((s: ProductSeries) => s.collection === collection);
+    return list;
   }
 
   async submitCustomOrder(data: Record<string, unknown>) {

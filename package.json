@@ -10,6 +10,7 @@
     "studio": "sanity dev",
     "seed": "node scripts/seed-sanity.mjs",
     "seed:commerce": "node scripts/seed-commerce-options.mjs",
+    "seed:series": "node scripts/seed-series.mjs",
     "sync:sanity": "node scripts/sync-sanity-products.mjs",
     "debug:images": "node scripts/debug-images.mjs"
   },

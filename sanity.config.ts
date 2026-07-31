@@ -24,9 +24,17 @@ export default defineConfig({
                   .schemaType("siteSettings")
                   .documentId("siteSettings")
               ),
+            S.listItem()
+              .title("Series")
+              .child(
+                S.documentTypeList("productSeries")
+                  .title("Series")
+                  .defaultOrdering([{ field: "sortOrder", direction: "asc" }])
+              ),
             S.divider(),
             ...S.documentTypeListItems().filter(
-              (item) => item.getId() !== "siteSettings"
+              (item) =>
+                item.getId() !== "siteSettings" && item.getId() !== "productSeries"
             ),
           ]),
     }),

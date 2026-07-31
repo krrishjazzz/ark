@@ -3,12 +3,12 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import { Clock } from "lucide-react";
 import { SectionHeading } from "@/components/animations/SectionHeading";
-import { ProductCard } from "@/components/product/ProductCard";
-import { CustomOrderCard } from "@/components/product/CustomOrderCard";
+import { CollectionSeriesSections } from "@/components/collections/CollectionSeriesSections";
 import {
   fetchCollection,
   fetchCollections,
   fetchProductsByCollection,
+  fetchSeriesForCollection,
 } from "@/lib/cms";
 import { Badge } from "@/components/ui/badge";
 import { resolveImageSrc } from "@/lib/images";
@@ -42,7 +42,10 @@ export default async function CollectionDetailPage({ params }: Props) {
   const collection = await fetchCollection(slug);
   if (!collection) notFound();
 
-  const products = await fetchProductsByCollection(slug);
+  const [products, seriesList] = await Promise.all([
+    fetchProductsByCollection(slug),
+    fetchSeriesForCollection(slug),
+  ]);
   const interestHref = buildWhatsAppUrl(
     buildCollectionInterestMessage(collection.name)
   );
@@ -79,7 +82,7 @@ export default async function CollectionDetailPage({ params }: Props) {
       </div>
 
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
-        {products.length > 0 ? (
+        {products.length > 0 || seriesList.length > 0 ? (
           <>
             {collection.comingSoon && (
               <div className="mb-10 rounded-[20px] border border-gold/20 bg-gold/5 px-6 py-5 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
@@ -101,21 +104,11 @@ export default async function CollectionDetailPage({ params }: Props) {
                 </a>
               </div>
             )}
-            <div className="flex flex-wrap justify-center gap-3 sm:gap-8">
-              {products.map((product) => (
-                <div
-                  key={product.id}
-                  className="w-[calc(50%-0.375rem)] sm:w-[calc(50%-1rem)] lg:w-[calc(33.333%-1.375rem)]"
-                >
-                  <ProductCard product={product} />
-                </div>
-              ))}
-              {slug === "cars" && !collection.comingSoon && (
-                <div className="w-[calc(50%-0.375rem)] sm:w-[calc(50%-1rem)] lg:w-[calc(33.333%-1.375rem)]">
-                  <CustomOrderCard />
-                </div>
-              )}
-            </div>
+
+            <CollectionSeriesSections
+              products={products}
+              seriesList={seriesList}
+            />
           </>
         ) : collection.comingSoon ? (
           <div className="text-center max-w-xl mx-auto">

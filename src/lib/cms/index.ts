@@ -12,7 +12,7 @@ import {
   mergeProduct,
   getSanitySlugsForLocal,
 } from "@/lib/cms/merge";
-import type { Product, Collection, Testimonial } from "@/types";
+import type { Product, ProductSeries, Collection, Testimonial } from "@/types";
 import type { SiteSettings } from "@/types/site-settings";
 import { EMPTY_SITE_SETTINGS } from "@/types/site-settings";
 import {
@@ -196,6 +196,63 @@ export async function fetchSiteSettings(): Promise<SiteSettings> {
     console.warn("[CMS] Sanity site settings fetch failed:", error);
   }
   return siteSettingsWithCommerceDefaults();
+}
+
+const LOCAL_CAR_SERIES: ProductSeries[] = [
+  {
+    id: "local-environment",
+    name: "Environment",
+    slug: "environment",
+    collection: "cars",
+    sortOrder: 1,
+    slotCount: 3,
+    description: "Machines set in sculpted landscapes and atmospheric resin worlds.",
+  },
+  {
+    id: "local-drift",
+    name: "Drift",
+    slug: "drift",
+    collection: "cars",
+    sortOrder: 2,
+    slotCount: 3,
+    description: "Motion frozen mid-slide — smoke, marble, and speed.",
+  },
+  {
+    id: "local-lego",
+    name: "Lego",
+    slug: "lego",
+    collection: "cars",
+    sortOrder: 3,
+    slotCount: 3,
+    description: "Iconic builds reimagined as resin gallery pieces.",
+  },
+  {
+    id: "local-small-car",
+    name: "Small Car",
+    slug: "small-car",
+    collection: "cars",
+    sortOrder: 4,
+    slotCount: 3,
+    description: "Compact icons, big presence.",
+    comingSoon: true,
+  },
+];
+
+export async function fetchSeriesForCollection(
+  collection: string
+): Promise<ProductSeries[]> {
+  try {
+    // Prefer Site Settings → Collection Series Order when set for this collection
+    const fromSettings = await sanity.getSeriesFromSiteSettings(collection);
+    if (fromSettings.length > 0) return fromSettings;
+
+    const series = await sanity.getSeriesByCollection(collection);
+    if (series.length > 0) return series;
+  } catch (error) {
+    console.warn("[CMS] Sanity series fetch failed:", error);
+  }
+  if (collection === "cars") return LOCAL_CAR_SERIES;
+  return [];
 }
 
 export async function fetchRelatedProducts(slug: string, limit = 4) {

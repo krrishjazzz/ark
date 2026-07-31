@@ -3,9 +3,12 @@ import Link from "next/link";
 import Image from "next/image";
 import { ArrowUpRight, Clock } from "lucide-react";
 import { SectionHeading } from "@/components/animations/SectionHeading";
-import { ProductCard } from "@/components/product/ProductCard";
-import { CustomOrderCard } from "@/components/product/CustomOrderCard";
-import { fetchProducts, fetchCollections } from "@/lib/cms";
+import { CollectionSeriesSections } from "@/components/collections/CollectionSeriesSections";
+import {
+  fetchProducts,
+  fetchCollections,
+  fetchSeriesForCollection,
+} from "@/lib/cms";
 import { isComingSoonCollection } from "@/lib/data/collections";
 import { resolveImageSrc } from "@/lib/images";
 import { Badge } from "@/components/ui/badge";
@@ -13,6 +16,7 @@ import {
   buildCollectionInterestMessage,
   buildWhatsAppUrl,
 } from "@/lib/whatsapp";
+import type { ProductSeries } from "@/types";
 
 export const metadata: Metadata = {
   title: "Collections",
@@ -29,6 +33,14 @@ export default async function CollectionsPage() {
   const upcoming = collections.filter((c) => c.comingSoon);
   const liveProducts = products.filter((p) => !isComingSoonCollection(p.collection));
 
+  const seriesByCollection = new Map<string, ProductSeries[]>();
+  await Promise.all(
+    liveCollections.map(async (collection) => {
+      const series = await fetchSeriesForCollection(collection.slug);
+      seriesByCollection.set(collection.slug, series);
+    })
+  );
+
   return (
     <div className="pt-32 pb-20">
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
@@ -38,17 +50,20 @@ export default async function CollectionsPage() {
           description="Shop available pieces today. Browse upcoming collections and preview what's launching next."
         />
 
-        {liveProducts.length > 0 && (
-          <div className="mb-20">
+        {liveCollections.length > 0 && (
+          <div className="mb-20 space-y-20">
             {liveCollections.map((collection) => {
               const collectionProducts = liveProducts.filter(
                 (p) => p.collection === collection.slug
               );
-              if (collectionProducts.length === 0) return null;
+              const seriesList = seriesByCollection.get(collection.slug) ?? [];
+              if (collectionProducts.length === 0 && seriesList.length === 0) {
+                return null;
+              }
 
               return (
-                <div key={collection.id} className="mb-16 last:mb-0">
-                  <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-8">
+                <div key={collection.id}>
+                  <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-10">
                     <div>
                       <p className="font-button text-[10px] uppercase tracking-[0.3em] text-gold mb-2">
                         Available Now
@@ -56,7 +71,9 @@ export default async function CollectionsPage() {
                       <h2 className="font-heading text-3xl md:text-4xl font-light text-foreground">
                         {collection.name}
                       </h2>
-                      <p className="text-sm text-grey mt-2 max-w-xl">{collection.description}</p>
+                      <p className="text-sm text-grey mt-2 max-w-xl">
+                        {collection.description}
+                      </p>
                     </div>
                     <Link
                       href={`/collections/${collection.slug}`}
@@ -65,21 +82,11 @@ export default async function CollectionsPage() {
                       View collection →
                     </Link>
                   </div>
-                  <div className="flex flex-wrap justify-center gap-3 sm:gap-8">
-                    {collectionProducts.map((product) => (
-                      <div
-                        key={product.id}
-                        className="w-[calc(50%-0.375rem)] sm:w-[calc(50%-1rem)] lg:w-[calc(33.333%-1.375rem)]"
-                      >
-                        <ProductCard product={product} />
-                      </div>
-                    ))}
-                    {collection.slug === "cars" && (
-                      <div className="w-[calc(50%-0.375rem)] sm:w-[calc(50%-1rem)] lg:w-[calc(33.333%-1.375rem)]">
-                        <CustomOrderCard />
-                      </div>
-                    )}
-                  </div>
+
+                  <CollectionSeriesSections
+                    products={collectionProducts}
+                    seriesList={seriesList}
+                  />
                 </div>
               );
             })}

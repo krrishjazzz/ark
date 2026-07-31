@@ -40,6 +40,8 @@ export function mergeProduct(local: Product, sanity: Product): Product {
     slug: local.slug,
     name: pickString(sanity.name, local.name),
     series: pickString(sanity.series, local.series),
+    seriesSlug: sanity.seriesSlug || local.seriesSlug,
+    seriesOrder: sanity.seriesOrder ?? local.seriesOrder,
     manufacturer: hasText(sanity.manufacturer)
       ? sanity.manufacturer
       : local.manufacturer,

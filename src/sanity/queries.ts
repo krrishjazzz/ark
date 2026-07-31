@@ -1,10 +1,20 @@
 import { imageAssetFields } from "./queries/image-projection";
 
+const seriesProjection = `series->{
+  _id,
+  name,
+  "slug": slug.current,
+  collection,
+  sortOrder,
+  description,
+  comingSoon
+}`;
+
 export const productsQuery = `*[_type == "product"] | order(name asc) {
   _id,
   name,
   "slug": slug.current,
-  series,
+  ${seriesProjection},
   manufacturer,
   tagline,
   description,
@@ -27,7 +37,7 @@ export const productBySlugQuery = `*[_type == "product" && slug.current == $slug
   _id,
   name,
   "slug": slug.current,
-  series,
+  ${seriesProjection},
   manufacturer,
   tagline,
   description,
@@ -50,7 +60,7 @@ export const featuredProductsQuery = `*[_type == "product" && featured == true] 
   _id,
   name,
   "slug": slug.current,
-  series,
+  ${seriesProjection},
   manufacturer,
   tagline,
   description,
@@ -67,6 +77,30 @@ export const featuredProductsQuery = `*[_type == "product" && featured == true] 
   packaging,
   shipping,
   reviews
+}`;
+
+export const seriesByCollectionQuery = `*[_type == "productSeries" && collection == $collection] | order(sortOrder asc) {
+  _id,
+  name,
+  "slug": slug.current,
+  collection,
+  sortOrder,
+  slotCount,
+  description,
+  comingSoon
+}`;
+
+export const siteSettingsSeriesQuery = `*[_type == "siteSettings" && _id == "siteSettings"][0]{
+  collectionSeries[]->{
+    _id,
+    name,
+    "slug": slug.current,
+    collection,
+    sortOrder,
+    slotCount,
+    description,
+    comingSoon
+  }
 }`;
 
 export const collectionsQuery = `*[_type == "collection"] | order(name asc) {
@@ -125,6 +159,16 @@ export const siteSettingsQuery = `*[_type == "siteSettings" && _id == "siteSetti
   sizes[]{ label, value, priceMultiplier },
   frames[]{ label, value, hex, priceMultiplier },
   manufacturers,
+  collectionSeries[]->{
+    _id,
+    name,
+    "slug": slug.current,
+    collection,
+    sortOrder,
+    slotCount,
+    description,
+    comingSoon
+  },
   textures[]{ label, value },
   resinColors[]{ label, value, hex },
   configuratorBasePrice,

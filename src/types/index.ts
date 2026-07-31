@@ -1,10 +1,25 @@
 import type { FrameOption, SizeOption } from "@/types/site-settings";
 
+export interface ProductSeries {
+  id: string;
+  name: string;
+  slug: string;
+  collection: string;
+  sortOrder: number;
+  /** Cards to show in the series row (products + blanks), default 3 */
+  slotCount: number;
+  description?: string;
+  comingSoon?: boolean;
+}
+
 export interface Product {
   id: string;
   slug: string;
   name: string;
+  /** Display name of the sub-series (e.g. Environment) */
   series: string;
+  seriesSlug?: string;
+  seriesOrder?: number;
   manufacturer?: string;
   tagline: string;
   description: string;

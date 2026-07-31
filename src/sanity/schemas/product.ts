@@ -10,7 +10,7 @@ export const product = defineType({
   type: "document",
   groups: [
     { name: "details", title: "Details", default: true },
-    { name: "commerce", title: "Sizes & Frames" },
+    { name: "commerce", title: "Price, Sizes & Frames" },
     { name: "content", title: "Content" },
   ],
   fields: [
@@ -29,7 +29,15 @@ export const product = defineType({
       validation: (r) => r.required(),
       group: "details",
     }),
-    defineField({ name: "series", title: "Series", type: "string", group: "details" }),
+    defineField({
+      name: "series",
+      title: "Series",
+      type: "reference",
+      to: [{ type: "productSeries" }],
+      description:
+        "Sub-series within a collection (Environment, Drift, Lego, Small Car…). Create/edit under Series in Studio.",
+      group: "details",
+    }),
     defineField({
       name: "manufacturer",
       title: "Manufacturer",
@@ -42,19 +50,6 @@ export const product = defineType({
       title: "Description",
       type: "text",
       rows: 4,
-      group: "details",
-    }),
-    defineField({
-      name: "basePrice",
-      title: "Sale Price (INR)",
-      type: "number",
-      group: "details",
-    }),
-    defineField({
-      name: "compareAtPrice",
-      title: "Original Price (INR)",
-      type: "number",
-      description: "Shown crossed out when higher than the sale price.",
       group: "details",
     }),
     defineField({
@@ -93,10 +88,24 @@ export const product = defineType({
     }),
 
     defineField({
+      name: "basePrice",
+      title: "Sale Price (INR)",
+      type: "number",
+      description: "This product’s own price — set per product.",
+      group: "commerce",
+    }),
+    defineField({
+      name: "compareAtPrice",
+      title: "Original Price (INR)",
+      type: "number",
+      description: "Shown crossed out when higher than the sale price.",
+      group: "commerce",
+    }),
+    defineField({
       name: "sizes",
       title: "Available Sizes",
       description:
-        "Sizes for this product only. Leave empty to use the global defaults from Site Settings.",
+        "Sizes & multipliers for this product only.",
       type: "array",
       of: [sizesArrayMember],
       group: "commerce",
@@ -105,7 +114,7 @@ export const product = defineType({
       name: "frames",
       title: "Available Frame Materials",
       description:
-        "Acrylic, Wooden, Aluminum, etc. — each with its own price multiplier. Leave empty to use Site Settings defaults. Add, edit, or remove freely.",
+        "Acrylic, Wooden, Aluminum — each with its own price multiplier for this product.",
       type: "array",
       of: [framesArrayMember],
       group: "commerce",

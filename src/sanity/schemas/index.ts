@@ -1,4 +1,5 @@
 import { product } from "./product";
+import { productSeries } from "./productSeries";
 import { collection } from "./collection";
 import { testimonial } from "./testimonial";
 import { galleryImage } from "./galleryImage";
@@ -7,6 +8,7 @@ import { siteSettings } from "./siteSettings";
 
 export const schemaTypes = [
   product,
+  productSeries,
   collection,
   testimonial,
   galleryImage,

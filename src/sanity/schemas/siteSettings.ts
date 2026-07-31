@@ -18,6 +18,7 @@ export const siteSettings = defineType({
   groups: [
     { name: "images", title: "Images", default: true },
     { name: "commerce", title: "Sizes & Frames" },
+    { name: "series", title: "Series" },
     { name: "configurator", title: "Configurator" },
     { name: "content", title: "Page Content" },
   ],
@@ -141,6 +142,21 @@ export const siteSettings = defineType({
       of: [{ type: "string" }],
       options: { layout: "tags" },
       group: "commerce",
+    }),
+
+    defineField({
+      name: "collectionSeries",
+      title: "Collection Series Order",
+      description:
+        "Add, remove, or reorder series shown on collection pages. Array order = display order. Leave empty to use all Series documents by Sort Order. Create series under Series in the sidebar first.",
+      type: "array",
+      of: [
+        {
+          type: "reference",
+          to: [{ type: "productSeries" }],
+        },
+      ],
+      group: "series",
     }),
 
     defineField({
