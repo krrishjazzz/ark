@@ -25,6 +25,13 @@ export default defineConfig({
                   .documentId("siteSettings")
               ),
             S.listItem()
+              .title("Shop Orders")
+              .child(
+                S.documentTypeList("order")
+                  .title("Shop Orders")
+                  .defaultOrdering([{ field: "paidAt", direction: "desc" }])
+              ),
+            S.listItem()
               .title("Series")
               .child(
                 S.documentTypeList("productSeries")
@@ -34,7 +41,9 @@ export default defineConfig({
             S.divider(),
             ...S.documentTypeListItems().filter(
               (item) =>
-                item.getId() !== "siteSettings" && item.getId() !== "productSeries"
+                item.getId() !== "siteSettings" &&
+                item.getId() !== "productSeries" &&
+                item.getId() !== "order"
             ),
           ]),
     }),

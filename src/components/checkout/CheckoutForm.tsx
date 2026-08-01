@@ -99,17 +99,26 @@ export function CheckoutForm() {
               throw new Error(verifyData.error || "Payment verification failed");
             }
 
+            const trackingCode = verifyData.order?.trackingCode as
+              | string
+              | undefined;
+
             sessionStorage.setItem(
               "ark-last-order",
               JSON.stringify({
                 paymentId: response.razorpay_payment_id,
                 orderId: response.razorpay_order_id,
+                trackingCode,
                 total: createData.totals.total,
               })
             );
 
             clearCart();
-            router.push(`/checkout/success?payment_id=${response.razorpay_payment_id}`);
+            const successQs = new URLSearchParams({
+              payment_id: response.razorpay_payment_id,
+            });
+            if (trackingCode) successQs.set("code", trackingCode);
+            router.push(`/checkout/success?${successQs.toString()}`);
           } catch (verifyError) {
             const message =
               verifyError instanceof Error ? verifyError.message : "Verification failed";

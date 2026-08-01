@@ -1,7 +1,9 @@
 import { NextResponse } from "next/server";
 import { verifyRazorpaySignature } from "@/lib/payments/razorpay";
-import type { CheckoutCustomer } from "@/lib/checkout";
+import type { CheckoutCustomer, CheckoutTotals } from "@/lib/checkout";
 import type { CartItem } from "@/types";
+import { createPaidOrder } from "@/lib/orders";
+import { notifyOwnerNewOrder, ownerWhatsAppNotifyUrl } from "@/lib/orders/notify";
 
 export async function POST(req: Request) {
   try {
@@ -19,11 +21,15 @@ export async function POST(req: Request) {
       razorpay_signature: string;
       customer: CheckoutCustomer;
       items: CartItem[];
-      totals: { subtotal: number; shipping: number; total: number };
+      totals: CheckoutTotals;
     };
 
     if (!razorpay_order_id || !razorpay_payment_id || !razorpay_signature) {
       return NextResponse.json({ error: "Missing payment details" }, { status: 400 });
+    }
+
+    if (!customer?.name || !customer.email || !items?.length || !totals) {
+      return NextResponse.json({ error: "Missing order details" }, { status: 400 });
     }
 
     const valid = verifyRazorpaySignature(
@@ -36,21 +42,34 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "Payment verification failed" }, { status: 400 });
     }
 
-    const order = {
-      orderId: razorpay_order_id,
-      paymentId: razorpay_payment_id,
+    const order = await createPaidOrder({
+      razorpayOrderId: razorpay_order_id,
+      razorpayPaymentId: razorpay_payment_id,
       customer,
       items,
       totals,
-      status: "paid",
-      createdAt: new Date().toISOString(),
-    };
+    });
 
-    console.info("[checkout/verify] Order confirmed:", order);
+    // Fire-and-forget owner alerts (Sanity is source of truth)
+    void notifyOwnerNewOrder(order).catch((err) => {
+      console.error("[checkout/verify] notify failed:", err);
+    });
 
-    return NextResponse.json({ success: true, order });
+    return NextResponse.json({
+      success: true,
+      order: {
+        trackingCode: order.trackingCode,
+        orderId: order.razorpayOrderId,
+        paymentId: order.razorpayPaymentId,
+        total: order.total,
+        status: order.status,
+        ownerWhatsAppUrl: ownerWhatsAppNotifyUrl(order),
+      },
+    });
   } catch (error) {
     console.error("[checkout/verify]", error);
-    return NextResponse.json({ error: "Verification failed" }, { status: 500 });
+    const message =
+      error instanceof Error ? error.message : "Verification failed";
+    return NextResponse.json({ error: message }, { status: 500 });
   }
 }

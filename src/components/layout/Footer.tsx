@@ -13,6 +13,7 @@ const footerLinks = {
     { href: "/garage", label: "Garage Collection" },
     { href: "/configurator", label: "Build Your Frame" },
     { href: "/custom-orders", label: "Custom Orders" },
+    { href: "/track", label: "Track Order" },
   ],
   company: [
     { href: "/about", label: "About" },

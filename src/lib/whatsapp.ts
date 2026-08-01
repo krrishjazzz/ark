@@ -16,3 +16,7 @@ export function buildProductEnquiryMessage(productName: string, comingSoon = fal
 export function buildCollectionInterestMessage(collectionName: string): string {
   return `Hi ARK! Please notify me when the *${collectionName}* collection launches. I'd like to register my interest.`;
 }
+
+export function buildOrderTrackingMessage(trackingCode: string): string {
+  return `Hi ARK! I'd like an update on order *${trackingCode}*.`;
+}
