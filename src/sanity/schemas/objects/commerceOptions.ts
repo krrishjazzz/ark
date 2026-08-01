@@ -12,8 +12,8 @@ export const sizeOptionFields = [
     name: "value",
     title: "Value",
     type: "string",
-    description: "Stable ID used in cart/checkout, e.g. 16x24",
-    validation: (rule) => rule.required(),
+    description:
+      'Stable ID for cart/checkout, e.g. 18x22. If left empty, it is generated from the label.',
   }),
   defineField({
     name: "priceAdd",
@@ -21,7 +21,7 @@ export const sizeOptionFields = [
     type: "number",
     description: "Added to the product sale price. Keep 0 when you only have one size.",
     initialValue: 0,
-    validation: (rule) => rule.required().min(0),
+    validation: (rule) => rule.min(0),
   }),
 ];
 
@@ -56,9 +56,17 @@ export const frameOptionFields = [
     name: "priceAdd",
     title: "Extra Price (₹)",
     type: "number",
-    description: "Added to the product sale price. Acrylic = 0.",
+    description: "Flat ₹ added to sale price. Use 0 for Acrylic. Ignored if Price Multiplier is set.",
     initialValue: 0,
-    validation: (rule) => rule.required().min(0),
+    validation: (rule) => rule.min(0),
+  }),
+  defineField({
+    name: "priceMultiplier",
+    title: "Price Multiplier",
+    type: "number",
+    description:
+      "Optional. e.g. 1.1 = 10% more than sale price (Aluminum). Overrides Extra Price when set.",
+    validation: (rule) => rule.positive(),
   }),
 ];
 
@@ -123,11 +131,14 @@ export const framesArrayMember = defineArrayMember({
       subtitle: "value",
       hex: "hex",
       add: "priceAdd",
+      mult: "priceMultiplier",
     },
-    prepare({ title, subtitle, hex, add }) {
+    prepare({ title, subtitle, hex, add, mult }) {
+      const priceLabel =
+        typeof mult === "number" ? `×${mult}` : formatAdd(add);
       return {
         title: title || "Frame",
-        subtitle: `${subtitle || "—"} · ${hex || ""} · ${formatAdd(add)}`,
+        subtitle: `${subtitle || "—"} · ${hex || ""} · ${priceLabel}`,
       };
     },
   },

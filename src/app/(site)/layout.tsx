@@ -6,8 +6,8 @@ import { ScrollProgress } from "@/components/layout/ScrollProgress";
 import { WhatsAppFloat } from "@/components/layout/WhatsAppFloat";
 import { fetchSiteSettings } from "@/lib/cms";
 
-/** Refresh CMS content from Sanity every 60 seconds */
-export const revalidate = 60;
+/** Refresh CMS content from Sanity often so Studio size/price edits show quickly */
+export const revalidate = 10;
 
 export default async function SiteLayout({
   children,

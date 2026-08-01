@@ -5,9 +5,22 @@ import type { FrameOption, SizeOption } from "@/types/site-settings";
 export const SHIPPING_FEE = 2500;
 export const FREE_SHIPPING_THRESHOLD = 50000;
 
+function optionExtra(
+  basePrice: number,
+  option?: Pick<SizeOption, "priceAdd" | "priceMultiplier">
+): number {
+  if (!option) return 0;
+  // Multiplier wins when set (e.g. Aluminum 1.1× Acrylic)
+  if (typeof option.priceMultiplier === "number") {
+    return Math.round(basePrice * option.priceMultiplier) - basePrice;
+  }
+  if (typeof option.priceAdd === "number") return option.priceAdd;
+  return 0;
+}
+
 /**
- * Final price = sale price + size extra (₹) + frame extra (₹).
- * With one size and Acrylic only, extras are 0 → price equals sale price.
+ * Final price = sale price + size extra + frame extra.
+ * Frame multiplier example: Aluminum 1.1 → sale × 1.1
  */
 export function calculatePrice(
   basePrice: number,
@@ -19,20 +32,14 @@ export function calculatePrice(
   const sizeOpt = sizes.find((s) => s.value === size);
   const frameOpt = frame ? frames.find((f) => f.value === frame) : undefined;
 
-  const sizeAdd =
-    typeof sizeOpt?.priceAdd === "number"
-      ? sizeOpt.priceAdd
-      : typeof sizeOpt?.priceMultiplier === "number"
-        ? Math.round(basePrice * sizeOpt.priceMultiplier) - basePrice
-        : 0;
-  const frameAdd =
-    typeof frameOpt?.priceAdd === "number"
-      ? frameOpt.priceAdd
-      : typeof frameOpt?.priceMultiplier === "number"
-        ? Math.round(basePrice * frameOpt.priceMultiplier) - basePrice
-        : 0;
-
-  return Math.max(0, Math.round(basePrice + sizeAdd + frameAdd));
+  return Math.max(
+    0,
+    Math.round(
+      basePrice +
+        optionExtra(basePrice, sizeOpt) +
+        optionExtra(basePrice, frameOpt)
+    )
+  );
 }
 
 export function calculateCartTotals(items: Pick<CartItem, "price" | "quantity">[]) {

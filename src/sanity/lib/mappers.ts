@@ -82,9 +82,25 @@ function resolvePriceFields(
   priceAdd?: number,
   priceMultiplier?: number
 ): { priceAdd?: number; priceMultiplier?: number } {
+  // Multiplier (e.g. Aluminum 1.1×) takes priority in calculatePrice
+  if (typeof priceMultiplier === "number") {
+    return {
+      priceMultiplier,
+      ...(typeof priceAdd === "number" ? { priceAdd } : {}),
+    };
+  }
   if (typeof priceAdd === "number") return { priceAdd };
-  if (typeof priceMultiplier === "number") return { priceMultiplier };
   return { priceAdd: 0 };
+}
+
+/** Derive stable size value when Studio only fills the label */
+function sizeValueFromLabel(label: string): string {
+  return label
+    .toLowerCase()
+    .replace(/["″''′]/g, "")
+    .replace(/×/g, "x")
+    .replace(/\s+/g, "")
+    .replace(/[^a-z0-9x]/g, "");
 }
 
 function resolveSeriesFields(series?: string | SanitySeriesRef): {
@@ -135,12 +151,17 @@ function mapProductSizes(
 ): SizeOption[] | undefined {
   const mapped =
     sizes
-      ?.filter((s) => s?.label && s?.value)
-      .map((s) => ({
-        label: s.label!,
-        value: s.value!,
-        ...resolvePriceFields(s.priceAdd, s.priceMultiplier),
-      })) ?? [];
+      ?.filter((s) => Boolean(s?.label?.trim()))
+      .map((s) => {
+        const label = s.label!.trim();
+        const value = s.value?.trim() || sizeValueFromLabel(label);
+        return {
+          label,
+          value,
+          ...resolvePriceFields(s.priceAdd, s.priceMultiplier),
+        };
+      })
+      .filter((s) => Boolean(s.value)) ?? [];
   return mapped.length > 0 ? mapped : undefined;
 }
 
@@ -280,12 +301,17 @@ function mapSizes(
 ): SizeOption[] {
   const mapped =
     sizes
-      ?.filter((s) => s?.label && s?.value)
-      .map((s) => ({
-        label: s.label!,
-        value: s.value!,
-        ...resolvePriceFields(s.priceAdd, s.priceMultiplier),
-      })) ?? [];
+      ?.filter((s) => Boolean(s?.label?.trim()))
+      .map((s) => {
+        const label = s.label!.trim();
+        const value = s.value?.trim() || sizeValueFromLabel(label);
+        return {
+          label,
+          value,
+          ...resolvePriceFields(s.priceAdd, s.priceMultiplier),
+        };
+      })
+      .filter((s) => Boolean(s.value)) ?? [];
   return mapped.length > 0 ? mapped : [...DEFAULT_SIZES];
 }
 

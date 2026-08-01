@@ -14,14 +14,30 @@ export const BRAND = {
   whatsapp: "https://wa.me/919163034822",
 } as const;
 
-/** One standard size for all products — add more later in Sanity if needed */
+/** Default size for all products (except Lego) */
 export const DEFAULT_SIZES = [
-  { label: '16" × 24"', value: "16x24", priceAdd: 0 },
+  { label: '18" × 22"', value: "18x22", priceAdd: 0 },
 ] as const;
 
-/** Acrylic only for now — add Wooden / Aluminum later in Sanity */
+/** Lego series only */
+export const LEGO_SIZES = [
+  { label: '20" × 31"', value: "20x31", priceAdd: 0 },
+] as const;
+
+/** Default frame for all non-Lego products */
 export const DEFAULT_FRAME_OPTIONS = [
   { label: "Acrylic", value: "acrylic", hex: "#B8D4E3", priceAdd: 0 },
+] as const;
+
+/** Lego: Acrylic + Aluminum (Aluminum = 1.1× Acrylic / sale price) */
+export const LEGO_FRAME_OPTIONS = [
+  { label: "Acrylic", value: "acrylic", hex: "#B8D4E3", priceAdd: 0 },
+  {
+    label: "Aluminum",
+    value: "aluminum",
+    hex: "#C0C0C0",
+    priceMultiplier: 1.1,
+  },
 ] as const;
 
 export const DEFAULT_MANUFACTURERS = [

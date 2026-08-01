@@ -684,7 +684,7 @@ async function seed() {
 
   const commerceOptions = {
     sizes: [
-      { _key: "size-16x24", _type: "sizeOption", label: '16" × 24"', value: "16x24", priceAdd: 0 },
+      { _key: "size-18x22", _type: "sizeOption", label: '18" × 22"', value: "18x22", priceAdd: 0 },
     ],
     frames: [
       { _key: "frame-acrylic", _type: "frameOption", label: "Acrylic", value: "acrylic", hex: "#B8D4E3", priceAdd: 0 },

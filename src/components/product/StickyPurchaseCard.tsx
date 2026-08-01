@@ -139,7 +139,7 @@ export function StickyPurchaseCard({ product, comingSoon = false }: StickyPurcha
               className="mb-6"
             />
 
-            {sizes.length > 1 && (
+            {sizes.length > 0 && (
               <div className="mb-6">
                 <p className="font-button text-[10px] uppercase tracking-[0.2em] text-grey mb-3">
                   Size
@@ -148,6 +148,7 @@ export function StickyPurchaseCard({ product, comingSoon = false }: StickyPurcha
                   {sizes.map((size) => (
                     <button
                       key={size.value}
+                      type="button"
                       onClick={() => setSelectedSize(size.value)}
                       className={cn(
                         "font-button text-[9px] uppercase tracking-wider px-4 py-2.5 rounded-full border transition-all duration-300",
@@ -163,7 +164,7 @@ export function StickyPurchaseCard({ product, comingSoon = false }: StickyPurcha
               </div>
             )}
 
-            {frames.length > 1 && (
+            {frames.length > 0 && (
               <div className="mb-8">
                 <p className="font-button text-[10px] uppercase tracking-[0.2em] text-grey mb-3">
                   Frame Material
@@ -172,6 +173,7 @@ export function StickyPurchaseCard({ product, comingSoon = false }: StickyPurcha
                   {frames.map((frame) => (
                     <button
                       key={frame.value}
+                      type="button"
                       onClick={() => setSelectedFrame(frame.value)}
                       className={cn(
                         "flex items-center gap-2 px-4 py-2.5 rounded-full border transition-all duration-300",
@@ -191,10 +193,6 @@ export function StickyPurchaseCard({ product, comingSoon = false }: StickyPurcha
                   ))}
                 </div>
               </div>
-            )}
-
-            {sizes.length <= 1 && frames.length <= 1 && (
-              <div className="mb-8" />
             )}
 
             <div className="flex flex-col gap-3 mb-4">

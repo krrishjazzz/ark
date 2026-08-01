@@ -3,7 +3,7 @@
  * 1. Environment — Audi, Mercedes, Mustang
  * 2. Drift — Rolls Royce
  * 3. Lego — Ferrari + Ford GT (if present)
- * 4. Small Car — empty / coming soon
+ * 4. Small Car — compact relief pieces
  *
  * Usage: npm run seed:series
  */
@@ -94,8 +94,9 @@ const seriesDocs = [
     collection: "cars",
     sortOrder: 4,
     slotCount: 3,
-    description: "Compact icons, big presence.",
-    comingSoon: true,
+    description:
+      "Compact icons with sculpted trails — big presence in a focused frame.",
+    comingSoon: false,
   },
 ];
 
@@ -107,6 +108,8 @@ const assignmentsBySlug = {
   "rolls-royce-phantom": "series-drift",
   "ferrari-f1-sf23": "series-lego",
   "ferrari-f1-sf24": "series-lego",
+  "ford-mustang-shadow-trail": "series-small-car",
+  "audi-obsidian-drift": "series-small-car",
 };
 
 async function seed() {

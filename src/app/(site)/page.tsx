@@ -12,6 +12,9 @@ import {
   fetchGalleryImages,
 } from "@/lib/cms";
 
+/** Keep homepage cars/series in sync with Sanity quickly */
+export const revalidate = 0;
+
 export default async function HomePage() {
   const [collections, products, carSeries, testimonials, galleryImages] =
     await Promise.all([

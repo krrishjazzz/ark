@@ -15,6 +15,7 @@ import { ChevronLeft, ChevronRight, Clock } from "lucide-react";
 import { FadeIn } from "@/components/animations/FadeIn";
 import { ProductCard } from "@/components/product/ProductCard";
 import { resolveImageSrc } from "@/lib/images";
+import { productMatchesSeries } from "@/lib/series";
 import {
   buildCollectionInterestMessage,
   buildWhatsAppUrl,
@@ -132,7 +133,7 @@ export function HomeCarsSeries({
 
   const seriesProducts = useMemo(() => {
     if (!activeSeries) return carProducts;
-    return carProducts.filter((p) => p.seriesSlug === activeSeries.slug);
+    return carProducts.filter((p) => productMatchesSeries(p, activeSeries));
   }, [activeSeries, carProducts]);
 
   // Desktop: swipe only when more than 3. Mobile: always horizontal row.
@@ -380,21 +381,27 @@ export function HomeCarsSeries({
                     : "sm:grid sm:grid-cols-3 sm:gap-5 sm:overflow-visible sm:snap-none"
                 )}
               >
-                {seriesProducts.map((product) => (
-                  <div
-                    key={product.id}
-                    className={cn(
-                      "h-full shrink-0 snap-start",
-                      // ~62% width → one full card + clear half of the next
-                      "w-[62%]",
-                      needsDesktopSwipe
-                        ? "sm:w-[calc((100%-2.5rem)/3)]"
-                        : "sm:w-auto sm:shrink"
-                    )}
-                  >
-                    <ProductCard product={product} />
-                  </div>
-                ))}
+                {seriesProducts.length === 0 ? (
+                  <p className="text-sm text-grey py-10 w-full text-center">
+                    No pieces in this series yet — check back soon.
+                  </p>
+                ) : (
+                  seriesProducts.map((product) => (
+                    <div
+                      key={product.id || product.slug}
+                      className={cn(
+                        "h-full shrink-0 snap-start",
+                        // ~62% width → one full card + clear half of the next
+                        "w-[62%]",
+                        needsDesktopSwipe
+                          ? "sm:w-[calc((100%-2.5rem)/3)]"
+                          : "sm:w-auto sm:shrink"
+                      )}
+                    >
+                      <ProductCard product={product} />
+                    </div>
+                  ))
+                )}
               </div>
             </motion.div>
           </AnimatePresence>

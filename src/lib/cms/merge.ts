@@ -40,7 +40,7 @@ export function mergeProduct(local: Product, sanity: Product): Product {
     slug: local.slug,
     name: pickString(sanity.name, local.name),
     series: pickString(sanity.series, local.series),
-    seriesSlug: sanity.seriesSlug || local.seriesSlug,
+    seriesSlug: sanity.seriesSlug || local.seriesSlug || undefined,
     seriesOrder: sanity.seriesOrder ?? local.seriesOrder,
     manufacturer: hasText(sanity.manufacturer)
       ? sanity.manufacturer
@@ -64,8 +64,19 @@ export function mergeProduct(local: Product, sanity: Product): Product {
     },
     featured: sanity.featured ?? local.featured,
     collection: pickString(sanity.collection, local.collection),
-    sizes: pickArray(sanity.sizes ?? [], local.sizes ?? []),
-    frames: pickArray(sanity.frames ?? [], local.frames ?? []),
+    // Prefer Sanity commerce options so Studio edits show on the site
+    sizes:
+      sanity.sizes && sanity.sizes.length > 0
+        ? sanity.sizes
+        : local.sizes && local.sizes.length > 0
+          ? local.sizes
+          : undefined,
+    frames:
+      sanity.frames && sanity.frames.length > 0
+        ? sanity.frames
+        : local.frames && local.frames.length > 0
+          ? local.frames
+          : undefined,
     craftsmanship: pickArray(sanity.craftsmanship, local.craftsmanship),
     packaging: pickArray(sanity.packaging, local.packaging),
     shipping: pickString(sanity.shipping, local.shipping),

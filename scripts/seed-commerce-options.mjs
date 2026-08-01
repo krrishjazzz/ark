@@ -52,11 +52,28 @@ const client = createClient({
 });
 
 const sizes = [
-  { _key: "size-16x24", _type: "sizeOption", label: '16" × 24"', value: "16x24", priceAdd: 0 },
+  { _key: "size-18x22", _type: "sizeOption", label: '18" × 22"', value: "18x22", priceAdd: 0 },
+];
+
+const legoSizes = [
+  { _key: "size-20x31", _type: "sizeOption", label: '20" × 31"', value: "20x31", priceAdd: 0 },
 ];
 
 const frames = [
   { _key: "frame-acrylic", _type: "frameOption", label: "Acrylic", value: "acrylic", hex: "#B8D4E3", priceAdd: 0 },
+];
+
+/** Lego only — Aluminum is 1.1× the Acrylic / sale price */
+const legoFrames = [
+  { _key: "frame-acrylic", _type: "frameOption", label: "Acrylic", value: "acrylic", hex: "#B8D4E3", priceAdd: 0 },
+  {
+    _key: "frame-aluminum",
+    _type: "frameOption",
+    label: "Aluminum",
+    value: "aluminum",
+    hex: "#C0C0C0",
+    priceMultiplier: 1.1,
+  },
 ];
 
 const manufacturers = [
@@ -146,8 +163,43 @@ async function seed() {
       ...sitePatch,
     });
   }
-  console.log("✅ Site Settings updated (1 size: 16×24, frame: Acrylic only)");
-  console.log("   Products inherit these unless they set their own sizes/frames.");
+  console.log('✅ Site Settings: default size 18" × 22", frame Acrylic');
+
+  // Lego series products → 20" × 31" only
+  const legoIds = await client.fetch(`
+    *[_type == "product" && series->slug.current == "lego"]._id
+  `);
+
+  if (legoIds?.length) {
+    const tx = client.transaction();
+    for (const id of legoIds) {
+      tx.patch(id, (p) =>
+        p.set({ sizes: legoSizes, frames: legoFrames })
+      );
+    }
+    await tx.commit();
+    console.log(
+      `✅ Lego products (${legoIds.length}): size 20" × 31", frames Acrylic + Aluminum (×1.1)`
+    );
+  } else {
+    console.log("ℹ️ No Lego-series products found to assign 20×31");
+  }
+
+  // Clear size overrides on non-lego so they inherit 18×22 from Site Settings
+  const otherIds = await client.fetch(`
+    *[_type == "product" && (
+      !defined(series) || series->slug.current != "lego"
+    )]._id
+  `);
+  if (otherIds?.length) {
+    const tx = client.transaction();
+    for (const id of otherIds) {
+      tx.patch(id, (p) => p.set({ sizes: [], frames: [] }));
+    }
+    await tx.commit();
+    console.log(`✅ Other products (${otherIds.length}): inherit 18" × 22"`);
+  }
+
   console.log("   http://localhost:3000/studio");
 }
 

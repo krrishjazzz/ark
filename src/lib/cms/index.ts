@@ -233,8 +233,9 @@ const LOCAL_CAR_SERIES: ProductSeries[] = [
     collection: "cars",
     sortOrder: 4,
     slotCount: 3,
-    description: "Compact icons, big presence.",
-    comingSoon: true,
+    description:
+      "Compact icons with sculpted trails — big presence in a focused frame.",
+    comingSoon: false,
   },
 ];
 
